@@ -1,0 +1,18 @@
+# Cache files
+.scons*
+.cache/
+__pycache__/
+
+# Built files
+build/*
+!build/.gdignore
+*.o
+*.os
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+*.framework
+compile_commands.json
