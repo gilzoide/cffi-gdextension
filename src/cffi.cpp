@@ -83,14 +83,14 @@ FFI *FFI::get_singleton() {
 FFI *FFI::get_or_create_singleton() {
 	if (!instance) {
 		instance = memnew(FFI);
-		Engine::get_singleton()->register_singleton("Cffi", instance);
+		Engine::get_singleton()->register_singleton(FFI::get_class_static(), instance);
 	}
 	return instance;
 }
 
 void FFI::delete_singleton() {
 	if (instance) {
-		Engine::get_singleton()->unregister_singleton("Cffi");
+		Engine::get_singleton()->unregister_singleton(FFI::get_class_static());
 		memdelete(instance);
 		instance = nullptr;
 	}
