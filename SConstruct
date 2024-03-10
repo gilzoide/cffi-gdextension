@@ -1,3 +1,6 @@
+from os import path
+
+
 env = SConscript("lib/godot-cpp/SConstruct").Clone()
 
 # Add support for generating compilation database files
@@ -16,7 +19,7 @@ def remove_prefix(s, prefix):
     return s[len(prefix):] if s.startswith(prefix) else s
 
 build_dir = "build/{}".format(remove_prefix(env["suffix"], "."))
-VariantDir(build_dir, 'src', duplicate=False)
+env.VariantDir(build_dir, 'src', duplicate=False)
 
 # libffi stuff
 if env['platform'] == 'macos':
@@ -32,7 +35,10 @@ env.Append(
 )
 
 # Build Lua GDExtension
-sources = Glob("src/*.cpp")
+sources = [
+    f"{build_dir}/{path.basename(str(cpp))}"
+    for cpp in Glob("src/*.cpp")
+]
 library = env.SharedLibrary(
     "addons/cffi/build/libcffi{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
     source=sources,
