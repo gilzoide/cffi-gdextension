@@ -6,6 +6,7 @@
 #include <godot_cpp/variant/dictionary.hpp>
 
 #include "CffiType.hpp"
+#include "CffiLibrary.hpp"
 
 using namespace godot;
 
@@ -17,6 +18,8 @@ public:
     Cffi();
 
     CffiType *get_type(const String& name) const;
+
+    CffiLibrary *open(const String& name) const;
 
     static Cffi *get_singleton();
 	static Cffi *get_or_create_singleton();

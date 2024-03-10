@@ -1,4 +1,5 @@
 #include "Cffi.hpp"
+#include "CffiLibrary.hpp"
 
 #include <godot_cpp/classes/engine.hpp>
 
@@ -49,8 +50,13 @@ CffiType *Cffi::get_type(const String& name) const {
     return Object::cast_to<CffiType>(builtin_types.get(name, Variant()));
 }
 
+CffiLibrary *Cffi::open(const String& name) const {
+    return CffiLibrary::open(name);
+}
+
 void Cffi::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_type", "name"), &Cffi::get_type);
+    ClassDB::bind_method(D_METHOD("open", "library_name"), &Cffi::open);
 }
 
 Cffi *Cffi::get_singleton() {

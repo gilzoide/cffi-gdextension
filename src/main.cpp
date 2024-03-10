@@ -12,6 +12,7 @@ static void initialize(ModuleInitializationLevel level) {
 		return;
 	}
 
+	ClassDB::register_abstract_class<CffiLibrary>();
 	ClassDB::register_abstract_class<CffiType>();
 	ClassDB::register_abstract_class<Cffi>();
 	Cffi::get_or_create_singleton();
