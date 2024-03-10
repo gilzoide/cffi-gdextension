@@ -2,6 +2,8 @@
 #include <godot_cpp/godot.hpp>
 
 #include "Cffi.hpp"
+#include "CffiFunction.hpp"
+#include "CffiLibrary.hpp"
 #include "CffiType.hpp"
 
 using namespace cffi;
@@ -13,6 +15,7 @@ static void initialize(ModuleInitializationLevel level) {
 	}
 
 	ClassDB::register_abstract_class<CffiLibrary>();
+	ClassDB::register_abstract_class<CffiFunction>();
 	ClassDB::register_abstract_class<CffiType>();
 	ClassDB::register_abstract_class<Cffi>();
 	Cffi::get_or_create_singleton();

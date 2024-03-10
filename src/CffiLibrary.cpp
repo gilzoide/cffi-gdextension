@@ -1,5 +1,6 @@
 #include "CffiLibrary.hpp"
 
+#include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/core/error_macros.hpp>
 
 #ifdef _WIN32
@@ -16,7 +17,7 @@ static void *os_open_library(const char *path) {
 #endif
 }
 
-static String os_get_open_library_error() {
+static String os_get_last_error() {
 #ifdef _WIN32
     return GetLastError();
 #else
@@ -53,10 +54,18 @@ CffiLibrary::~CffiLibrary() {
 
 CffiLibrary *CffiLibrary::open(const String& name) {
     void *library_handle = os_open_library(name.utf8().get_data());
-    ERR_FAIL_COND_V_MSG(library_handle == nullptr, nullptr, os_get_open_library_error());
+    ERR_FAIL_COND_V_MSG(library_handle == nullptr, nullptr, os_get_last_error());
     return memnew(CffiLibrary(library_handle));
 }
 
-void CffiLibrary::_bind_methods() {}
+Ref<CffiFunction> CffiLibrary::define_function(const String& name, Ref<CffiType> return_type, TypedArray<CffiType> argument_types, bool is_variadic) {
+    void *address = os_get_symbol(library_handle, name.ascii().get_data());
+    ERR_FAIL_COND_V_MSG(address == nullptr, nullptr, os_get_last_error());
+    return memnew(CffiFunction(name, address, return_type, argument_types, is_variadic));
+}
+
+void CffiLibrary::_bind_methods() {
+    ClassDB::bind_method(D_METHOD("define_function", "name", "return_type", "argument_types", "is_variadic"), &CffiLibrary::define_function, DEFVAL(true));
+}
 
 }

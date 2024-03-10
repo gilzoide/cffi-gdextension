@@ -16,7 +16,8 @@ public:
     CffiType(ffi_type ffi_type);
 
     // TODO: get_size, get_alignment
-    ffi_type get_ffi_type() const;
+    ffi_type& get_ffi_type();
+    const ffi_type& get_ffi_type() const;
 
 protected:
     static void _bind_methods();
