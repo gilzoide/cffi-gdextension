@@ -31,7 +31,7 @@ ffi_staticlib = env.Command(f"{ffi_output}/.libs/libffi.a", ffi_configure, f"mak
 ffi_h = env.SideEffect(f"{ffi_output}/include/ffi.h", ffi_configure)
 env.Append(
     CPPPATH=f"{ffi_output}/include",
-    LIBS=ffi_staticlib,
+    LIBS=[ffi_staticlib],
 )
 
 # Build Lua GDExtension
