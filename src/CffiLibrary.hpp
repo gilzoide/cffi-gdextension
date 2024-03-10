@@ -24,6 +24,7 @@ public:
 
 protected:
     static void _bind_methods();
+    String _to_string() const;
 
 private:
     void *library_handle;

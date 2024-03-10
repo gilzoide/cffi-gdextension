@@ -27,6 +27,9 @@ public:
 
 protected:
     static void _bind_methods();
+    
+    bool _get(const StringName& property_name, Variant& r_value) const;
+    void _get_property_list(List<PropertyInfo> *p_list) const;
 
     Dictionary builtin_types;
 

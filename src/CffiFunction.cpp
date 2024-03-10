@@ -1,6 +1,5 @@
 #include "CffiFunction.hpp"
-
-#include <godot_cpp/core/memory.hpp>
+#include "CffiType.hpp"
 
 namespace cffi {
 
@@ -16,9 +15,19 @@ CffiFunction::CffiFunction(const String& name, void *address, Ref<CffiType> retu
 }
 
 CffiFunction::~CffiFunction() {
-    memdelete_arr(ffi_argument_types);
+    if (ffi_argument_types) {
+        memdelete_arr(ffi_argument_types);
+    }
 }
 
 void CffiFunction::_bind_methods() {}
+
+String CffiFunction::_to_string() const {
+    PackedStringArray arguments_str;
+    for (int i = 0; i < argument_types.size(); i++) {
+        arguments_str.append(Object::cast_to<CffiType>(argument_types[0])->get_name());
+    }
+    return String("[%s:0x%x:%s %s(%s)]") % Array::make(get_class(), (uint64_t) address, return_type->get_name(), name, String(", ").join(arguments_str));
+}
 
 }

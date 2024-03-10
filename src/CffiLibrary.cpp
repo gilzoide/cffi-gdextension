@@ -53,7 +53,7 @@ CffiLibrary::~CffiLibrary() {
 }
 
 CffiLibrary *CffiLibrary::open(const String& name) {
-    void *library_handle = os_open_library(name.utf8().get_data());
+    void *library_handle = os_open_library(name.is_empty() ? nullptr : name.utf8().get_data());
     ERR_FAIL_COND_V_MSG(library_handle == nullptr, nullptr, os_get_last_error());
     return memnew(CffiLibrary(library_handle));
 }
@@ -66,6 +66,10 @@ Ref<CffiFunction> CffiLibrary::define_function(const String& name, Ref<CffiType>
 
 void CffiLibrary::_bind_methods() {
     ClassDB::bind_method(D_METHOD("define_function", "name", "return_type", "argument_types", "is_variadic"), &CffiLibrary::define_function, DEFVAL(true));
+}
+
+String CffiLibrary::_to_string() const {
+    return String("[%s:0x%x]") % Array::make(get_class(), (uint64_t) library_handle);
 }
 
 }
