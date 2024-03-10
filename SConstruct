@@ -33,7 +33,7 @@ env.Append(
 # Build Lua GDExtension
 sources = Glob("src/*.cpp")
 library = env.SharedLibrary(
-    "addons/ffi-gdextension/build/libffigdextension{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+    "addons/cffi/build/libcffi{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
     source=sources,
 )
 

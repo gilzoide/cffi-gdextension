@@ -15,7 +15,7 @@ static void deinitialize(ModuleInitializationLevel level) {
 	}
 }
 
-extern "C" GDExtensionBool ffigdextension_entrypoint(
+extern "C" GDExtensionBool cffi_entrypoint(
 	const GDExtensionInterfaceGetProcAddress p_getprocaccess,
 	GDExtensionClassLibraryPtr p_library,
 	GDExtensionInitialization *r_initialization
