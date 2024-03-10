@@ -2,6 +2,12 @@
 
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/core/error_macros.hpp>
+#include <godot_cpp/classes/os.hpp>
+#include <godot_cpp/classes/project_settings.hpp>
+
+#ifndef SHLIBSUFFIX
+    #define SHLIBSUFFIX ".so"
+#endif
 
 #ifdef _WIN32
     #include <Windows.h>
@@ -53,7 +59,22 @@ FFILibrary::~FFILibrary() {
 }
 
 FFILibrary *FFILibrary::open(const String& name) {
-    void *library_handle = os_open_library(name.is_empty() ? nullptr : name.utf8().get_data());
+    String path;
+    if (name.begins_with("res://")) {
+        if (OS::get_singleton()->has_feature("editor")) {
+            path = ProjectSettings::get_singleton()->globalize_path(name);
+        }
+        else {
+            path = OS::get_singleton()->get_executable_path().path_join(name.get_basename());
+        }
+    }
+    else {
+        path = name;
+    }
+    if (!name.contains(".")) {
+        path += SHLIBSUFFIX;
+    }
+    void *library_handle = os_open_library(path.is_empty() ? nullptr : path.utf8().get_data());
     ERR_FAIL_COND_V_MSG(library_handle == nullptr, nullptr, os_get_last_error());
     return memnew(FFILibrary(library_handle));
 }

@@ -34,7 +34,10 @@ env.Append(
     LIBS=[ffi_staticlib],
 )
 
-# Build Lua GDExtension
+# Shared Library suffix, for dlopen/LoadLibrary
+env.Append(CXXFLAGS=[f'-DSHLIBSUFFIX=\\"{env["SHLIBSUFFIX"]}\\"'])
+
+# Build GDExtension
 sources = [
     f"{build_dir}/{path.basename(str(cpp))}"
     for cpp in Glob("src/*.cpp")
