@@ -1,3 +1,6 @@
+#ifndef __CFFI_TYPE_HPP__
+#define __CFFI_TYPE_HPP__
+
 #include <ffi.h>
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/classes/wrapped.hpp>
@@ -22,3 +25,5 @@ protected:
 };
 
 }
+
+#endif  // __CFFI_TYPE_HPP__

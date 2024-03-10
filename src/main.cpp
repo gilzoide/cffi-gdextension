@@ -1,7 +1,8 @@
 #include <ffi.h>
 #include <godot_cpp/godot.hpp>
 
-#include "CffiType.h"
+#include "Cffi.hpp"
+#include "CffiType.hpp"
 
 using namespace cffi;
 using namespace godot;
@@ -12,12 +13,15 @@ static void initialize(ModuleInitializationLevel level) {
 	}
 
 	ClassDB::register_abstract_class<CffiType>();
+	ClassDB::register_abstract_class<Cffi>();
+	Cffi::get_or_create_singleton();
 }
 
 static void deinitialize(ModuleInitializationLevel level) {
 	if (level != MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
 	}
+	Cffi::delete_singleton();
 }
 
 extern "C" GDExtensionBool cffi_entrypoint(
