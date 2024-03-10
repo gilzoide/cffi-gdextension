@@ -4,19 +4,19 @@
 #include <ffi.h>
 #include <godot_cpp/classes/ref_counted.hpp>
 
-#include "CffiType.hpp"
+#include "cffi_type.hpp"
 #include "godot_cpp/variant/typed_array.hpp"
 
 using namespace godot;
 
 namespace cffi {
 
-class CffiFunction : public RefCounted {
-    GDCLASS(CffiFunction, RefCounted);
+class FFIFunction : public RefCounted {
+    GDCLASS(FFIFunction, RefCounted);
 public:
-    CffiFunction();
-    CffiFunction(const String& name, void *address, Ref<CffiType> return_type, TypedArray<CffiType> argument_types, bool is_variadic = false, ffi_abi abi = FFI_DEFAULT_ABI);
-    ~CffiFunction();
+    FFIFunction();
+    FFIFunction(const String& name, void *address, Ref<FFIType> return_type, TypedArray<FFIType> argument_types, bool is_variadic = false, ffi_abi abi = FFI_DEFAULT_ABI);
+    ~FFIFunction();
 
 protected:
     static void _bind_methods();
@@ -27,8 +27,8 @@ private:
     void *address;
     ffi_cif ffi_handle;
     ffi_type **ffi_argument_types;
-    Ref<CffiType> return_type;
-    TypedArray<CffiType> argument_types;
+    Ref<FFIType> return_type;
+    TypedArray<FFIType> argument_types;
     bool is_variadic;
 };
 

@@ -5,24 +5,24 @@
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/variant/dictionary.hpp>
 
-#include "CffiType.hpp"
-#include "CffiLibrary.hpp"
+#include "cffi_type.hpp"
+#include "cffi_library.hpp"
 
 using namespace godot;
 
 namespace cffi {
 
-class Cffi : public RefCounted {
-    GDCLASS(Cffi, RefCounted);
+class FFI : public RefCounted {
+    GDCLASS(FFI, RefCounted);
 public:
-    Cffi();
+    FFI();
 
-    CffiType *get_type(const String& name) const;
+    FFIType *get_type(const String& name) const;
 
-    CffiLibrary *open(const String& name) const;
+    FFILibrary *open(const String& name) const;
 
-    static Cffi *get_singleton();
-	static Cffi *get_or_create_singleton();
+    static FFI *get_singleton();
+	static FFI *get_or_create_singleton();
 	static void delete_singleton();
 
 protected:
@@ -34,7 +34,7 @@ protected:
     Dictionary builtin_types;
 
 private:
-    static Cffi *instance;
+    static FFI *instance;
 };
 
 }

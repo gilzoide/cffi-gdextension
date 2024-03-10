@@ -9,11 +9,11 @@ using namespace godot;
 
 namespace cffi {
 
-class CffiType : public RefCounted {
-    GDCLASS(CffiType, RefCounted);
+class FFIType : public RefCounted {
+    GDCLASS(FFIType, RefCounted);
 public:
-    CffiType();
-    CffiType(const String& name, ffi_type ffi_type);
+    FFIType();
+    FFIType(const String& name, ffi_type ffi_type);
 
     // TODO: get_size, get_alignment
     ffi_type& get_ffi_type();

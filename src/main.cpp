@@ -1,10 +1,10 @@
 #include <ffi.h>
 #include <godot_cpp/godot.hpp>
 
-#include "Cffi.hpp"
-#include "CffiFunction.hpp"
-#include "CffiLibrary.hpp"
-#include "CffiType.hpp"
+#include "cffi.hpp"
+#include "cffi_function.hpp"
+#include "cffi_library.hpp"
+#include "cffi_type.hpp"
 
 using namespace cffi;
 using namespace godot;
@@ -14,18 +14,18 @@ static void initialize(ModuleInitializationLevel level) {
 		return;
 	}
 
-	ClassDB::register_abstract_class<CffiLibrary>();
-	ClassDB::register_abstract_class<CffiFunction>();
-	ClassDB::register_abstract_class<CffiType>();
-	ClassDB::register_abstract_class<Cffi>();
-	Cffi::get_or_create_singleton();
+	ClassDB::register_abstract_class<FFILibrary>();
+	ClassDB::register_abstract_class<FFIFunction>();
+	ClassDB::register_abstract_class<FFIType>();
+	ClassDB::register_abstract_class<FFI>();
+	FFI::get_or_create_singleton();
 }
 
 static void deinitialize(ModuleInitializationLevel level) {
 	if (level != MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
 	}
-	Cffi::delete_singleton();
+	FFI::delete_singleton();
 }
 
 extern "C" GDExtensionBool cffi_entrypoint(
