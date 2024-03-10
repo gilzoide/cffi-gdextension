@@ -18,13 +18,14 @@ def remove_prefix(s, prefix):
 build_dir = "build/{}".format(remove_prefix(env["suffix"], "."))
 VariantDir(build_dir, 'src', duplicate=False)
 
-# Run autoconf
+# libffi stuff
 if env['platform'] == 'macos':
     env.Append(CFLAGS=["-arch", "x86_64", "-arch", "arm64"])
-ffi_autogen = env.Command(f"lib/libffi/configure", [], "cd lib/libffi && ./autogen.sh")
 ffi_output = f"{build_dir}/libffi"
+ffi_autogen = env.Command(f"lib/libffi/configure", [], "cd lib/libffi && ./autogen.sh")
 ffi_configure = env.Command(f"{ffi_output}/Makefile", ffi_autogen, f"mkdir -p {ffi_output} && cd {ffi_output} && ../../../lib/libffi/configure --disable-shared \"CFLAGS={env['CFLAGS']}\"")
 ffi_staticlib = env.Command(f"{ffi_output}/.libs/libffi.a", ffi_configure, f"make -C {ffi_output}")
+ffi_h = env.SideEffect(f"{ffi_output}/include/ffi.h", ffi_configure)
 env.Append(
     CPPPATH=f"{ffi_output}/include",
     LIBS=ffi_staticlib,
@@ -36,5 +37,6 @@ library = env.SharedLibrary(
     "addons/cffi/build/libcffi{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
     source=sources,
 )
+env.Depends(library, ffi_h)
 
 Default(library)
