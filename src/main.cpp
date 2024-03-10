@@ -1,12 +1,17 @@
 #include <ffi.h>
 #include <godot_cpp/godot.hpp>
 
+#include "CffiType.h"
+
+using namespace cffi;
 using namespace godot;
 
 static void initialize(ModuleInitializationLevel level) {
 	if (level != MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
 	}
+
+	ClassDB::register_abstract_class<CffiType>();
 }
 
 static void deinitialize(ModuleInitializationLevel level) {
