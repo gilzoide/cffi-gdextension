@@ -4,7 +4,7 @@
 namespace cffi {
 
 FFIFunction::FFIFunction() {}
-FFIFunction::FFIFunction(const String& name, void *address, Ref<FFIType> return_type, TypedArray<FFIType> argument_types, bool is_variadic, ffi_abi abi)
+FFIFunction::FFIFunction(const String& name, void *address, const Ref<FFIType>& return_type, const TypedArray<FFIType>& argument_types, bool is_variadic, ffi_abi abi)
 	: name(name), address(address), return_type(return_type), argument_types(argument_types), is_variadic(is_variadic)
 {
 	ffi_argument_types = memnew_arr(ffi_type*, argument_types.size());

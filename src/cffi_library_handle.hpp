@@ -20,7 +20,7 @@ public:
 
 	static FFILibraryHandle *open(const String& name);
 
-	Ref<FFIFunction> define_function(const String& name, Ref<FFIType> return_type, TypedArray<FFIType> argument_types, bool is_variadic = false);
+	Ref<FFIFunction> define_function(const String& name, const Variant& return_type, const Array& argument_types, bool is_variadic = false);
 
 protected:
 	static void _bind_methods();

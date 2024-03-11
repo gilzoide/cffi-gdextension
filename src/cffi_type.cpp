@@ -1,4 +1,5 @@
 #include "cffi_type.hpp"
+#include "cffi.hpp"
 
 namespace cffi {
 
@@ -15,6 +16,11 @@ const ffi_type& FFIType::get_ffi_type() const {
 
 const String& FFIType::get_name() const {
 	return name;
+}
+
+FFIType *FFIType::from_variant(const Variant& var) {
+	FFIType *type = Object::cast_to<FFIType>(var);
+	return type ? type : FFI::get_singleton()->get_type(var);
 }
 
 void FFIType::_bind_methods() {}

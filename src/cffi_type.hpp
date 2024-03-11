@@ -21,6 +21,8 @@ public:
 
 	const String& get_name() const;
 
+	static FFIType *from_variant(const Variant& var);
+
 protected:
 	static void _bind_methods();
 	String _to_string() const;
