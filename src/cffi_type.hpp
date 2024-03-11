@@ -10,23 +10,23 @@ using namespace godot;
 namespace cffi {
 
 class FFIType : public RefCounted {
-    GDCLASS(FFIType, RefCounted);
+	GDCLASS(FFIType, RefCounted);
 public:
-    FFIType();
-    FFIType(const String& name, ffi_type ffi_type);
+	FFIType();
+	FFIType(const String& name, ffi_type ffi_type);
 
-    // TODO: get_size, get_alignment
-    ffi_type& get_ffi_type();
-    const ffi_type& get_ffi_type() const;
+	// TODO: get_size, get_alignment
+	ffi_type& get_ffi_type();
+	const ffi_type& get_ffi_type() const;
 
-    const String& get_name() const;
+	const String& get_name() const;
 
 protected:
-    static void _bind_methods();
-    String _to_string() const;
+	static void _bind_methods();
+	String _to_string() const;
 
-    String name;
-    ffi_type ffi_type;
+	String name;
+	ffi_type ffi_type;
 };
 
 }

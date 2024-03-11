@@ -12,24 +12,24 @@ using namespace godot;
 namespace cffi {
 
 class FFIFunction : public RefCounted {
-    GDCLASS(FFIFunction, RefCounted);
+	GDCLASS(FFIFunction, RefCounted);
 public:
-    FFIFunction();
-    FFIFunction(const String& name, void *address, Ref<FFIType> return_type, TypedArray<FFIType> argument_types, bool is_variadic = false, ffi_abi abi = FFI_DEFAULT_ABI);
-    ~FFIFunction();
+	FFIFunction();
+	FFIFunction(const String& name, void *address, Ref<FFIType> return_type, TypedArray<FFIType> argument_types, bool is_variadic = false, ffi_abi abi = FFI_DEFAULT_ABI);
+	~FFIFunction();
 
 protected:
-    static void _bind_methods();
-    String _to_string() const;
+	static void _bind_methods();
+	String _to_string() const;
 
 private:
-    String name;
-    void *address;
-    ffi_cif ffi_handle;
-    ffi_type **ffi_argument_types;
-    Ref<FFIType> return_type;
-    TypedArray<FFIType> argument_types;
-    bool is_variadic;
+	String name;
+	void *address;
+	ffi_cif ffi_handle;
+	ffi_type **ffi_argument_types;
+	Ref<FFIType> return_type;
+	TypedArray<FFIType> argument_types;
+	bool is_variadic;
 };
 
 }

@@ -12,22 +12,22 @@ using namespace godot;
 namespace cffi {
 
 class FFILibraryHandle : public RefCounted {
-    GDCLASS(FFILibraryHandle, RefCounted);
+	GDCLASS(FFILibraryHandle, RefCounted);
 public:
-    FFILibraryHandle();
-    FFILibraryHandle(void *library_handle);
-    ~FFILibraryHandle();
+	FFILibraryHandle();
+	FFILibraryHandle(void *library_handle);
+	~FFILibraryHandle();
 
-    static FFILibraryHandle *open(const String& name);
+	static FFILibraryHandle *open(const String& name);
 
-    Ref<FFIFunction> define_function(const String& name, Ref<FFIType> return_type, TypedArray<FFIType> argument_types, bool is_variadic = false);
+	Ref<FFIFunction> define_function(const String& name, Ref<FFIType> return_type, TypedArray<FFIType> argument_types, bool is_variadic = false);
 
 protected:
-    static void _bind_methods();
-    String _to_string() const;
+	static void _bind_methods();
+	String _to_string() const;
 
 private:
-    void *library_handle;
+	void *library_handle;
 };
 
 }

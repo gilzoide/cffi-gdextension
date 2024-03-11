@@ -13,28 +13,28 @@ using namespace godot;
 namespace cffi {
 
 class FFI : public RefCounted {
-    GDCLASS(FFI, RefCounted);
+	GDCLASS(FFI, RefCounted);
 public:
-    FFI();
+	FFI();
 
-    FFIType *get_type(const String& name) const;
+	FFIType *get_type(const String& name) const;
 
-    FFILibraryHandle *open(const String& name) const;
+	FFILibraryHandle *open(const String& name) const;
 
-    static FFI *get_singleton();
+	static FFI *get_singleton();
 	static FFI *get_or_create_singleton();
 	static void delete_singleton();
 
 protected:
-    static void _bind_methods();
-    
-    bool _get(const StringName& property_name, Variant& r_value) const;
-    void _get_property_list(List<PropertyInfo> *p_list) const;
+	static void _bind_methods();
 
-    Dictionary builtin_types;
+	bool _get(const StringName& property_name, Variant& r_value) const;
+	void _get_property_list(List<PropertyInfo> *p_list) const;
+
+	Dictionary builtin_types;
 
 private:
-    static FFI *instance;
+	static FFI *instance;
 };
 
 }
