@@ -71,7 +71,7 @@ FFILibrary *FFILibrary::open(const String& name) {
     else {
         path = name;
     }
-    if (!name.contains(".")) {
+    if (!name.is_empty() && !name.contains(".")) {
         path += SHLIBSUFFIX;
     }
     void *library_handle = os_open_library(path.is_empty() ? nullptr : path.utf8().get_data());
