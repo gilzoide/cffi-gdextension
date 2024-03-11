@@ -5,8 +5,8 @@
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/variant/dictionary.hpp>
 
+#include "cffi_library_handle.hpp"
 #include "cffi_type.hpp"
-#include "cffi_library.hpp"
 
 using namespace godot;
 
@@ -19,7 +19,7 @@ public:
 
     FFIType *get_type(const String& name) const;
 
-    FFILibrary *open(const String& name) const;
+    FFILibraryHandle *open(const String& name) const;
 
     static FFI *get_singleton();
 	static FFI *get_or_create_singleton();

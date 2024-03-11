@@ -3,7 +3,7 @@
 
 #include "cffi.hpp"
 #include "cffi_function.hpp"
-#include "cffi_library.hpp"
+#include "cffi_library_handle.hpp"
 #include "cffi_type.hpp"
 
 using namespace cffi;
@@ -14,7 +14,7 @@ static void initialize(ModuleInitializationLevel level) {
 		return;
 	}
 
-	ClassDB::register_abstract_class<FFILibrary>();
+	ClassDB::register_abstract_class<FFILibraryHandle>();
 	ClassDB::register_abstract_class<FFIFunction>();
 	ClassDB::register_abstract_class<FFIType>();
 	ClassDB::register_abstract_class<FFI>();

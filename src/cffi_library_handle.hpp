@@ -11,14 +11,14 @@ using namespace godot;
 
 namespace cffi {
 
-class FFILibrary : public RefCounted {
-    GDCLASS(FFILibrary, RefCounted);
+class FFILibraryHandle : public RefCounted {
+    GDCLASS(FFILibraryHandle, RefCounted);
 public:
-    FFILibrary();
-    FFILibrary(void *library_handle);
-    ~FFILibrary();
+    FFILibraryHandle();
+    FFILibraryHandle(void *library_handle);
+    ~FFILibraryHandle();
 
-    static FFILibrary *open(const String& name);
+    static FFILibraryHandle *open(const String& name);
 
     Ref<FFIFunction> define_function(const String& name, Ref<FFIType> return_type, TypedArray<FFIType> argument_types, bool is_variadic = false);
 

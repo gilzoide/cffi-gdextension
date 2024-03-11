@@ -49,8 +49,8 @@ FFIType *FFI::get_type(const String& name) const {
     return Object::cast_to<FFIType>(builtin_types.get(name, Variant()));
 }
 
-FFILibrary *FFI::open(const String& name) const {
-    return FFILibrary::open(name);
+FFILibraryHandle *FFI::open(const String& name) const {
+    return FFILibraryHandle::open(name);
 }
 
 void FFI::_bind_methods() {
