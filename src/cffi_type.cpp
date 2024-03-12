@@ -92,6 +92,73 @@ bool FFIType::get_return_value(const PackedByteArray& data, Variant& r_variant) 
 	return true;
 }
 
+bool FFIType::serialize_value_into(const Variant& value, Ref<StreamPeerBuffer> buffer) const {
+	switch (ffi_handle.type) {
+		case FFI_TYPE_VOID:
+			break;
+
+		case FFI_TYPE_INT:
+			buffer->put_32(value);
+			break;
+
+		case FFI_TYPE_FLOAT:
+			buffer->put_float(value);
+			break;
+
+		case FFI_TYPE_DOUBLE:
+			buffer->put_double(value);
+			break;
+
+#if FFI_TYPE_LONGDOUBLE != FFI_TYPE_DOUBLE
+		case FFI_TYPE_LONGDOUBLE:
+			buffer->put_double((double) value);
+			break;
+#endif
+
+		case FFI_TYPE_UINT8:
+			buffer->put_u8((uint64_t) value);
+			break;
+
+		case FFI_TYPE_SINT8:
+			buffer->put_8((int64_t) value);
+			break;
+
+		case FFI_TYPE_UINT16:
+			buffer->put_u16((uint64_t) value);
+			break;
+
+		case FFI_TYPE_SINT16:
+			buffer->put_16((int64_t) value);
+			break;
+
+		case FFI_TYPE_UINT32:
+			buffer->put_u32((uint64_t) value);
+			break;
+
+		case FFI_TYPE_SINT32:
+			buffer->put_32((int64_t) value);
+			break;
+
+		case FFI_TYPE_UINT64:
+			buffer->put_u64((uint64_t) value);
+			break;
+
+		case FFI_TYPE_SINT64:
+			buffer->put_64((int64_t) value);
+			break;
+
+		case FFI_TYPE_STRUCT:
+			ERR_FAIL_V_EDMSG(false, "Struct type is not supported yet");
+
+		case FFI_TYPE_POINTER:
+			ERR_FAIL_V_EDMSG(false, "Pointer type is not supported yet");
+
+		case FFI_TYPE_COMPLEX:
+			ERR_FAIL_V_EDMSG(false, "Complex type is not supported yet");
+	}
+	return true;
+}
+
 FFIType *FFIType::from_variant(const Variant& var) {
 	FFIType *type = Object::cast_to<FFIType>(var);
 	return type ? type : FFI::get_singleton()->get_type(var);

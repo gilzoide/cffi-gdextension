@@ -3,6 +3,7 @@
 
 #include <ffi.h>
 #include <godot_cpp/classes/ref_counted.hpp>
+#include <godot_cpp/classes/stream_peer_buffer.hpp>
 
 using namespace godot;
 
@@ -21,6 +22,7 @@ public:
 	const String& get_name() const;
 
 	bool get_return_value(const PackedByteArray& data, Variant& r_variant) const;
+	bool serialize_value_into(const Variant& value, Ref<StreamPeerBuffer> buffer) const;
 
 	static FFIType *from_variant(const Variant& var);
 

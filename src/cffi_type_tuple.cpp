@@ -22,12 +22,14 @@ String FFITypeTuple::to_string() const {
 	return String("(%s)") % String(", ").join(types_str);
 }
 
-ffi_type **FFITypeTuple::alloc_argument_types() const {
-	ffi_type **arr = memnew_arr(ffi_type*, fields.size());
-	for (int i = 0; i < fields.size(); i++) {
-		arr[i] = &fields[i]->get_ffi_type();
+ffi_type **FFITypeTuple::get_argument_types() {
+	if (ffi_handle.size() != fields.size()) {
+		ffi_handle.resize(fields.size());
+		for (int i = 0; i < fields.size(); i++) {
+			ffi_handle[i] = &fields[i]->get_ffi_type();
+		}
 	}
-	return arr;
+	return ffi_handle.ptr();
 }
 
 FFITypeTuple FFITypeTuple::from_array(const Array& array) {
@@ -37,6 +39,7 @@ FFITypeTuple FFITypeTuple::from_array(const Array& array) {
 		auto& var = array[i];
 		FFIType *field_type = FFIType::from_variant(var);
 		ERR_FAIL_COND_V_EDMSG(field_type == nullptr, FFITypeTuple(), String("Invalid type: %s") % var.stringify());
+		fields[i].reference_ptr(field_type);
 	}
 	return FFITypeTuple(std::move(fields));
 }

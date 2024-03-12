@@ -16,7 +16,6 @@ class FFIFunction : public RefCounted {
 public:
 	FFIFunction();
 	FFIFunction(const String& name, void *address, const Ref<FFIType>& return_type, const FFITypeTuple& argument_types, bool is_variadic = false, ffi_abi abi = FFI_DEFAULT_ABI);
-	~FFIFunction();
 
 	Variant invokev(const Array& arguments);
 

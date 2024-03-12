@@ -1,5 +1,5 @@
-#ifndef __CFFI_STRUCT_TYPE_HPP__
-#define __CFFI_STRUCT_TYPE_HPP__
+#ifndef __CFFI_TYPE_TUPLE_HPP__
+#define __CFFI_TYPE_TUPLE_HPP__
 
 #include "cffi_type.hpp"
 
@@ -10,6 +10,7 @@ using namespace godot;
 namespace cffi {
 
 typedef LocalVector<Ref<FFIType>, int> FFITypeVector;
+typedef LocalVector<ffi_type*, int> ffi_typeVector;
 
 class FFITypeTuple {
 public:
@@ -22,14 +23,15 @@ public:
 
 	String to_string() const;
 
-	ffi_type **alloc_argument_types() const;
+	ffi_type **get_argument_types();
 
 	static FFITypeTuple from_array(const Array& array);
 
 private:
 	FFITypeVector fields;
+	ffi_typeVector ffi_handle;
 };
 
 }
 
-#endif  // __CFFI_STRUCT_TYPE_HPP__
+#endif  // __CFFI_TYPE_TUPLE_HPP__
