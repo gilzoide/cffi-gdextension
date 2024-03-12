@@ -18,6 +18,8 @@ public:
 	FFIFunction(const String& name, void *address, const Ref<FFIType>& return_type, const TypedArray<FFIType>& argument_types, bool is_variadic = false, ffi_abi abi = FFI_DEFAULT_ABI);
 	~FFIFunction();
 
+	Variant invokev(const Array& arguments);
+
 protected:
 	static void _bind_methods();
 	String _to_string() const;

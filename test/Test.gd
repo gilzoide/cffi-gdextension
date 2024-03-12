@@ -7,3 +7,4 @@ func _ready():
 	print(lib)
 	var f = lib.define_function("get_answer", "int", [])
 	print(f)
+	print(f.invokev())

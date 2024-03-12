@@ -3,7 +3,6 @@
 
 #include <ffi.h>
 #include <godot_cpp/classes/ref_counted.hpp>
-#include <godot_cpp/classes/wrapped.hpp>
 
 using namespace godot;
 
@@ -20,6 +19,8 @@ public:
 	const ffi_type& get_ffi_type() const;
 
 	const String& get_name() const;
+
+	bool get_return_value(const PackedByteArray& data, Variant& r_variant) const;
 
 	static FFIType *from_variant(const Variant& var);
 
