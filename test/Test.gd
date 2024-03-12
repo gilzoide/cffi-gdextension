@@ -5,6 +5,6 @@ extends Node
 func _ready():
 	var lib = preload("res://native_plugin/native_plugin.ffilibrary").open()
 	print(lib)
-	var f = lib.define_function("get_answer", "int", [])
+	var f = lib.get_function("get_answer", "int")
 	print(f)
 	print(f.invokev())

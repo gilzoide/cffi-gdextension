@@ -79,7 +79,7 @@ FFILibraryHandle *FFILibraryHandle::open(const String& name) {
 	return memnew(FFILibraryHandle(library_handle));
 }
 
-Ref<FFIFunction> FFILibraryHandle::define_function(const String& name, const Variant& return_type_var, const Array& argument_types_arr, bool is_variadic) {
+Ref<FFIFunction> FFILibraryHandle::get_function(const String& name, const Variant& return_type_var, const Array& argument_types_arr, bool is_variadic) {
 	void *address = os_get_symbol(library_handle, name.ascii().get_data());
 	ERR_FAIL_COND_V_MSG(address == nullptr, nullptr, os_get_last_error());
 
@@ -98,7 +98,7 @@ Ref<FFIFunction> FFILibraryHandle::define_function(const String& name, const Var
 }
 
 void FFILibraryHandle::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("define_function", "name", "return_type", "argument_types", "is_variadic"), &FFILibraryHandle::define_function, DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("get_function", "name", "return_type", "argument_types", "is_variadic"), &FFILibraryHandle::get_function, DEFVAL(Array()), DEFVAL(true));
 }
 
 String FFILibraryHandle::_to_string() const {
