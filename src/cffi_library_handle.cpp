@@ -1,4 +1,5 @@
 #include "cffi_library_handle.hpp"
+#include "cffi_type_tuple.hpp"
 
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/core/error_macros.hpp>
@@ -86,14 +87,8 @@ Ref<FFIFunction> FFILibraryHandle::get_function(const String& name, const Varian
 	auto return_type = FFIType::from_variant(return_type_var);
 	ERR_FAIL_COND_V_MSG(return_type == nullptr, nullptr, String("Could not find return type: %s") % return_type_var.stringify());
 
-	TypedArray<FFIType> argument_types;
-	for (int i = 0; i < argument_types_arr.size(); i++) {
-		auto& var = argument_types_arr[i];
-		auto argument_type = FFIType::from_variant(var);
-		ERR_FAIL_COND_V_MSG(argument_type == nullptr, nullptr, String("Could not find argument type: %s") % var.stringify());
-		argument_types.append(argument_type);
-	}
-
+	FFITypeTuple argument_types = FFITypeTuple::from_array(argument_types_arr);
+	ERR_FAIL_COND_V_MSG(argument_types.size() != argument_types_arr.size(), nullptr, "Invalid argument types");
 	return memnew(FFIFunction(name, address, return_type, argument_types, is_variadic));
 }
 

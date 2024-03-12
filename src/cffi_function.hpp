@@ -5,7 +5,7 @@
 #include <godot_cpp/classes/ref_counted.hpp>
 
 #include "cffi_type.hpp"
-#include "godot_cpp/variant/typed_array.hpp"
+#include "cffi_type_tuple.hpp"
 
 using namespace godot;
 
@@ -15,7 +15,7 @@ class FFIFunction : public RefCounted {
 	GDCLASS(FFIFunction, RefCounted);
 public:
 	FFIFunction();
-	FFIFunction(const String& name, void *address, const Ref<FFIType>& return_type, const TypedArray<FFIType>& argument_types, bool is_variadic = false, ffi_abi abi = FFI_DEFAULT_ABI);
+	FFIFunction(const String& name, void *address, const Ref<FFIType>& return_type, const FFITypeTuple& argument_types, bool is_variadic = false, ffi_abi abi = FFI_DEFAULT_ABI);
 	~FFIFunction();
 
 	Variant invokev(const Array& arguments);
@@ -30,7 +30,7 @@ private:
 	ffi_cif ffi_handle;
 	ffi_type **ffi_argument_types;
 	Ref<FFIType> return_type;
-	TypedArray<FFIType> argument_types;
+	FFITypeTuple argument_types;
 	bool is_variadic;
 };
 

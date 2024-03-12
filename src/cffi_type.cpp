@@ -3,15 +3,15 @@
 
 namespace cffi {
 
-FFIType::FFIType() : ffi_type(ffi_type_void) {}
-FFIType::FFIType(const String& name, _ffi_type ffi_type) : name(name), ffi_type(ffi_type) {}
+FFIType::FFIType() : ffi_handle(ffi_type_void) {}
+FFIType::FFIType(const String& name, ffi_type ffi_type) : name(name), ffi_handle(ffi_type) {}
 
 ffi_type& FFIType::get_ffi_type() {
-	return ffi_type;
+	return ffi_handle;
 }
 
 const ffi_type& FFIType::get_ffi_type() const {
-	return ffi_type;
+	return ffi_handle;
 }
 
 const String& FFIType::get_name() const {
@@ -19,13 +19,13 @@ const String& FFIType::get_name() const {
 }
 
 bool FFIType::get_return_value(const PackedByteArray& data, Variant& r_variant) const {
-	if (data.size() < ffi_type.size) {
-		ERR_PRINT_ED(String("Expected at least %d bytes for %s, got %d") % Array::make((uint64_t) ffi_type.size, name, data.size()));
+	if (data.size() < ffi_handle.size) {
+		ERR_PRINT_ED(String("Expected at least %d bytes for %s, got %d") % Array::make((uint64_t) ffi_handle.size, name, data.size()));
 		return false;
 	}
 
 	const void *ptr = data.ptr();
-	switch (ffi_type.type) {
+	switch (ffi_handle.type) {
 		case FFI_TYPE_VOID:
 			r_variant =  Variant();
 			break;

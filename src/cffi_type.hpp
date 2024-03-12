@@ -29,7 +29,7 @@ protected:
 	String _to_string() const;
 
 	String name;
-	ffi_type ffi_type;
+	ffi_type ffi_handle;
 };
 
 }

@@ -34,8 +34,14 @@ env.Append(
     LIBS=[ffi_staticlib],
 )
 
-# Shared Library suffix, for dlopen/LoadLibrary
-env.Append(CXXFLAGS=[f'-DSHLIBSUFFIX=\\"{env["SHLIBSUFFIX"]}\\"'])
+env.Append(CXXFLAGS=[
+    # Shared Library suffix, for dlopen/LoadLibrary
+    f'-DSHLIBSUFFIX=\\"{env["SHLIBSUFFIX"]}\\"',
+    # Avoid C++ not being able to use type `ffi_type` at some points
+    "-D_ffi_type=ffi_type",
+    # Avoid warnings about __has_trivial_* from godot-cpp templates
+    "-Wno-deprecated-builtins",
+])
 
 # Build GDExtension
 sources = [
