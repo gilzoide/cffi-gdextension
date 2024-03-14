@@ -5,12 +5,12 @@
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/variant/dictionary.hpp>
 
-#include "cffi_library_handle.hpp"
-#include "cffi_type.hpp"
-
 using namespace godot;
 
 namespace cffi {
+
+class FFILibraryHandle;
+class FFIType;
 
 class FFI : public RefCounted {
 	GDCLASS(FFI, RefCounted);

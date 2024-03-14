@@ -1,4 +1,5 @@
 #include "cffi_function.hpp"
+#include "cffi_type.hpp"
 #include "cffi_value_tuple.hpp"
 
 namespace cffi {

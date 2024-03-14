@@ -2,14 +2,14 @@
 #define __CFFI_LIBRARY_HPP__
 
 #include "cffi_function.hpp"
-#include "cffi_type.hpp"
-
 #include <godot_cpp/variant/typed_array.hpp>
 #include <godot_cpp/classes/ref_counted.hpp>
 
 using namespace godot;
 
 namespace cffi {
+
+class FFIFunction;
 
 class FFILibraryHandle : public RefCounted {
 	GDCLASS(FFILibraryHandle, RefCounted);

@@ -1,8 +1,7 @@
 #include "cffi_library_handle.hpp"
+#include "cffi_type.hpp"
 #include "cffi_type_tuple.hpp"
 
-#include <godot_cpp/core/class_db.hpp>
-#include <godot_cpp/core/error_macros.hpp>
 #include <godot_cpp/classes/os.hpp>
 #include <godot_cpp/classes/project_settings.hpp>
 

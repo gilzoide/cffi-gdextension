@@ -4,13 +4,14 @@
 #include <ffi.h>
 #include <godot_cpp/classes/ref_counted.hpp>
 
-#include "cffi_type.hpp"
 #include "cffi_type_tuple.hpp"
-#include "cffi_value_tuple.hpp"
 
 using namespace godot;
 
 namespace cffi {
+
+class FFITypeTuple;
+class FFIValueTuple;
 
 class FFIFunction : public RefCounted {
 	GDCLASS(FFIFunction, RefCounted);

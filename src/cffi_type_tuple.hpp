@@ -1,14 +1,14 @@
 #ifndef __CFFI_TYPE_TUPLE_HPP__
 #define __CFFI_TYPE_TUPLE_HPP__
 
-#include "cffi_type.hpp"
-
+#include <ffi.h>
 #include <godot_cpp/templates/local_vector.hpp>
 
 using namespace godot;
 
 namespace cffi {
 
+class FFIType;
 typedef LocalVector<Ref<FFIType>> FFITypeVector;
 typedef LocalVector<ffi_type*> ffi_typeVector;
 

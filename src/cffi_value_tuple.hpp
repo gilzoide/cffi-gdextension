@@ -1,8 +1,6 @@
 #ifndef __CFFI_VALUE_TUPLE_HPP__
 #define __CFFI_VALUE_TUPLE_HPP__
 
-#include "cffi_type.hpp"
-
 #include <godot_cpp/templates/local_vector.hpp>
 
 using namespace godot;

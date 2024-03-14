@@ -1,4 +1,6 @@
 #include "cffi.hpp"
+#include "cffi_library_handle.hpp"
+#include "cffi_type.hpp"
 
 #include <godot_cpp/classes/engine.hpp>
 

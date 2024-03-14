@@ -1,5 +1,8 @@
 #include "cffi_value_tuple.hpp"
 #include "cffi_type_tuple.hpp"
+#include "cffi_type.hpp"
+
+#include <godot_cpp/classes/stream_peer_buffer.hpp>
 
 using namespace godot;
 
