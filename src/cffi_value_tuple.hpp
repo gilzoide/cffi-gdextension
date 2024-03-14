@@ -9,15 +9,19 @@ using namespace godot;
 
 namespace cffi {
 
-typedef LocalVector<void*, int> voidp_Vector;
+typedef LocalVector<void*> voidp_Vector;
 class FFITypeTuple;
 
 class FFIValueTuple {
 public:
-	int size() const;
-	void **get_value_addresses();
+	FFIValueTuple();
+	FFIValueTuple(const PackedByteArray& bytes, const PackedInt32Array& byteOffsets);
 
-	static FFIValueTuple from_array(const FFITypeTuple& types, const Array& array);
+	uint32_t size() const;
+	void * const *get_value_addresses() const;
+
+	static FFIValueTuple from_varargs(const FFITypeTuple& type_tuple, const Variant **args, GDExtensionInt arg_count);
+	static FFIValueTuple from_array(const FFITypeTuple& type_tuple, const Array& array);
 
 private:
 	PackedByteArray bytes;

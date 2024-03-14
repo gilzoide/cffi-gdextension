@@ -6,6 +6,7 @@
 
 #include "cffi_type.hpp"
 #include "cffi_type_tuple.hpp"
+#include "cffi_value_tuple.hpp"
 
 using namespace godot;
 
@@ -18,10 +19,13 @@ public:
 	FFIFunction(const String& name, void *address, const Ref<FFIType>& return_type, const FFITypeTuple& argument_types, bool is_variadic = false, ffi_abi abi = FFI_DEFAULT_ABI);
 
 	Variant invokev(const Array& arguments);
+	Variant invoke_variadic(const Variant **args, GDExtensionInt arg_count, GDExtensionCallError &error);
 
 protected:
 	static void _bind_methods();
 	String _to_string() const;
+
+	Variant invoke(const FFIValueTuple& arguments);
 
 private:
 	String name;

@@ -9,8 +9,8 @@ using namespace godot;
 
 namespace cffi {
 
-typedef LocalVector<Ref<FFIType>, int> FFITypeVector;
-typedef LocalVector<ffi_type*, int> ffi_typeVector;
+typedef LocalVector<Ref<FFIType>> FFITypeVector;
+typedef LocalVector<ffi_type*> ffi_typeVector;
 
 class FFITypeTuple {
 public:
@@ -18,7 +18,7 @@ public:
 	FFITypeTuple(FFITypeVector&& fields);
 	FFITypeTuple(const FFITypeVector& fields);
 
-	const int size() const;
+	uint32_t size() const;
 	const FFITypeVector& get_fields() const;
 
 	String to_string() const;

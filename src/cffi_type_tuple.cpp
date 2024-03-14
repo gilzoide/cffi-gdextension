@@ -10,7 +10,7 @@ const FFITypeVector& FFITypeTuple::get_fields() const {
 	return fields;
 }
 
-const int FFITypeTuple::size() const {
+uint32_t FFITypeTuple::size() const {
 	return fields.size();
 }
 
