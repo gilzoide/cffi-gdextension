@@ -47,11 +47,11 @@ FFI::FFI() {
 	builtin_types["uint64_t"] = builtin_types["uint64"];
 }
 
-FFIType *FFI::get_type(const String& name) const {
+Ref<FFIType> FFI::get_type(const String& name) const {
 	return Object::cast_to<FFIType>(builtin_types.get(name, Variant()));
 }
 
-FFILibraryHandle *FFI::open(const String& name) const {
+Ref<FFILibraryHandle> FFI::open(const String& name) const {
 	return FFILibraryHandle::open(name);
 }
 
@@ -61,7 +61,8 @@ void FFI::_bind_methods() {
 }
 
 bool FFI::_get(const StringName& property_name, Variant& r_value) const {
-	if (auto type = get_type(property_name)) {
+	auto type = get_type(property_name);
+	if (type.is_valid()) {
 		r_value = type;
 		return true;
 	}

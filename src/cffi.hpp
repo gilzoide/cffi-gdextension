@@ -17,9 +17,9 @@ class FFI : public RefCounted {
 public:
 	FFI();
 
-	FFIType *get_type(const String& name) const;
+	Ref<FFIType> get_type(const String& name) const;
 
-	FFILibraryHandle *open(const String& name) const;
+	Ref<FFILibraryHandle> open(const String& name) const;
 
 	static FFI *get_singleton();
 	static FFI *get_or_create_singleton();

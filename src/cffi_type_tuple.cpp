@@ -38,9 +38,9 @@ FFITypeTuple FFITypeTuple::from_array(const Array& array) {
 	fields.resize(array.size());
 	for (int64_t i = 0; i < array.size(); i++) {
 		auto& var = array[i];
-		FFIType *field_type = FFIType::from_variant(var);
+		Ref<FFIType> field_type = FFIType::from_variant(var);
 		ERR_FAIL_COND_V_EDMSG(field_type == nullptr, FFITypeTuple(), String("Invalid type: %s") % var.stringify());
-		fields[i].reference_ptr(field_type);
+		fields[i] = field_type;
 	}
 	return FFITypeTuple(std::move(fields));
 }

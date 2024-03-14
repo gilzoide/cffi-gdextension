@@ -24,7 +24,7 @@ public:
 	bool get_return_value(const PackedByteArray& data, Variant& r_variant) const;
 	bool serialize_value_into(const Variant& value, Ref<StreamPeerBuffer> buffer) const;
 
-	static FFIType *from_variant(const Variant& var);
+	static Ref<FFIType> from_variant(const Variant& var);
 
 protected:
 	static void _bind_methods();

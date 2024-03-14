@@ -159,7 +159,7 @@ bool FFIType::serialize_value_into(const Variant& value, Ref<StreamPeerBuffer> b
 	return true;
 }
 
-FFIType *FFIType::from_variant(const Variant& var) {
+Ref<FFIType> FFIType::from_variant(const Variant& var) {
 	FFIType *type = Object::cast_to<FFIType>(var);
 	return type ? type : FFI::get_singleton()->get_type(var);
 }

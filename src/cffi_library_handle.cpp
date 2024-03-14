@@ -58,7 +58,7 @@ FFILibraryHandle::~FFILibraryHandle() {
 	}
 }
 
-FFILibraryHandle *FFILibraryHandle::open(const String& name) {
+Ref<FFILibraryHandle> FFILibraryHandle::open(const String& name) {
 	String path;
 	if (name.begins_with("res://")) {
 		if (OS::get_singleton()->has_feature("editor")) {

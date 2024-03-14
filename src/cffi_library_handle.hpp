@@ -18,7 +18,7 @@ public:
 	FFILibraryHandle(void *library_handle);
 	~FFILibraryHandle();
 
-	static FFILibraryHandle *open(const String& name);
+	static Ref<FFILibraryHandle> open(const String& name);
 
 	Ref<FFIFunction> get_function(const String& name, const Variant& return_type, const Array& argument_types, bool is_variadic = false);
 
