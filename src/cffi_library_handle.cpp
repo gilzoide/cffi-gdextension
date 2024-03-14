@@ -93,7 +93,7 @@ Ref<FFIFunction> FFILibraryHandle::get_function(const String& name, const Varian
 }
 
 void FFILibraryHandle::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_function", "name", "return_type", "argument_types", "is_variadic"), &FFILibraryHandle::get_function, DEFVAL(Array()), DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("get_function", "name", "return_type", "argument_types", "is_variadic"), &FFILibraryHandle::get_function, DEFVAL(Array()), DEFVAL(false));
 }
 
 String FFILibraryHandle::_to_string() const {
