@@ -12,8 +12,8 @@ namespace cffi {
 class FFILibraryHandle;
 class FFIType;
 
-class FFI : public RefCounted {
-	GDCLASS(FFI, RefCounted);
+class FFI : public Object {
+	GDCLASS(FFI, Object);
 public:
 	FFI();
 
