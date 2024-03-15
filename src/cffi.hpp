@@ -2,8 +2,8 @@
 #define __CFFI_HPP__
 
 #include <ffi.h>
+#include <godot_cpp/templates/hash_map.hpp>
 #include <godot_cpp/classes/ref_counted.hpp>
-#include <godot_cpp/variant/dictionary.hpp>
 
 using namespace godot;
 
@@ -29,9 +29,8 @@ protected:
 	static void _bind_methods();
 
 	bool _get(const StringName& property_name, Variant& r_value) const;
-	void _get_property_list(List<PropertyInfo> *p_list) const;
 
-	Dictionary builtin_types;
+	HashMap<String, Ref<FFIType>> builtin_types;
 
 private:
 	static FFI *instance;
