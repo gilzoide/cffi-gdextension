@@ -4,6 +4,7 @@
 #include "cffi.hpp"
 #include "cffi_function.hpp"
 #include "cffi_library_handle.hpp"
+#include "cffi_pointer.hpp"
 #include "cffi_pointer_type.hpp"
 #include "cffi_type.hpp"
 
@@ -19,6 +20,7 @@ static void initialize(ModuleInitializationLevel level) {
 	ClassDB::register_abstract_class<FFIFunction>();
 	ClassDB::register_abstract_class<FFIType>();
 	ClassDB::register_abstract_class<FFIPointerType>();
+	ClassDB::register_abstract_class<FFIPointer>();
 	ClassDB::register_abstract_class<FFI>();
 	FFI::get_or_create_singleton();
 }

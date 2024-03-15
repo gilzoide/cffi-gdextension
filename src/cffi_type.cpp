@@ -14,6 +14,14 @@ const ffi_type& FFIType::get_ffi_type() const {
 	return ffi_handle;
 }
 
+size_t FFIType::get_size() const {
+	return ffi_handle.size;
+}
+
+unsigned short FFIType::get_alignment() const {
+	return ffi_handle.alignment;
+}
+
 const String& FFIType::get_name() const {
 	return name;
 }
@@ -24,10 +32,13 @@ bool FFIType::get_return_value(const PackedByteArray& data, Variant& r_variant) 
 		return false;
 	}
 
-	const void *ptr = data.ptr();
+	return get_return_value(data.ptr(), r_variant);
+}
+
+bool FFIType::get_return_value(const uint8_t *ptr, Variant& r_variant) const {
 	switch (ffi_handle.type) {
 		case FFI_TYPE_VOID:
-			r_variant =  Variant();
+			r_variant = Variant();
 			break;
 
 		case FFI_TYPE_INT:
@@ -92,59 +103,64 @@ bool FFIType::get_return_value(const PackedByteArray& data, Variant& r_variant) 
 	return true;
 }
 
-bool FFIType::serialize_value_into(const Variant& value, Ref<StreamPeerBuffer> buffer) const {
+bool FFIType::serialize_value_into(const Variant& value, PackedByteArray& buffer) const {
+	buffer.resize(buffer.size() + ffi_handle.size);
+	return serialize_value_into(value, buffer.ptrw());
+}
+
+bool FFIType::serialize_value_into(const Variant& value, uint8_t *buffer) const {
 	switch (ffi_handle.type) {
 		case FFI_TYPE_VOID:
 			break;
 
 		case FFI_TYPE_INT:
-			buffer->put_32(value);
+			*(int *) buffer = value;
 			break;
 
 		case FFI_TYPE_FLOAT:
-			buffer->put_float(value);
+			*(float *) buffer = value;
 			break;
 
 		case FFI_TYPE_DOUBLE:
-			buffer->put_double(value);
+			*(double *) buffer = value;
 			break;
 
 #if FFI_TYPE_LONGDOUBLE != FFI_TYPE_DOUBLE
 		case FFI_TYPE_LONGDOUBLE:
-			buffer->put_double((double) value);
+			*(long double *) buffer = (double) value;
 			break;
 #endif
 
 		case FFI_TYPE_UINT8:
-			buffer->put_u8((uint64_t) value);
+			*(uint8_t *) buffer = (uint64_t) value;
 			break;
 
 		case FFI_TYPE_SINT8:
-			buffer->put_8((int64_t) value);
+			*(int8_t *) buffer = (int64_t) value;
 			break;
 
 		case FFI_TYPE_UINT16:
-			buffer->put_u16((uint64_t) value);
+			*(uint16_t *) buffer = (uint64_t) value;
 			break;
 
 		case FFI_TYPE_SINT16:
-			buffer->put_16((int64_t) value);
+			*(int16_t *) buffer = (int64_t) value;
 			break;
 
 		case FFI_TYPE_UINT32:
-			buffer->put_u32((uint64_t) value);
+			*(uint32_t *) buffer = (uint64_t) value;
 			break;
 
 		case FFI_TYPE_SINT32:
-			buffer->put_32((int64_t) value);
+			*(int32_t *) buffer = (int64_t) value;
 			break;
 
 		case FFI_TYPE_UINT64:
-			buffer->put_u64((uint64_t) value);
+			*(uint64_t *) buffer = (uint64_t) value;
 			break;
 
 		case FFI_TYPE_SINT64:
-			buffer->put_64((int64_t) value);
+			*(int64_t *) buffer = (int64_t) value;
 			break;
 
 		case FFI_TYPE_STRUCT:

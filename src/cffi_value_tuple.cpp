@@ -29,26 +29,26 @@ FFIValueTuple FFIValueTuple::from_varargs(const FFITypeTuple& type_tuple, const 
 	ERR_FAIL_COND_V_EDMSG(type_tuple.size() != arg_count, FFIValueTuple(), "Array size doesn't match types size");
 
 	auto& fields = type_tuple.get_fields();
-	Ref<StreamPeerBuffer> buffer = memnew(StreamPeerBuffer);
+	PackedByteArray buffer;
 	PackedInt32Array offsets;
 	for (GDExtensionInt i = 0; i < arg_count; i++) {
-		offsets.append(buffer->get_size());
+		offsets.append(buffer.size());
 		ERR_FAIL_COND_V(!fields[i]->serialize_value_into(*args[i], buffer), FFIValueTuple());
 	}
-	return FFIValueTuple(buffer->get_data_array(), offsets);
+	return FFIValueTuple(buffer, offsets);
 }
 
 FFIValueTuple FFIValueTuple::from_array(const FFITypeTuple& type_tuple, const Array& array) {
 	ERR_FAIL_COND_V_EDMSG(type_tuple.size() != array.size(), FFIValueTuple(), "Array size doesn't match types size");
 
 	auto& fields = type_tuple.get_fields();
-	Ref<StreamPeerBuffer> buffer = memnew(StreamPeerBuffer);
+	PackedByteArray buffer;
 	PackedInt32Array offsets;
 	for (int64_t i = 0; i < array.size(); i++) {
-		offsets.append(buffer->get_size());
+		offsets.append(buffer.size());
 		ERR_FAIL_COND_V(!fields[i]->serialize_value_into(array[i], buffer), FFIValueTuple());
 	}
-	return FFIValueTuple(buffer->get_data_array(), offsets);
+	return FFIValueTuple(buffer, offsets);
 }
 
 }

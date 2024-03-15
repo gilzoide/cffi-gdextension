@@ -9,3 +9,7 @@ int double_int(int i) {
 int double_float(float f) {
 	return f + f;
 }
+
+const char *get_message() {
+	return "Hello world!";
+}

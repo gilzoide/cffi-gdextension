@@ -15,14 +15,18 @@ public:
 	FFIType();
 	FFIType(const String& name, ffi_type ffi_type);
 
-	// TODO: get_size, get_alignment
 	ffi_type& get_ffi_type();
 	const ffi_type& get_ffi_type() const;
+	size_t get_size() const;
+	unsigned short get_alignment() const;
 
 	const String& get_name() const;
 
 	bool get_return_value(const PackedByteArray& data, Variant& r_variant) const;
-	bool serialize_value_into(const Variant& value, Ref<StreamPeerBuffer> buffer) const;
+	virtual bool get_return_value(const uint8_t *ptr, Variant& r_variant) const;
+
+	bool serialize_value_into(const Variant& value, PackedByteArray& buffer) const;
+	virtual bool serialize_value_into(const Variant& value, uint8_t *buffer) const;
 
 	static Ref<FFIType> from_variant(const Variant& var);
 
