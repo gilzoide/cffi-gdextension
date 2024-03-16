@@ -11,6 +11,7 @@
 
 #ifdef _WIN32
 	#include <Windows.h>
+	#include <system_error>
 #else
 	#include <dlfcn.h>
 #endif
@@ -25,7 +26,8 @@ static void *os_open_library(const char *path) {
 
 static String os_get_last_error() {
 #ifdef _WIN32
-	return GetLastError();
+	auto str = std::system_category().message(GetLastError());
+	return String::utf8(str.c_str(), str.size());
 #else
 	return dlerror();
 #endif
@@ -33,7 +35,7 @@ static String os_get_last_error() {
 
 static int os_close_library(void *handle) {
 #ifdef _WIN32
-	return FreeLibrary(handle);
+	return FreeLibrary((HMODULE) handle);
 #else
 	return dlclose(handle);
 #endif
@@ -41,7 +43,7 @@ static int os_close_library(void *handle) {
 
 static void *os_get_symbol(void *handle, const char *symbol) {
 #ifdef _WIN32
-	return (void *) GetProcAddress(handle, symbol);
+	return (void *) GetProcAddress((HMODULE) handle, symbol);
 #else
 	return dlsym(handle, symbol);
 #endif
