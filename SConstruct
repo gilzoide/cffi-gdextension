@@ -52,7 +52,6 @@ target_triple_map = {
 CC = env["CXX"].replace("clang++", "clang").replace("g++", "gcc").replace("c++", "cc")
 CXX = env["CXX"]
 CFLAGS = env["CCFLAGS"]
-LINKFLAGS = env["LINKFLAGS"]
 target_triple = target_triple_map[env["platform"]][env["arch"]]
 ffi_output = f"{build_dir}/libffi"
 ffi_autogen = env.Command(
@@ -71,7 +70,6 @@ ffi_configure = env.Command(
             f" \"CC={CC}\""
             f" \"CXX={CXX}\""
             f" \"CFLAGS={CFLAGS}\""
-            f" \"LINKFLAGS={LINKFLAGS}\""
     )
 )
 ffi_staticlib = env.Command(
