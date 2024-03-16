@@ -50,13 +50,35 @@ target_triple_map = {
 }
 
 CC = env["CXX"].replace("clang++", "clang").replace("g++", "gcc").replace("c++", "cc")
+CXX = env["CXX"]
 CFLAGS = env["CCFLAGS"]
 LINKFLAGS = env["LINKFLAGS"]
 target_triple = target_triple_map[env["platform"]][env["arch"]]
 ffi_output = f"{build_dir}/libffi"
-ffi_autogen = env.Command(f"lib/libffi/configure", [], "cd lib/libffi && ./autogen.sh")
-ffi_configure = env.Command(f"{ffi_output}/Makefile", ffi_autogen, f"mkdir -p {ffi_output} && cd {ffi_output} && ../../../lib/libffi/configure --disable-shared --host {target_triple} \"CFLAGS={CFLAGS}\" \"CC={CC}\" \"LINKFLAGS={LINKFLAGS}\"")
-ffi_staticlib = env.Command(f"{ffi_output}/.libs/libffi.a", ffi_configure, f"make -C {ffi_output}")
+ffi_autogen = env.Command(
+    f"lib/libffi/configure",
+    [],
+    "cd lib/libffi && ./autogen.sh"
+)
+ffi_configure = env.Command(
+    f"{ffi_output}/Makefile",
+    ffi_autogen,
+    (
+        f"mkdir -p {ffi_output}"
+        f" && cd {ffi_output}"
+        f" && ../../../lib/libffi/configure --disable-shared"
+            f" --host {target_triple}"
+            f" \"CC={CC}\""
+            f" \"CXX={CXX}\""
+            f" \"CFLAGS={CFLAGS}\""
+            f" \"LINKFLAGS={LINKFLAGS}\""
+    )
+)
+ffi_staticlib = env.Command(
+    f"{ffi_output}/.libs/libffi.a",
+    ffi_configure,
+    f"make -C {ffi_output}"
+)
 ffi_h = env.SideEffect(f"{ffi_output}/include/ffi.h", ffi_configure)
 env.Append(
     CPPPATH=f"{ffi_output}/include",
