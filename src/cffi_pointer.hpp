@@ -29,6 +29,7 @@ public:
 	String get_string_from_utf32(int length = -1) const;
 	String get_string_from_wchar(int length = -1) const;
 	PackedByteArray get_buffer(int length) const;
+	Array to_array(int length) const;
 
 protected:
 	static void _bind_methods();

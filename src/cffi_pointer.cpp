@@ -87,6 +87,17 @@ PackedByteArray FFIPointer::get_buffer(int length) const {
 	return array;
 }
 
+Array FFIPointer::to_array(int length) const {
+	Array array;
+	array.resize(length);
+	for (int i = 0; i < length; i++) {
+		if (!element_type->get_return_value(address_offset_by(i), array[i])) {
+			return Array();
+		}
+	}
+	return array;
+}
+
 void FFIPointer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("offset_by", "offset"), &FFIPointer::offset_by);
 	ClassDB::bind_method(D_METHOD("get_value", "index"), &FFIPointer::get_value, DEFVAL(0));
@@ -99,6 +110,7 @@ void FFIPointer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_string_from_utf32", "length"), &FFIPointer::get_string_from_utf32, DEFVAL(-1));
 	ClassDB::bind_method(D_METHOD("get_string_from_wchar", "length"), &FFIPointer::get_string_from_wchar, DEFVAL(-1));
 	ClassDB::bind_method(D_METHOD("get_buffer", "length"), &FFIPointer::get_buffer);
+	ClassDB::bind_method(D_METHOD("to_array", "length"), &FFIPointer::to_array);
 }
 
 String FFIPointer::_to_string() const {
