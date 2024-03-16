@@ -30,6 +30,20 @@ bool FFIPointer::set_value(const Variant& value, int index) const {
 	return element_type->serialize_value_into(value, address_offset_by(index));
 }
 
+Ref<FFIType> FFIPointer::get_element_type() const {
+	return element_type;
+}
+
+Ref<FFIPointer> FFIPointer::cast_elements(const Variant& type) const {
+	Ref<FFIType> new_type = FFIType::from_variant(type);
+	if (new_type.is_valid()) {
+		return Ref<FFIPointer>(memnew(FFIPointer(new_type, address)));
+	}
+	else {
+		return nullptr;
+	}
+}
+
 String FFIPointer::get_string_from_ascii(int length) const {
 	ERR_FAIL_COND_V_EDMSG(element_type->get_size() != sizeof(char), "", String("Element mismatch, expected char, found %s") % element_type->get_name());
 	String s;
@@ -77,6 +91,8 @@ void FFIPointer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("offset_by", "offset"), &FFIPointer::offset_by);
 	ClassDB::bind_method(D_METHOD("get_value", "index"), &FFIPointer::get_value, DEFVAL(0));
 	ClassDB::bind_method(D_METHOD("set_value", "value", "index"), &FFIPointer::set_value, DEFVAL(0));
+	ClassDB::bind_method(D_METHOD("get_element_type"), &FFIPointer::get_element_type);
+	ClassDB::bind_method(D_METHOD("cast_elements", "element_type"), &FFIPointer::cast_elements);
 	ClassDB::bind_method(D_METHOD("get_string_from_ascii", "length"), &FFIPointer::get_string_from_ascii, DEFVAL(-1));
 	ClassDB::bind_method(D_METHOD("get_string_from_utf8", "length"), &FFIPointer::get_string_from_utf8, DEFVAL(-1));
 	ClassDB::bind_method(D_METHOD("get_string_from_utf16", "length"), &FFIPointer::get_string_from_utf16, DEFVAL(-1));

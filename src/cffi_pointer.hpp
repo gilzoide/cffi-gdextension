@@ -20,6 +20,9 @@ public:
 	Variant get_value(int index = 0) const;
 	bool set_value(const Variant& value, int index = 0) const;
 
+	Ref<FFIType> get_element_type() const;
+	Ref<FFIPointer> cast_elements(const Variant& element_type) const;
+
 	String get_string_from_ascii(int length = -1) const;
 	String get_string_from_utf8(int length = -1) const;
 	String get_string_from_utf16(int length = -1) const;
