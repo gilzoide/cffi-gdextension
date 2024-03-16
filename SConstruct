@@ -62,6 +62,8 @@ env.Append(
     CPPPATH=f"{ffi_output}/include",
     LIBS=[ffi_staticlib],
 )
+# avoid caching single files in CI
+env.NoCache([ffi_autogen, ffi_configure, ffi_staticlib])
 
 env.Append(CXXFLAGS=[
     # Shared Library suffix, for dlopen/LoadLibrary
