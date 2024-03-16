@@ -12,9 +12,6 @@ func _ready():
 	print(get_answer.invoke())
 	print(double_int.invoke(31))
 	print(double_float.invoke(2.51))
-	var message = get_message.invoke()
-	print(message)
-	print(char(message.get_value()))
-	print(char(message.get_value(1)))
-	print(char(message.get_value(2)))
+	var message: FFIPointer = get_message.invoke()
+	print(message.get_string_from_utf8())
 	pass

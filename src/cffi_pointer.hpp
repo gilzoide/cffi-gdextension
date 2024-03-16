@@ -20,6 +20,12 @@ public:
 	Variant get_value(int index = 0) const;
 	bool set_value(const Variant& value, int index = 0) const;
 
+	String get_string_from_ascii(int length = -1) const;
+	String get_string_from_utf8(int length = -1) const;
+	String get_string_from_utf16(int length = -1) const;
+	String get_string_from_utf32(int length = -1) const;
+	String get_string_from_wchar(int length = -1) const;
+
 protected:
 	static void _bind_methods();
 	String _to_string() const;
