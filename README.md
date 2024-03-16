@@ -1,4 +1,4 @@
-# Godot cffi
+# CFFI GDExtension
 WIP [libffi](https://github.com/libffi/libffi) bindings for [Godot 4.1+](https://godotengine.org/).
 
 > **Warning**
