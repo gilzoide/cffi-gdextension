@@ -10,7 +10,7 @@
 #endif
 
 #ifdef _WIN32
-	#include <Windows.h>
+	#include <windows.h>
 	#include <system_error>
 #else
 	#include <dlfcn.h>
