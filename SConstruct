@@ -22,11 +22,40 @@ build_dir = "build/{}".format(remove_prefix(env["suffix"], "."))
 env.VariantDir(build_dir, 'src', duplicate=False)
 
 # libffi stuff
-if env['platform'] == 'macos':
-    env.Append(CFLAGS=["-arch", "x86_64", "-arch", "arm64"])
+target_triple_map = {
+    "windows": {
+        "x86_64": "x86_64-mingw-windows",
+        "x86_32": "x86-windows",
+    },
+    "linux": {
+        "x86_64": "x86_64-linux",
+        "x86_32": "x86-linux",
+        "arm64": "arm64-linux",
+    },
+    "macos": {
+        "universal": "arm64-macos",
+        "arm64": "arm64-macos",
+        "x86_64": "x86_64-macos",
+    },
+    "ios": {
+        "universal": "arm64-ios",
+        "arm64": "arm64-ios",
+    },
+    "android": {
+        "arm64": "arm64-android",
+        "arm32": "armv7-android",
+        "x86_64": "x86_64-android",
+        "x86_32": "x86-android",
+    },
+}
+
+CC = env["CXX"].replace("clang++", "clang").replace("g++", "gcc").replace("c++", "cc")
+CFLAGS = env["CCFLAGS"]
+LINKFLAGS = env["LINKFLAGS"]
+target_triple = target_triple_map[env["platform"]][env["arch"]]
 ffi_output = f"{build_dir}/libffi"
 ffi_autogen = env.Command(f"lib/libffi/configure", [], "cd lib/libffi && ./autogen.sh")
-ffi_configure = env.Command(f"{ffi_output}/Makefile", ffi_autogen, f"mkdir -p {ffi_output} && cd {ffi_output} && ../../../lib/libffi/configure --disable-shared \"CFLAGS={env['CFLAGS']}\"")
+ffi_configure = env.Command(f"{ffi_output}/Makefile", ffi_autogen, f"mkdir -p {ffi_output} && cd {ffi_output} && ../../../lib/libffi/configure --disable-shared --host {target_triple} \"CFLAGS={CFLAGS}\" \"CC={CC}\" \"LINKFLAGS={LINKFLAGS}\"")
 ffi_staticlib = env.Command(f"{ffi_output}/.libs/libffi.a", ffi_configure, f"make -C {ffi_output}")
 ffi_h = env.SideEffect(f"{ffi_output}/include/ffi.h", ffi_configure)
 env.Append(
