@@ -116,7 +116,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: cffi
+          name: cffi-gdextension
           path: |
             UNLICENSE
             addons/cffi/UNLICENSE
