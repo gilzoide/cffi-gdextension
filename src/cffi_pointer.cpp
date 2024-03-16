@@ -65,6 +65,14 @@ String FFIPointer::get_string_from_wchar(int length) const {
 	return s;
 }
 
+PackedByteArray FFIPointer::get_buffer(int length) const {
+	int length_in_bytes = length * element_type->get_size();
+	PackedByteArray array;
+	array.resize(length_in_bytes);
+	memcpy(array.ptrw(), address, length_in_bytes);
+	return array;
+}
+
 void FFIPointer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("offset_by", "offset"), &FFIPointer::offset_by);
 	ClassDB::bind_method(D_METHOD("get_value", "index"), &FFIPointer::get_value, DEFVAL(0));
@@ -74,6 +82,7 @@ void FFIPointer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_string_from_utf16", "length"), &FFIPointer::get_string_from_utf16, DEFVAL(-1));
 	ClassDB::bind_method(D_METHOD("get_string_from_utf32", "length"), &FFIPointer::get_string_from_utf32, DEFVAL(-1));
 	ClassDB::bind_method(D_METHOD("get_string_from_wchar", "length"), &FFIPointer::get_string_from_wchar, DEFVAL(-1));
+	ClassDB::bind_method(D_METHOD("get_buffer", "length"), &FFIPointer::get_buffer);
 }
 
 String FFIPointer::_to_string() const {
