@@ -24,12 +24,12 @@ env.VariantDir(build_dir, 'src', duplicate=False)
 # libffi stuff
 target_triple_map = {
     "windows": {
-        "x86_64": "x86_64-mingw-windows",
-        "x86_32": "x86-windows",
+        "x86_64": "x86_64-windows",
+        "x86_32": "i686-windows",
     },
     "linux": {
         "x86_64": "x86_64-linux",
-        "x86_32": "x86-linux",
+        "x86_32": "i686-linux",
         "arm64": "arm64-linux",
     },
     "macos": {
@@ -45,7 +45,7 @@ target_triple_map = {
         "arm64": "arm64-android",
         "arm32": "armv7-android",
         "x86_64": "x86_64-android",
-        "x86_32": "x86-android",
+        "x86_32": "i686-android",
     },
 }
 
