@@ -7,21 +7,21 @@ using namespace godot;
 
 namespace cffi {
 
-class FFIType;
+class CFFIType;
 
-class FFIPointer : public RefCounted {
-	GDCLASS(FFIPointer, RefCounted);
+class CFFIPointer : public RefCounted {
+	GDCLASS(CFFIPointer, RefCounted);
 public:
-	FFIPointer();
-	FFIPointer(Ref<FFIType> element_type, uint8_t *address);
+	CFFIPointer();
+	CFFIPointer(Ref<CFFIType> element_type, uint8_t *address);
 
 	uint8_t *address_offset_by(int offset) const;
-	Ref<FFIPointer> offset_by(int offset) const;
+	Ref<CFFIPointer> offset_by(int offset) const;
 	Variant get_value(int index = 0) const;
 	bool set_value(const Variant& value, int index = 0) const;
 
-	Ref<FFIType> get_element_type() const;
-	Ref<FFIPointer> cast_elements(const Variant& element_type) const;
+	Ref<CFFIType> get_element_type() const;
+	Ref<CFFIPointer> cast_elements(const Variant& element_type) const;
 
 	String get_string_from_ascii(int length = -1) const;
 	String get_string_from_utf8(int length = -1) const;
@@ -35,7 +35,7 @@ protected:
 	static void _bind_methods();
 	String _to_string() const;
 
-	Ref<FFIType> element_type;
+	Ref<CFFIType> element_type;
 	uint8_t *address;
 };
 

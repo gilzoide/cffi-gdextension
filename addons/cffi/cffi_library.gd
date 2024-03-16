@@ -1,5 +1,5 @@
 extends Resource
-class_name FFILibrary
+class_name CFFILibrary
 
 @export var libraries: Dictionary
 
@@ -11,9 +11,9 @@ func find_library_path(tags := PackedStringArray()) -> String:
 		return _find_library_path(func(tag): return tags.has(tag))
 
 
-func open(tags := PackedStringArray()) -> FFILibraryHandle:
+func open(tags := PackedStringArray()) -> CFFILibraryHandle:
 	var library_path = find_library_path(tags)
-	return FFI.open(library_path)
+	return CFFI.open(library_path)
 
 
 func _find_library_path(has_tag: Callable) -> String:

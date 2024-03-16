@@ -9,20 +9,20 @@ using namespace godot;
 
 namespace cffi {
 
-class FFILibraryHandle;
-class FFIType;
+class CFFILibraryHandle;
+class CFFIType;
 
-class FFI : public Object {
-	GDCLASS(FFI, Object);
+class CFFI : public Object {
+	GDCLASS(CFFI, Object);
 public:
-	FFI();
+	CFFI();
 
-	Ref<FFIType> get_type(const String& name) const;
+	Ref<CFFIType> get_type(const String& name) const;
 
-	Ref<FFILibraryHandle> open(const String& name) const;
+	Ref<CFFILibraryHandle> open(const String& name) const;
 
-	static FFI *get_singleton();
-	static FFI *get_or_create_singleton();
+	static CFFI *get_singleton();
+	static CFFI *get_or_create_singleton();
 	static void delete_singleton();
 
 protected:
@@ -30,10 +30,10 @@ protected:
 
 	bool _get(const StringName& property_name, Variant& r_value) const;
 
-	HashMap<String, Ref<FFIType>> builtin_types;
+	HashMap<String, Ref<CFFIType>> builtin_types;
 
 private:
-	static FFI *instance;
+	static CFFI *instance;
 };
 
 }

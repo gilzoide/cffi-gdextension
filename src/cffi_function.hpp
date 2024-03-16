@@ -10,14 +10,14 @@ using namespace godot;
 
 namespace cffi {
 
-class FFITypeTuple;
-class FFIValueTuple;
+class CFFITypeTuple;
+class CFFIValueTuple;
 
-class FFIFunction : public RefCounted {
-	GDCLASS(FFIFunction, RefCounted);
+class CFFIFunction : public RefCounted {
+	GDCLASS(CFFIFunction, RefCounted);
 public:
-	FFIFunction();
-	FFIFunction(const String& name, void *address, const Ref<FFIType>& return_type, const FFITypeTuple& argument_types, bool is_variadic = false, ffi_abi abi = FFI_DEFAULT_ABI);
+	CFFIFunction();
+	CFFIFunction(const String& name, void *address, const Ref<CFFIType>& return_type, const CFFITypeTuple& argument_types, bool is_variadic = false, ffi_abi abi = FFI_DEFAULT_ABI);
 
 	Variant invokev(const Array& arguments);
 	Variant invoke_variadic(const Variant **args, GDExtensionInt arg_count, GDExtensionCallError &error);
@@ -26,15 +26,15 @@ protected:
 	static void _bind_methods();
 	String _to_string() const;
 
-	Variant invoke(const FFIValueTuple& arguments);
+	Variant invoke(const CFFIValueTuple& arguments);
 
 private:
 	String name;
 	void *address;
 	ffi_cif ffi_handle;
 	ffi_type **ffi_argument_types;
-	Ref<FFIType> return_type;
-	FFITypeTuple argument_types;
+	Ref<CFFIType> return_type;
+	CFFITypeTuple argument_types;
 	bool is_variadic;
 };
 

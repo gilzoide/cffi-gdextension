@@ -9,18 +9,18 @@ using namespace godot;
 
 namespace cffi {
 
-class FFIFunction;
+class CFFIFunction;
 
-class FFILibraryHandle : public RefCounted {
-	GDCLASS(FFILibraryHandle, RefCounted);
+class CFFILibraryHandle : public RefCounted {
+	GDCLASS(CFFILibraryHandle, RefCounted);
 public:
-	FFILibraryHandle();
-	FFILibraryHandle(void *library_handle);
-	~FFILibraryHandle();
+	CFFILibraryHandle();
+	CFFILibraryHandle(void *library_handle);
+	~CFFILibraryHandle();
 
-	static Ref<FFILibraryHandle> open(const String& name);
+	static Ref<CFFILibraryHandle> open(const String& name);
 
-	Ref<FFIFunction> get_function(const String& name, const Variant& return_type, const Array& argument_types, bool is_variadic = false);
+	Ref<CFFIFunction> get_function(const String& name, const Variant& return_type, const Array& argument_types, bool is_variadic = false);
 
 protected:
 	static void _bind_methods();

@@ -4,28 +4,28 @@
 
 namespace cffi {
 
-bool FFITypeParser::is_valid() const {
+bool CFFITypeParser::is_valid() const {
 	return !name.is_empty();
 }
 
-void FFITypeParser::clear() {
+void CFFITypeParser::clear() {
 	name = "";
 	pointer_level = 0;
 }
 
-String FFITypeParser::get_base_name() const {
+String CFFITypeParser::get_base_name() const {
 	return name;
 }
 
-int FFITypeParser::get_pointer_level() const {
+int CFFITypeParser::get_pointer_level() const {
 	return pointer_level;
 }
 
-String FFITypeParser::get_full_name() const {
+String CFFITypeParser::get_full_name() const {
 	return name + String::chr('*').repeat(pointer_level);
 }
 
-bool FFITypeParser::parse(const String &full_name) {
+bool CFFITypeParser::parse(const String &full_name) {
 	clear();
 
 	int start_index = 0;
@@ -65,7 +65,7 @@ bool FFITypeParser::parse(const String &full_name) {
 	return is_valid();
 }
 
-bool FFITypeParser::set_name(const String& new_name) {
+bool CFFITypeParser::set_name(const String& new_name) {
 	if (new_name == "const" || new_name == "volatile" || new_name == "register") {
 		return true;
 	}

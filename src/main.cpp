@@ -16,20 +16,20 @@ static void initialize(ModuleInitializationLevel level) {
 		return;
 	}
 
-	ClassDB::register_abstract_class<FFILibraryHandle>();
-	ClassDB::register_abstract_class<FFIFunction>();
-	ClassDB::register_abstract_class<FFIType>();
-	ClassDB::register_abstract_class<FFIPointerType>();
-	ClassDB::register_abstract_class<FFIPointer>();
-	ClassDB::register_abstract_class<FFI>();
-	FFI::get_or_create_singleton();
+	ClassDB::register_abstract_class<CFFILibraryHandle>();
+	ClassDB::register_abstract_class<CFFIFunction>();
+	ClassDB::register_abstract_class<CFFIType>();
+	ClassDB::register_abstract_class<CFFIPointerType>();
+	ClassDB::register_abstract_class<CFFIPointer>();
+	ClassDB::register_abstract_class<CFFI>();
+	CFFI::get_or_create_singleton();
 }
 
 static void deinitialize(ModuleInitializationLevel level) {
 	if (level != MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
 	}
-	FFI::delete_singleton();
+	CFFI::delete_singleton();
 }
 
 extern "C" GDExtensionBool cffi_entrypoint(

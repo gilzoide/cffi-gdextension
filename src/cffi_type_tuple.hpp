@@ -8,27 +8,27 @@ using namespace godot;
 
 namespace cffi {
 
-class FFIType;
-typedef LocalVector<Ref<FFIType>> FFITypeVector;
+class CFFIType;
+typedef LocalVector<Ref<CFFIType>> CFFITypeVector;
 typedef LocalVector<ffi_type*> ffi_typeVector;
 
-class FFITypeTuple {
+class CFFITypeTuple {
 public:
-	FFITypeTuple();
-	FFITypeTuple(FFITypeVector&& fields);
-	FFITypeTuple(const FFITypeVector& fields);
+	CFFITypeTuple();
+	CFFITypeTuple(CFFITypeVector&& fields);
+	CFFITypeTuple(const CFFITypeVector& fields);
 
 	uint32_t size() const;
-	const FFITypeVector& get_fields() const;
+	const CFFITypeVector& get_fields() const;
 
 	String to_string() const;
 
 	ffi_type **get_argument_types();
 
-	static FFITypeTuple from_array(const Array& array);
+	static CFFITypeTuple from_array(const Array& array);
 
 private:
-	FFITypeVector fields;
+	CFFITypeVector fields;
 	ffi_typeVector ffi_handle;
 };
 

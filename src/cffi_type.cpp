@@ -3,30 +3,30 @@
 
 namespace cffi {
 
-FFIType::FFIType() : ffi_handle(ffi_type_void) {}
-FFIType::FFIType(const String& name, ffi_type ffi_type) : name(name), ffi_handle(ffi_type) {}
+CFFIType::CFFIType() : ffi_handle(ffi_type_void) {}
+CFFIType::CFFIType(const String& name, ffi_type ffi_type) : name(name), ffi_handle(ffi_type) {}
 
-ffi_type& FFIType::get_ffi_type() {
+ffi_type& CFFIType::get_ffi_type() {
 	return ffi_handle;
 }
 
-const ffi_type& FFIType::get_ffi_type() const {
+const ffi_type& CFFIType::get_ffi_type() const {
 	return ffi_handle;
 }
 
-size_t FFIType::get_size() const {
+size_t CFFIType::get_size() const {
 	return ffi_handle.size;
 }
 
-unsigned short FFIType::get_alignment() const {
+unsigned short CFFIType::get_alignment() const {
 	return ffi_handle.alignment;
 }
 
-const String& FFIType::get_name() const {
+const String& CFFIType::get_name() const {
 	return name;
 }
 
-bool FFIType::get_return_value(const PackedByteArray& data, Variant& r_variant) const {
+bool CFFIType::get_return_value(const PackedByteArray& data, Variant& r_variant) const {
 	if (data.size() < ffi_handle.size) {
 		ERR_PRINT_ED(String("Expected at least %d bytes for %s, got %d") % Array::make((uint64_t) ffi_handle.size, name, data.size()));
 		return false;
@@ -35,7 +35,7 @@ bool FFIType::get_return_value(const PackedByteArray& data, Variant& r_variant) 
 	return get_return_value(data.ptr(), r_variant);
 }
 
-bool FFIType::get_return_value(const uint8_t *ptr, Variant& r_variant) const {
+bool CFFIType::get_return_value(const uint8_t *ptr, Variant& r_variant) const {
 	switch (ffi_handle.type) {
 		case FFI_TYPE_VOID:
 			r_variant = Variant();
@@ -103,12 +103,12 @@ bool FFIType::get_return_value(const uint8_t *ptr, Variant& r_variant) const {
 	return true;
 }
 
-bool FFIType::serialize_value_into(const Variant& value, PackedByteArray& buffer) const {
+bool CFFIType::serialize_value_into(const Variant& value, PackedByteArray& buffer) const {
 	buffer.resize(buffer.size() + ffi_handle.size);
 	return serialize_value_into(value, buffer.ptrw());
 }
 
-bool FFIType::serialize_value_into(const Variant& value, uint8_t *buffer) const {
+bool CFFIType::serialize_value_into(const Variant& value, uint8_t *buffer) const {
 	switch (ffi_handle.type) {
 		case FFI_TYPE_VOID:
 			break;
@@ -175,14 +175,14 @@ bool FFIType::serialize_value_into(const Variant& value, uint8_t *buffer) const 
 	return true;
 }
 
-Ref<FFIType> FFIType::from_variant(const Variant& var) {
-	FFIType *type = Object::cast_to<FFIType>(var);
-	return type ? type : FFI::get_singleton()->get_type(var);
+Ref<CFFIType> CFFIType::from_variant(const Variant& var) {
+	CFFIType *type = Object::cast_to<CFFIType>(var);
+	return type ? type : CFFI::get_singleton()->get_type(var);
 }
 
-void FFIType::_bind_methods() {}
+void CFFIType::_bind_methods() {}
 
-String FFIType::_to_string() const {
+String CFFIType::_to_string() const {
 	return String("[%s:%s]") % Array::make(get_class(), name);
 }
 

@@ -9,11 +9,11 @@ using namespace godot;
 
 namespace cffi {
 
-class FFIType : public RefCounted {
-	GDCLASS(FFIType, RefCounted);
+class CFFIType : public RefCounted {
+	GDCLASS(CFFIType, RefCounted);
 public:
-	FFIType();
-	FFIType(const String& name, ffi_type ffi_type);
+	CFFIType();
+	CFFIType(const String& name, ffi_type ffi_type);
 
 	ffi_type& get_ffi_type();
 	const ffi_type& get_ffi_type() const;
@@ -27,7 +27,7 @@ public:
 	bool serialize_value_into(const Variant& value, PackedByteArray& buffer) const;
 	virtual bool serialize_value_into(const Variant& value, uint8_t *buffer) const;
 
-	static Ref<FFIType> from_variant(const Variant& var);
+	static Ref<CFFIType> from_variant(const Variant& var);
 
 protected:
 	static void _bind_methods();

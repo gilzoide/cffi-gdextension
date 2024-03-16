@@ -8,8 +8,8 @@ using namespace godot;
 
 namespace cffi {
 
-FFIValueTuple::FFIValueTuple() {}
-FFIValueTuple::FFIValueTuple(const PackedByteArray& bytes, const PackedInt32Array& byteOffsets) : bytes(bytes) {
+CFFIValueTuple::CFFIValueTuple() {}
+CFFIValueTuple::CFFIValueTuple(const PackedByteArray& bytes, const PackedInt32Array& byteOffsets) : bytes(bytes) {
 	value_addresses.resize(byteOffsets.size());
 	const uint8_t *ptr = this->bytes.ptr();
 	for (int i = 0; i < byteOffsets.size(); i++) {
@@ -17,38 +17,38 @@ FFIValueTuple::FFIValueTuple(const PackedByteArray& bytes, const PackedInt32Arra
 	}
 }
 
-uint32_t FFIValueTuple::size() const {
+uint32_t CFFIValueTuple::size() const {
 	return value_addresses.size();
 }
 
-void * const *FFIValueTuple::get_value_addresses() const {
+void * const *CFFIValueTuple::get_value_addresses() const {
 	return value_addresses.ptr();
 }
 
-FFIValueTuple FFIValueTuple::from_varargs(const FFITypeTuple& type_tuple, const Variant **args, GDExtensionInt arg_count) {
-	ERR_FAIL_COND_V_EDMSG(type_tuple.size() != arg_count, FFIValueTuple(), "Array size doesn't match types size");
+CFFIValueTuple CFFIValueTuple::from_varargs(const CFFITypeTuple& type_tuple, const Variant **args, GDExtensionInt arg_count) {
+	ERR_FAIL_COND_V_EDMSG(type_tuple.size() != arg_count, CFFIValueTuple(), "Array size doesn't match types size");
 
 	auto& fields = type_tuple.get_fields();
 	PackedByteArray buffer;
 	PackedInt32Array offsets;
 	for (GDExtensionInt i = 0; i < arg_count; i++) {
 		offsets.append(buffer.size());
-		ERR_FAIL_COND_V(!fields[i]->serialize_value_into(*args[i], buffer), FFIValueTuple());
+		ERR_FAIL_COND_V(!fields[i]->serialize_value_into(*args[i], buffer), CFFIValueTuple());
 	}
-	return FFIValueTuple(buffer, offsets);
+	return CFFIValueTuple(buffer, offsets);
 }
 
-FFIValueTuple FFIValueTuple::from_array(const FFITypeTuple& type_tuple, const Array& array) {
-	ERR_FAIL_COND_V_EDMSG(type_tuple.size() != array.size(), FFIValueTuple(), "Array size doesn't match types size");
+CFFIValueTuple CFFIValueTuple::from_array(const CFFITypeTuple& type_tuple, const Array& array) {
+	ERR_FAIL_COND_V_EDMSG(type_tuple.size() != array.size(), CFFIValueTuple(), "Array size doesn't match types size");
 
 	auto& fields = type_tuple.get_fields();
 	PackedByteArray buffer;
 	PackedInt32Array offsets;
 	for (int64_t i = 0; i < array.size(); i++) {
 		offsets.append(buffer.size());
-		ERR_FAIL_COND_V(!fields[i]->serialize_value_into(array[i], buffer), FFIValueTuple());
+		ERR_FAIL_COND_V(!fields[i]->serialize_value_into(array[i], buffer), CFFIValueTuple());
 	}
-	return FFIValueTuple(buffer, offsets);
+	return CFFIValueTuple(buffer, offsets);
 }
 
 }

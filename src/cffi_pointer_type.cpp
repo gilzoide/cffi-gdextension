@@ -3,23 +3,23 @@
 
 namespace cffi {
 
-FFIPointerType::FFIPointerType() {}
-FFIPointerType::FFIPointerType(Ref<FFIType> element_type)
-	: FFIType(element_type->get_name() + String("*"), ffi_type_pointer)
+CFFIPointerType::CFFIPointerType() {}
+CFFIPointerType::CFFIPointerType(Ref<CFFIType> element_type)
+	: CFFIType(element_type->get_name() + String("*"), ffi_type_pointer)
 	, element_type(element_type)
 	{}
 
-Ref<FFIType> FFIPointerType::get_element_type() const {
+Ref<CFFIType> CFFIPointerType::get_element_type() const {
 	return element_type;
 }
 
-bool FFIPointerType::get_return_value(const uint8_t *ptr, Variant& r_variant) const {
+bool CFFIPointerType::get_return_value(const uint8_t *ptr, Variant& r_variant) const {
 	uint8_t *value = *(uint8_t **) ptr;
-	r_variant = memnew(FFIPointer(element_type, value));
+	r_variant = memnew(CFFIPointer(element_type, value));
 	return true;
 }
 
-bool FFIPointerType::serialize_value_into(const Variant& value, uint8_t *buffer) const {
+bool CFFIPointerType::serialize_value_into(const Variant& value, uint8_t *buffer) const {
 	switch (value.get_type()) {
 		case Variant::Type::PACKED_BYTE_ARRAY: {
 			PackedByteArray bytes = value;
@@ -28,7 +28,7 @@ bool FFIPointerType::serialize_value_into(const Variant& value, uint8_t *buffer)
 		}
 
 		case Variant::Type::OBJECT: {
-			if (auto pointer_value = Object::cast_to<FFIPointer>(value)) {
+			if (auto pointer_value = Object::cast_to<CFFIPointer>(value)) {
 				*(uint8_t **) buffer = pointer_value->address_offset_by(0);
 				return true;
 			}

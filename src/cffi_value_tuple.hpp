@@ -8,18 +8,18 @@ using namespace godot;
 namespace cffi {
 
 typedef LocalVector<void*> voidp_Vector;
-class FFITypeTuple;
+class CFFITypeTuple;
 
-class FFIValueTuple {
+class CFFIValueTuple {
 public:
-	FFIValueTuple();
-	FFIValueTuple(const PackedByteArray& bytes, const PackedInt32Array& byteOffsets);
+	CFFIValueTuple();
+	CFFIValueTuple(const PackedByteArray& bytes, const PackedInt32Array& byteOffsets);
 
 	uint32_t size() const;
 	void * const *get_value_addresses() const;
 
-	static FFIValueTuple from_varargs(const FFITypeTuple& type_tuple, const Variant **args, GDExtensionInt arg_count);
-	static FFIValueTuple from_array(const FFITypeTuple& type_tuple, const Array& array);
+	static CFFIValueTuple from_varargs(const CFFITypeTuple& type_tuple, const Variant **args, GDExtensionInt arg_count);
+	static CFFIValueTuple from_array(const CFFITypeTuple& type_tuple, const Array& array);
 
 private:
 	PackedByteArray bytes;

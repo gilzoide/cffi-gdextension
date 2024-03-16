@@ -51,16 +51,16 @@ static void *os_get_symbol(void *handle, const char *symbol) {
 
 namespace cffi {
 
-FFILibraryHandle::FFILibraryHandle() {}
-FFILibraryHandle::FFILibraryHandle(void *library_handle) : library_handle(library_handle) {}
+CFFILibraryHandle::CFFILibraryHandle() {}
+CFFILibraryHandle::CFFILibraryHandle(void *library_handle) : library_handle(library_handle) {}
 
-FFILibraryHandle::~FFILibraryHandle() {
+CFFILibraryHandle::~CFFILibraryHandle() {
 	if (library_handle) {
 		os_close_library(library_handle);
 	}
 }
 
-Ref<FFILibraryHandle> FFILibraryHandle::open(const String& name) {
+Ref<CFFILibraryHandle> CFFILibraryHandle::open(const String& name) {
 	String path;
 	if (name.begins_with("res://")) {
 		if (OS::get_singleton()->has_feature("editor")) {
@@ -78,26 +78,26 @@ Ref<FFILibraryHandle> FFILibraryHandle::open(const String& name) {
 	}
 	void *library_handle = os_open_library(path.is_empty() ? nullptr : path.utf8().get_data());
 	ERR_FAIL_COND_V_MSG(library_handle == nullptr, nullptr, os_get_last_error());
-	return memnew(FFILibraryHandle(library_handle));
+	return memnew(CFFILibraryHandle(library_handle));
 }
 
-Ref<FFIFunction> FFILibraryHandle::get_function(const String& name, const Variant& return_type_var, const Array& argument_types_arr, bool is_variadic) {
+Ref<CFFIFunction> CFFILibraryHandle::get_function(const String& name, const Variant& return_type_var, const Array& argument_types_arr, bool is_variadic) {
 	void *address = os_get_symbol(library_handle, name.ascii().get_data());
 	ERR_FAIL_COND_V_MSG(address == nullptr, nullptr, os_get_last_error());
 
-	auto return_type = FFIType::from_variant(return_type_var);
+	auto return_type = CFFIType::from_variant(return_type_var);
 	ERR_FAIL_COND_V_MSG(return_type == nullptr, nullptr, String("Could not find return type: %s") % return_type_var.stringify());
 
-	FFITypeTuple argument_types = FFITypeTuple::from_array(argument_types_arr);
+	CFFITypeTuple argument_types = CFFITypeTuple::from_array(argument_types_arr);
 	ERR_FAIL_COND_V_MSG(argument_types.size() != argument_types_arr.size(), nullptr, "Invalid argument types");
-	return memnew(FFIFunction(name, address, return_type, argument_types, is_variadic));
+	return memnew(CFFIFunction(name, address, return_type, argument_types, is_variadic));
 }
 
-void FFILibraryHandle::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_function", "name", "return_type", "argument_types", "is_variadic"), &FFILibraryHandle::get_function, DEFVAL(Array()), DEFVAL(false));
+void CFFILibraryHandle::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_function", "name", "return_type", "argument_types", "is_variadic"), &CFFILibraryHandle::get_function, DEFVAL(Array()), DEFVAL(false));
 }
 
-String FFILibraryHandle::_to_string() const {
+String CFFILibraryHandle::_to_string() const {
 	return String("[%s:0x%x]") % Array::make(get_class(), (uint64_t) library_handle);
 }
 

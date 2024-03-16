@@ -4,14 +4,14 @@
 
 namespace cffi {
 
-FFIFunction::FFIFunction() {}
-FFIFunction::FFIFunction(const String& name, void *address, const Ref<FFIType>& return_type, const FFITypeTuple& argument_types, bool is_variadic, ffi_abi abi)
+CFFIFunction::CFFIFunction() {}
+CFFIFunction::CFFIFunction(const String& name, void *address, const Ref<CFFIType>& return_type, const CFFITypeTuple& argument_types, bool is_variadic, ffi_abi abi)
 	: name(name), address(address), return_type(return_type), argument_types(argument_types), is_variadic(is_variadic)
 {
 	ffi_prep_cif(&ffi_handle, abi, argument_types.size(), &return_type->get_ffi_type(), this->argument_types.get_argument_types());
 }
 
-Variant FFIFunction::invoke(const FFIValueTuple& argument_data) {
+Variant CFFIFunction::invoke(const CFFIValueTuple& argument_data) {
 	PackedByteArray return_data;
 	return_data.resize(MAX(return_type->get_ffi_type().size, sizeof(ffi_arg)));
 	ffi_call(&ffi_handle, (void(*)()) address, (void *) return_data.ptr(), (void **) argument_data.get_value_addresses());
@@ -21,7 +21,7 @@ Variant FFIFunction::invoke(const FFIValueTuple& argument_data) {
 	return return_value;
 }
 
-Variant FFIFunction::invokev(const Array& arguments) {
+Variant CFFIFunction::invokev(const Array& arguments) {
 	if (arguments.size() < argument_types.size()) {
 		ERR_FAIL_V_EDMSG(Variant(), String("Expected %d arguments.") % (int64_t) argument_types.size());
 	}
@@ -29,11 +29,11 @@ Variant FFIFunction::invokev(const Array& arguments) {
 		ERR_FAIL_V_EDMSG(Variant(), String("Expected %d arguments.") % (int64_t) argument_types.size());
 	}
 
-	FFIValueTuple argument_data = FFIValueTuple::from_array(argument_types, arguments);
+	CFFIValueTuple argument_data = CFFIValueTuple::from_array(argument_types, arguments);
 	return invoke(argument_data);
 }
 
-Variant FFIFunction::invoke_variadic(const Variant **args, GDExtensionInt arg_count, GDExtensionCallError &error) {
+Variant CFFIFunction::invoke_variadic(const Variant **args, GDExtensionInt arg_count, GDExtensionCallError &error) {
 	if (arg_count < argument_types.size()) {
 		error.error = GDEXTENSION_CALL_ERROR_TOO_FEW_ARGUMENTS;
 		error.expected = argument_types.size();
@@ -45,16 +45,16 @@ Variant FFIFunction::invoke_variadic(const Variant **args, GDExtensionInt arg_co
 		return Variant();
 	}
 
-	FFIValueTuple argument_data = FFIValueTuple::from_varargs(argument_types, args, arg_count);
+	CFFIValueTuple argument_data = CFFIValueTuple::from_varargs(argument_types, args, arg_count);
 	return invoke(argument_data);
 }
 
-void FFIFunction::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("invokev", "arg_array"), &FFIFunction::invokev);
-	ClassDB::bind_vararg_method(METHOD_FLAGS_DEFAULT, "invoke", &FFIFunction::invoke_variadic);
+void CFFIFunction::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("invokev", "arg_array"), &CFFIFunction::invokev);
+	ClassDB::bind_vararg_method(METHOD_FLAGS_DEFAULT, "invoke", &CFFIFunction::invoke_variadic);
 }
 
-String FFIFunction::_to_string() const {
+String CFFIFunction::_to_string() const {
 	return String("[%s:0x%x:%s %s%s]") % Array::make(get_class(), (uint64_t) address, return_type->get_name(), name, argument_types.to_string());
 }
 

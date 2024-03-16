@@ -8,7 +8,7 @@ using namespace godot;
 
 namespace cffi {
 
-class FFITypeParser {
+class CFFITypeParser {
 public:
 	bool is_valid() const;
 	void clear();

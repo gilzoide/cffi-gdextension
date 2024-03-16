@@ -10,7 +10,7 @@ func _get_recognized_extensions():
 
 
 func _handles_type(type):
-	return type == "FFILibrary"
+	return type == "CFFILibrary"
 
 
 func _load(path, original_path, use_sub_threads, cache_mode):
@@ -23,6 +23,6 @@ func _load(path, original_path, use_sub_threads, cache_mode):
 	var libraries = {}
 	for key in config.get_section_keys(LIBRARIES_SECTION):
 		libraries[key] = config.get_value(LIBRARIES_SECTION, key)
-	var resource = FFILibrary.new()
+	var resource = CFFILibrary.new()
 	resource.libraries = libraries
 	return resource

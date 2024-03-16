@@ -3,19 +3,19 @@
 
 namespace cffi {
 
-FFITypeTuple::FFITypeTuple() {}
-FFITypeTuple::FFITypeTuple(FFITypeVector&& fields) : fields(fields) {}
-FFITypeTuple::FFITypeTuple(const FFITypeVector& fields) : fields(fields) {}
+CFFITypeTuple::CFFITypeTuple() {}
+CFFITypeTuple::CFFITypeTuple(CFFITypeVector&& fields) : fields(fields) {}
+CFFITypeTuple::CFFITypeTuple(const CFFITypeVector& fields) : fields(fields) {}
 
-const FFITypeVector& FFITypeTuple::get_fields() const {
+const CFFITypeVector& CFFITypeTuple::get_fields() const {
 	return fields;
 }
 
-uint32_t FFITypeTuple::size() const {
+uint32_t CFFITypeTuple::size() const {
 	return fields.size();
 }
 
-String FFITypeTuple::to_string() const {
+String CFFITypeTuple::to_string() const {
 	PackedStringArray types_str;
 	for (int i = 0; i < fields.size(); i++) {
 		types_str.append(fields[i]->get_name());
@@ -23,7 +23,7 @@ String FFITypeTuple::to_string() const {
 	return String("(%s)") % String(", ").join(types_str);
 }
 
-ffi_type **FFITypeTuple::get_argument_types() {
+ffi_type **CFFITypeTuple::get_argument_types() {
 	if (ffi_handle.size() != fields.size()) {
 		ffi_handle.resize(fields.size());
 		for (int i = 0; i < fields.size(); i++) {
@@ -33,16 +33,16 @@ ffi_type **FFITypeTuple::get_argument_types() {
 	return ffi_handle.ptr();
 }
 
-FFITypeTuple FFITypeTuple::from_array(const Array& array) {
-	FFITypeVector fields;
+CFFITypeTuple CFFITypeTuple::from_array(const Array& array) {
+	CFFITypeVector fields;
 	fields.resize(array.size());
 	for (int64_t i = 0; i < array.size(); i++) {
 		auto& var = array[i];
-		Ref<FFIType> field_type = FFIType::from_variant(var);
-		ERR_FAIL_COND_V_EDMSG(field_type == nullptr, FFITypeTuple(), String("Invalid type: %s") % var.stringify());
+		Ref<CFFIType> field_type = CFFIType::from_variant(var);
+		ERR_FAIL_COND_V_EDMSG(field_type == nullptr, CFFITypeTuple(), String("Invalid type: %s") % var.stringify());
 		fields[i] = field_type;
 	}
-	return FFITypeTuple(std::move(fields));
+	return CFFITypeTuple(std::move(fields));
 }
 
 }
