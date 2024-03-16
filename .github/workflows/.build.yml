@@ -1,0 +1,127 @@
+name: Build
+on: [push, pull_request]
+defaults:
+  run:
+    shell: bash
+
+env:
+  SCONS_CACHE: ${{ github.workspace }}/.scons-cache
+
+jobs:
+  build_linux:
+    name: ${{ matrix.platform }} (${{ matrix.arch }}, ${{ matrix.target }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [template_debug, template_release]
+        arch: [x86_64, x86_32]
+        platform: [linux, windows, android]
+        include:
+          - platform: linux
+            arch: x86_32
+            packages: [g++-multilib]
+          - platform: windows
+            packages: [g++-mingw-w64]
+          - platform: android
+            arch: arm64
+            target: template_debug
+          - platform: android
+            arch: arm64
+            target: template_release
+          - platform: android
+            arch: arm32
+            target: template_debug
+            scons-args: android_api_level=19
+          - platform: android
+            arch: arm32
+            target: template_release
+            scons-args: android_api_level=19
+          - platform: android
+            arch: x86_32
+            scons-args: android_api_level=19
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install scons ${{ join(matrix.packages, ' ') }}
+      - name: Cache SCons files
+        uses: actions/cache@v3
+        with:
+          path: .scons-cache/
+          key: ${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.target }}-${{ hashfiles('.gitmodules', 'src/**') }}
+          restore-keys: |
+            ${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.target }}-
+      - name: Build artifact
+        run: |
+          scons platform=${{ matrix.platform }} arch=${{ matrix.arch }} target=${{ matrix.target }} ${{ join(matrix.scons-args, ' ') }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.target }}
+          path: |
+            addons/cffi/build/libcffi.*
+
+  build_macos:
+    name: ${{ matrix.platform }} (${{ matrix.arch }}, ${{ matrix.target }})
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [template_debug, template_release]
+        arch: [universal]
+        platform: [macos, ios]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: Install dependencies
+        run: |
+          brew install scons
+      - name: Cache SCons files
+        uses: actions/cache@v3
+        with:
+          path: .scons-cache/
+          key: ${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.target }}-${{ hashfiles('.gitmodules', 'src/**') }}
+          restore-keys: |
+            ${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.target }}-
+      - name: Build artifact
+        run: |
+          scons platform=${{ matrix.platform }} arch=${{ matrix.arch }} target=${{ matrix.target }}
+        env:
+          PYTHON_BIN: python3
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.target }}
+          path: |
+            addons/cffi/build/libcffi.*
+
+  distribute_zip:
+    name: Distribute zip
+    needs: [build_linux, build_macos]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download artifacts
+        id: download
+        uses: actions/download-artifact@v3
+        with:
+          path: artifacts
+      - name: Copy artifacts to build folder
+        run: cp -r ${{ steps.download.outputs.download-path }}/**/libcffi* addons/cffi/build
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: cffi
+          path: |
+            UNLICENSE
+            addons/cffi/UNLICENSE
+            addons/cffi/*.gdextension
+            addons/cffi/*.gd
+            addons/cffi/plugin.cfg
+            addons/cffi/build/libcffi.*
+
