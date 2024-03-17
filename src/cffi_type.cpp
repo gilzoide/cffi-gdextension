@@ -104,8 +104,9 @@ bool CFFIType::get_return_value(const uint8_t *ptr, Variant& r_variant) const {
 }
 
 bool CFFIType::serialize_value_into(const Variant& value, PackedByteArray& buffer) const {
-	buffer.resize(buffer.size() + ffi_handle.size);
-	return serialize_value_into(value, buffer.ptrw());
+	int64_t previous_size = buffer.size();
+	buffer.resize(previous_size + ffi_handle.size);
+	return serialize_value_into(value, buffer.ptrw() + previous_size);
 }
 
 bool CFFIType::serialize_value_into(const Variant& value, uint8_t *buffer) const {
