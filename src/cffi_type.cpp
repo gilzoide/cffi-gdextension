@@ -1,5 +1,6 @@
 #include "cffi_type.hpp"
 #include "cffi.hpp"
+#include "cffi_value.hpp"
 
 namespace cffi {
 
@@ -14,11 +15,11 @@ const ffi_type& CFFIType::get_ffi_type() const {
 	return ffi_handle;
 }
 
-size_t CFFIType::get_size() const {
+uint64_t CFFIType::get_size() const {
 	return ffi_handle.size;
 }
 
-unsigned short CFFIType::get_alignment() const {
+int CFFIType::get_alignment() const {
 	return ffi_handle.alignment;
 }
 
@@ -176,12 +177,21 @@ bool CFFIType::serialize_value_into(const Variant& value, uint8_t *buffer) const
 	return true;
 }
 
+Ref<CFFIValue> CFFIType::alloc(bool initialize_with_zeros) {
+	return memnew(CFFIValue(this, initialize_with_zeros));
+}
+
 Ref<CFFIType> CFFIType::from_variant(const Variant& var) {
 	CFFIType *type = Object::cast_to<CFFIType>(var);
 	return type ? type : CFFI::get_singleton()->get_type(var);
 }
 
-void CFFIType::_bind_methods() {}
+void CFFIType::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_name"), &CFFIType::get_name);
+	ClassDB::bind_method(D_METHOD("get_size"), &CFFIType::get_size);
+	ClassDB::bind_method(D_METHOD("get_alignment"), &CFFIType::get_alignment);
+	ClassDB::bind_method(D_METHOD("alloc", "initialize_with_zeros"), &CFFIType::alloc, DEFVAL(true));
+}
 
 String CFFIType::_to_string() const {
 	return String("[%s:%s]") % Array::make(get_class(), name);

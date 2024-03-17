@@ -41,4 +41,4 @@ protected:
 
 }
 
-#endif
+#endif  // __CFFI_POINTER_HPP__

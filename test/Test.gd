@@ -14,4 +14,6 @@ func _ready():
 	print(double_float.invoke(2.51))
 	var message: CFFIPointer = get_message.invoke()
 	print(message.get_string_from_utf8())
-	pass
+	
+	var native_int = CFFI["float"].alloc()
+	print(native_int)
