@@ -13,6 +13,8 @@ func find_library_path(tags := PackedStringArray()) -> String:
 
 func open(tags := PackedStringArray()) -> CFFILibraryHandle:
 	var library_path = find_library_path(tags)
+	if not OS.has_feature("editor"):
+		library_path = library_path.get_file()
 	return CFFI.open(library_path)
 
 
