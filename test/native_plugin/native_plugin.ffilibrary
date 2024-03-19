@@ -1,3 +1,7 @@
 [libraries]
 
-macos = "libnative_plugin.dylib"
+macos = "libnative_plugin_macos.dylib"
+android.arm64 = "libnative_plugin_android_arm64.so"
+android.arm32 = "libnative_plugin_android_arm32.so"
+android.x86_64 = "libnative_plugin_android_x86_64.so"
+android.x86 = "libnative_plugin_android_x86.so"

@@ -1,6 +1,6 @@
-extends Node
+extends Label
 
-static var NativePlugin = preload("res://native_plugin/native_plugin.ffilibrary").open()
+static var NativePlugin = load("res://native_plugin/native_plugin.ffilibrary").open()
 static var get_answer = NativePlugin.get_function("get_answer", "int")
 static var double_int = NativePlugin.get_function("double_int", "int", ["int"])
 static var double_float = NativePlugin.get_function("double_float", "float", ["float"])
@@ -13,7 +13,6 @@ func _ready():
 	print(double_int.invoke(31))
 	print(double_float.invoke(2.51))
 	var message: CFFIPointer = get_message.invoke()
-	print(message.get_string_from_utf8())
-	
-	var native_int = CFFI["float"].alloc()
-	print(native_int)
+	var message_str = message.get_string_from_utf8()
+	print(message_str)
+	text = message_str
