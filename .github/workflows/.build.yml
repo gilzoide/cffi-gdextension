@@ -119,9 +119,5 @@ jobs:
           name: cffi-gdextension
           path: |
             UNLICENSE
-            addons/cffi/UNLICENSE
-            addons/cffi/*.gdextension
-            addons/cffi/*.gd
-            addons/cffi/plugin.cfg
-            addons/cffi/build/libcffi.*
+            addons/cffi/**
 
