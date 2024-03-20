@@ -23,7 +23,7 @@ public:
 
 	String to_string() const;
 
-	ffi_type **get_argument_types();
+	ffi_type **get_element_types();
 
 	static CFFITypeTuple from_array(const Array& array);
 

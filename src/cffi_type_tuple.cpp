@@ -23,7 +23,7 @@ String CFFITypeTuple::to_string() const {
 	return String("(%s)") % String(", ").join(types_str);
 }
 
-ffi_type **CFFITypeTuple::get_argument_types() {
+ffi_type **CFFITypeTuple::get_element_types() {
 	if (ffi_handle.is_empty()) {
 		ffi_handle.resize(fields.size() + 1);
 		for (int i = 0; i < fields.size(); i++) {
