@@ -35,7 +35,7 @@ public:
 
 protected:
 	static void _bind_methods();
-	String _to_string() const;
+	virtual String _to_string() const;
 
 	String name;
 	ffi_type ffi_handle;

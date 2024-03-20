@@ -10,6 +10,7 @@ using namespace godot;
 namespace cffi {
 
 class CFFILibraryHandle;
+class CFFIStructType;
 class CFFIType;
 
 class CFFI : public Object {
@@ -20,6 +21,8 @@ public:
 	Ref<CFFIType> get_type(const String& name) const;
 
 	Ref<CFFILibraryHandle> open(const String& name) const;
+
+	Ref<CFFIStructType> register_struct(const String& name, const Dictionary& fields);
 
 	static CFFI *get_singleton();
 	static CFFI *get_or_create_singleton();

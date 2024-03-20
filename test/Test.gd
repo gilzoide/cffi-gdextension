@@ -16,3 +16,8 @@ func _ready():
 	var message_str = message.get_string_from_utf8()
 	print(message_str)
 	text = message_str
+	
+	print(CFFI.register_struct("teste", {
+		"oi2": "char",
+		"oi": "int",
+	}))

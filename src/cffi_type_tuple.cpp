@@ -24,11 +24,12 @@ String CFFITypeTuple::to_string() const {
 }
 
 ffi_type **CFFITypeTuple::get_argument_types() {
-	if (ffi_handle.size() != fields.size()) {
-		ffi_handle.resize(fields.size());
+	if (ffi_handle.is_empty()) {
+		ffi_handle.resize(fields.size() + 1);
 		for (int i = 0; i < fields.size(); i++) {
 			ffi_handle[i] = &fields[i]->get_ffi_type();
 		}
+		ffi_handle[fields.size()] = nullptr;
 	}
 	return ffi_handle.ptr();
 }

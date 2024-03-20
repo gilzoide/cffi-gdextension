@@ -6,6 +6,7 @@
 #include "cffi_library_handle.hpp"
 #include "cffi_pointer.hpp"
 #include "cffi_pointer_type.hpp"
+#include "cffi_struct_type.hpp"
 #include "cffi_type.hpp"
 #include "cffi_value.hpp"
 
@@ -21,6 +22,7 @@ static void initialize(ModuleInitializationLevel level) {
 	ClassDB::register_abstract_class<CFFIFunction>();
 	ClassDB::register_abstract_class<CFFIType>();
 	ClassDB::register_abstract_class<CFFIPointerType>();
+	ClassDB::register_abstract_class<CFFIStructType>();
 	ClassDB::register_abstract_class<CFFIPointer>();
 	ClassDB::register_abstract_class<CFFIValue>();
 	ClassDB::register_abstract_class<CFFI>();

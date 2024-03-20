@@ -27,7 +27,7 @@ public:
 
 	static CFFITypeTuple from_array(const Array& array);
 
-private:
+protected:
 	CFFITypeVector fields;
 	ffi_typeVector ffi_handle;
 };
