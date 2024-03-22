@@ -1,9 +1,7 @@
 #ifndef __CFFI_HPP__
 #define __CFFI_HPP__
 
-#include <ffi.h>
-#include <godot_cpp/templates/hash_map.hpp>
-#include <godot_cpp/classes/ref_counted.hpp>
+#include "cffi_scope.hpp"
 
 using namespace godot;
 
@@ -13,16 +11,10 @@ class CFFILibraryHandle;
 class CFFIStructType;
 class CFFIType;
 
-class CFFI : public Object {
-	GDCLASS(CFFI, Object);
+class CFFI : public CFFIScope {
+	GDCLASS(CFFI, CFFIScope);
 public:
-	CFFI();
-
-	Ref<CFFIType> get_type(const String& name) const;
-
 	Ref<CFFILibraryHandle> open(const String& name) const;
-
-	Ref<CFFIStructType> register_struct(const String& name, const Dictionary& fields);
 
 	static CFFI *get_singleton();
 	static CFFI *get_or_create_singleton();
@@ -30,10 +22,6 @@ public:
 
 protected:
 	static void _bind_methods();
-
-	bool _get(const StringName& property_name, Variant& r_value) const;
-
-	HashMap<String, Ref<CFFIType>> builtin_types;
 
 private:
 	static CFFI *instance;

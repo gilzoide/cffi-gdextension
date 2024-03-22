@@ -1,6 +1,6 @@
 #include "cffi_library_handle.hpp"
+#include "cffi_function.hpp"
 #include "cffi_type.hpp"
-#include "cffi_type_tuple.hpp"
 
 #include <godot_cpp/classes/os.hpp>
 #include <godot_cpp/classes/project_settings.hpp>

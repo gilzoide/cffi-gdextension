@@ -1,9 +1,7 @@
 #ifndef __CFFI_LIBRARY_HPP__
 #define __CFFI_LIBRARY_HPP__
 
-#include "cffi_function.hpp"
-#include <godot_cpp/variant/typed_array.hpp>
-#include <godot_cpp/classes/ref_counted.hpp>
+#include "cffi_scope.hpp"
 
 using namespace godot;
 
@@ -11,8 +9,8 @@ namespace cffi {
 
 class CFFIFunction;
 
-class CFFILibraryHandle : public RefCounted {
-	GDCLASS(CFFILibraryHandle, RefCounted);
+class CFFILibraryHandle : public CFFIScope {
+	GDCLASS(CFFILibraryHandle, CFFIScope);
 public:
 	CFFILibraryHandle();
 	CFFILibraryHandle(void *library_handle);
