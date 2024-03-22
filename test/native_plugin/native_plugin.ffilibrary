@@ -1,5 +1,7 @@
 [libraries]
 
+linux.x86_64 = "libnative_plugin_linux_x86_64.so"
+linux.x86 = "libnative_plugin_linux_x86.so"
 macos = "libnative_plugin_macos.dylib"
 android.arm64 = "libnative_plugin_android_arm64.so"
 android.arm32 = "libnative_plugin_android_arm32.so"
