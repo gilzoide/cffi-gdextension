@@ -1,7 +1,6 @@
 #include "cffi_pointer_type.hpp"
 #include "cffi_struct_type.hpp"
 #include "cffi_scope.hpp"
-#include "cffi_type.hpp"
 #include "cffi_type_parser.hpp"
 
 namespace cffi {
@@ -11,8 +10,9 @@ Ref<CFFIType> CFFIScope::get_type(const String& name) const {
 	ERR_FAIL_COND_V_EDMSG(!parser.parse(name), nullptr, String("Invalid type \"%s\"") % name);
 
 	// pointer types
-	auto base_type = builtin_types.getptr(parser.get_base_name());
-	ERR_FAIL_COND_V_EDMSG(base_type == nullptr, nullptr, String("Invalid type \"%s\"") % name);
+	auto& base_name = parser.get_base_name();
+	auto base_type = builtin_types.getptr(base_name) ?: defined_types.getptr(base_name);
+	ERR_FAIL_COND_V_EDMSG(base_type == nullptr, nullptr, String("Unknown type name: \"%s\"") % name);
 	auto type = *base_type;
 	for (int i = 0; i < parser.get_pointer_level(); i++) {
 		type = Ref<CFFIType>(memnew(CFFIPointerType(type)));
@@ -20,8 +20,26 @@ Ref<CFFIType> CFFIScope::get_type(const String& name) const {
 	return type;
 }
 
-Ref<CFFIStructType> CFFIScope::register_struct(const String& name, const Dictionary& fields) {
-	return CFFIStructType::from_dictionary(name, fields);
+Ref<CFFIStructType> CFFIScope::define_struct(const String& name, const Dictionary& fields) {
+	CFFITypeParser parser;
+	ERR_FAIL_COND_V_EDMSG(
+		!parser.parse(name) || parser.get_pointer_level() != 0,
+		nullptr,
+		String("Invalid type name: \"%s\"") % name
+	);
+
+	auto& base_name = parser.get_base_name();
+	ERR_FAIL_COND_V_EDMSG(
+		builtin_types.has(base_name) || defined_types.has(base_name),
+		nullptr,
+		String("Type name already defined: \"%s\"") % name
+	);
+
+	auto type = CFFIStructType::from_dictionary(base_name, fields);
+	if (type.is_valid()) {
+		defined_types[base_name] = type;
+	}
+	return type;
 }
 
 bool CFFIScope::_get(const StringName& property_name, Variant& r_value) const {
@@ -37,7 +55,7 @@ bool CFFIScope::_get(const StringName& property_name, Variant& r_value) const {
 
 void CFFIScope::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_type", "name"), &CFFIScope::get_type);
-	ClassDB::bind_method(D_METHOD("register_struct", "name", "fields"), &CFFIScope::register_struct);
+	ClassDB::bind_method(D_METHOD("define_struct", "name", "fields"), &CFFIScope::define_struct);
 }
 
 void CFFIScope::register_builtin_types() {

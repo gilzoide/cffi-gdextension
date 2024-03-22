@@ -13,7 +13,7 @@ void CFFITypeParser::clear() {
 	pointer_level = 0;
 }
 
-String CFFITypeParser::get_base_name() const {
+const String& CFFITypeParser::get_base_name() const {
 	return name;
 }
 

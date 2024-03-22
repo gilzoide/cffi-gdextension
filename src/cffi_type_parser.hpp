@@ -12,7 +12,7 @@ class CFFITypeParser {
 public:
 	bool is_valid() const;
 	void clear();
-	String get_base_name() const;
+	const String& get_base_name() const;
 	int get_pointer_level() const;
 	String get_full_name() const;
 	bool parse(const String& full_name);

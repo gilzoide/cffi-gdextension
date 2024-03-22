@@ -17,7 +17,7 @@ func _ready():
 	print(message_str)
 	text = message_str
 	
-	print(CFFI.register_struct("teste", {
-		"oi2": "char",
+	print(CFFI.define_struct("teste", {
+		"oi2": "short",
 		"oi": "int",
 	}))

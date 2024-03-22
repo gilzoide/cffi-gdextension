@@ -16,7 +16,7 @@ class CFFIScope : public RefCounted {
 	GDCLASS(CFFIScope, RefCounted);
 public:
 	Ref<CFFIType> get_type(const String& name) const;
-	Ref<CFFIStructType> register_struct(const String& name, const Dictionary& fields);
+	Ref<CFFIStructType> define_struct(const String& name, const Dictionary& fields);
 
 	static void register_builtin_types();
 	static void clear_builtin_types();
@@ -25,6 +25,7 @@ protected:
 	bool _get(const StringName& property_name, Variant& r_value) const;
 	static void _bind_methods();
 
+	HashMap<String, Ref<CFFIType>> defined_types;
 	static HashMap<String, Ref<CFFIType>> builtin_types;
 };
 

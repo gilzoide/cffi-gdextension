@@ -7,7 +7,8 @@ CFFIPointerType::CFFIPointerType() {}
 CFFIPointerType::CFFIPointerType(Ref<CFFIType> element_type)
 	: CFFIType(element_type->get_name() + String("*"), ffi_type_pointer)
 	, element_type(element_type)
-	{}
+{
+}
 
 Ref<CFFIType> CFFIPointerType::get_element_type() const {
 	return element_type;
