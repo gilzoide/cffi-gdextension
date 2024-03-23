@@ -26,13 +26,13 @@ Ref<CFFIStructType> CFFIStructType::from_dictionary(const String& name, const Di
 	return memnew(CFFIStructType(name, std::move(field_types), std::move(field_map)));
 }
 
-Ref<CFFIType> CFFIStructType::type_of(const StringName& field_name) {
+Ref<CFFIType> CFFIStructType::type_of(const StringName& field_name) const {
 	const int *index_ptr = field_map.getptr(field_name);
 	ERR_FAIL_COND_V_EDMSG(index_ptr == nullptr, nullptr, String("Unknown field: \"%s\"") % field_name);
 	return fields[*index_ptr];
 }
 
-int CFFIStructType::offset_of(const StringName& field_name) {
+int CFFIStructType::offset_of(const StringName& field_name) const {
 	const int *index_ptr = field_map.getptr(field_name);
 	ERR_FAIL_COND_V_EDMSG(index_ptr == nullptr, 0, String("Unknown field: \"%s\"") % field_name);
 	int index = *index_ptr;

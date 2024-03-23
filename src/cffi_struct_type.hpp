@@ -15,8 +15,8 @@ class CFFIStructType : public CFFITypeTuple, public CFFIType {
 public:
 	CFFIStructType();
 
-	Ref<CFFIType> type_of(const StringName& field_name);
-	int offset_of(const StringName& field_name);
+	Ref<CFFIType> type_of(const StringName& field_name) const;
+	int offset_of(const StringName& field_name) const;
 
 	static Ref<CFFIStructType> from_dictionary(const String& name, const Dictionary& fields);
 
