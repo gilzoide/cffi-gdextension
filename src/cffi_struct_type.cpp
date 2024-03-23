@@ -34,7 +34,7 @@ Ref<CFFIType> CFFIStructType::type_of(const StringName& field_name) const {
 
 int CFFIStructType::offset_of(const StringName& field_name) const {
 	const int *index_ptr = field_map.getptr(field_name);
-	ERR_FAIL_COND_V_EDMSG(index_ptr == nullptr, 0, String("Unknown field: \"%s\"") % field_name);
+	ERR_FAIL_COND_V_EDMSG(index_ptr == nullptr, -1, String("Unknown field: \"%s\"") % field_name);
 	int index = *index_ptr;
 	int offset = 0;
 	for (int i = 0; i < index; i++) {
