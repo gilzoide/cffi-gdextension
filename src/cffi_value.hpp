@@ -22,8 +22,12 @@ public:
 	bool set_value(const Variant& value) const;
 	Ref<CFFIPointer> get_address() const;
 
+	Ref<CFFIPointer> address_of(const StringName& field) const;
+
 protected:
 	static void _bind_methods();
+	bool _get(const StringName& property_name, Variant& r_value) const;
+	bool _set(const StringName& property_name, const Variant& value);
 	String _to_string() const;
 
 	Ref<CFFIType> type;
