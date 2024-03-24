@@ -29,7 +29,7 @@ public:
 
 protected:
 	CFFITypeVector fields;
-	ffi_typeVector ffi_handle;
+	ffi_typeVector ffi_fields;
 };
 
 }

@@ -24,14 +24,14 @@ String CFFITypeTuple::to_string() const {
 }
 
 ffi_type **CFFITypeTuple::get_element_types() {
-	if (ffi_handle.is_empty()) {
-		ffi_handle.resize(fields.size() + 1);
+	if (ffi_fields.is_empty()) {
+		ffi_fields.resize(fields.size() + 1);
 		for (int i = 0; i < fields.size(); i++) {
-			ffi_handle[i] = &fields[i]->get_ffi_type();
+			ffi_fields[i] = &fields[i]->get_ffi_type();
 		}
-		ffi_handle[fields.size()] = nullptr;
+		ffi_fields[fields.size()] = nullptr;
 	}
-	return ffi_handle.ptr();
+	return ffi_fields.ptr();
 }
 
 CFFITypeTuple CFFITypeTuple::from_array(const Array& array) {

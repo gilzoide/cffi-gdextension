@@ -22,7 +22,9 @@ public:
 	bool set_value(const Variant& value) const;
 	Ref<CFFIPointer> get_address() const;
 
+	// Struct values only
 	Ref<CFFIPointer> address_of(const StringName& field) const;
+	Dictionary to_dictionary() const;
 
 protected:
 	static void _bind_methods();

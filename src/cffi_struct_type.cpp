@@ -1,5 +1,6 @@
 #include "cffi_struct_type.hpp"
 #include "cffi_type_tuple.hpp"
+#include "cffi_value.hpp"
 
 #define ROUND_UP(size, alignment) ((size) + ((alignment) - 1)) & (~((alignment) - 1))
 
@@ -11,6 +12,19 @@ CFFIStructType::CFFIStructType(const String& name, CFFITypeTuple&& fields, HashM
 	, CFFIType(name, create_struct_type())
 	, field_map(field_map)
 {
+	offsets.resize(fields.size());
+	switch (ffi_get_struct_offsets(FFI_DEFAULT_ABI, &ffi_handle, offsets.ptr())) {
+		case FFI_BAD_ABI:
+			ERR_PRINT_ED("Invalid ABI");
+			break;
+
+		case FFI_BAD_TYPEDEF:
+			ERR_PRINT_ED("Invalid struct definition");
+			break;
+
+		default:
+			break;
+	}
 }
 
 Ref<CFFIStructType> CFFIStructType::from_dictionary(const String& name, const Dictionary& fields) {
@@ -32,23 +46,60 @@ Ref<CFFIType> CFFIStructType::type_of(const StringName& field_name) const {
 	return fields[*index_ptr];
 }
 
-int CFFIStructType::offset_of(const StringName& field_name) const {
+int64_t CFFIStructType::offset_of(const StringName& field_name) const {
 	const int *index_ptr = field_map.getptr(field_name);
 	ERR_FAIL_COND_V_EDMSG(index_ptr == nullptr, -1, String("Unknown field: \"%s\"") % field_name);
-	int index = *index_ptr;
-	int offset = 0;
-	for (int i = 0; i < index; i++) {
-		auto& type = fields[i]->get_ffi_type();
-		offset += ROUND_UP(type.size, type.alignment);
+	return offsets[*index_ptr];
+}
+
+Dictionary CFFIStructType::get_dictionary_value(const uint8_t *ptr) const {
+	Dictionary dict;
+	for (auto it : field_map) {
+		int index = it.value;
+		fields[index]->get_return_value(ptr + offsets[index], dict[it.key]);
 	}
-	return offset;
+	return dict;
+}
+
+bool CFFIStructType::get_return_value(const uint8_t *ptr, Variant& r_variant) const {
+	r_variant = memnew(CFFIValue(Ref<CFFIType>(this), ptr));
+	return true;
+}
+
+bool CFFIStructType::serialize_value_into(const Variant& value, uint8_t *buffer) const {
+	switch (value.get_type()) {
+		case Variant::Type::DICTIONARY: {
+			Dictionary dict = value;
+			for (auto it : field_map) {
+				auto field_type = fields[it.value];
+				Variant value = dict.get(it.key, Variant());
+				size_t offset = offsets[it.value];
+				if (value.booleanize()) {
+					field_type->serialize_value_into(value, buffer + offset);
+				}
+				else {
+					memset(buffer + offset, 0, field_type->get_size());
+				}
+			}
+			return true;
+		}
+
+		case Variant::Type::OBJECT: {
+			if (auto ffi_value = Object::cast_to<CFFIValue>(value)) {
+				// TODO
+			}
+		}
+
+		default:
+			break;
+	}
+	ERR_FAIL_V_EDMSG(false, String("Invalid type \"%s\" for pointer type \"%s\"") % Array::make(value.get_type_name(value.get_type()), name));
 }
 
 ffi_type CFFIStructType::create_struct_type() {
 	ffi_type type = {};
 	type.type = FFI_TYPE_STRUCT;
 	type.elements = get_element_types();
-	ffi_get_struct_offsets(FFI_DEFAULT_ABI, &type, nullptr);
 	return type;
 }
 
