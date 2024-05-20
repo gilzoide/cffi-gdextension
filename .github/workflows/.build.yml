@@ -80,7 +80,7 @@ jobs:
           submodules: true
       - name: Install dependencies
         run: |
-          brew install scons autoconf automake
+          brew install scons autoconf automake libtool
       - name: Cache SCons files
         uses: actions/cache@v4
         with:
