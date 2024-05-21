@@ -9,6 +9,7 @@ using namespace godot;
 namespace cffi {
 
 class CFFIType;
+class CFFIScope;
 typedef LocalVector<Ref<CFFIType>> CFFITypeVector;
 typedef LocalVector<ffi_type*> ffi_typeVector;
 
@@ -25,7 +26,7 @@ public:
 
 	ffi_type **get_element_types();
 
-	static CFFITypeTuple from_array(const Array& array);
+	static CFFITypeTuple from_array(const Array& array, CFFIScope *type_scope);
 
 protected:
 	CFFITypeVector fields;

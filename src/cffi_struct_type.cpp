@@ -27,8 +27,8 @@ CFFIStructType::CFFIStructType(const String& name, CFFITypeTuple&& fields, HashM
 	}
 }
 
-Ref<CFFIStructType> CFFIStructType::from_dictionary(const String& name, const Dictionary& fields) {
-	CFFITypeTuple field_types = CFFITypeTuple::from_array(fields.values());
+Ref<CFFIStructType> CFFIStructType::from_dictionary(const String& name, const Dictionary& fields, CFFIScope *type_scope) {
+	CFFITypeTuple field_types = CFFITypeTuple::from_array(fields.values(), type_scope);
 	Array names = fields.keys();
 	if (field_types.size() != names.size()) {
 		return nullptr;

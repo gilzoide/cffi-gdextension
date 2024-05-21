@@ -14,6 +14,7 @@ class CFFIType;
 class CFFI : public CFFIScope {
 	GDCLASS(CFFI, CFFIScope);
 public:
+	CFFI();
 	Ref<CFFILibraryHandle> open(const String& name) const;
 
 	static CFFI *get_singleton();

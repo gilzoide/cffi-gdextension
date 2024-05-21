@@ -10,6 +10,7 @@ using namespace godot;
 
 namespace cffi {
 
+class CFFIScope;
 typedef LocalVector<size_t> size_tVector;
 
 class CFFIStructType : public CFFITypeTuple, public CFFIType {
@@ -24,7 +25,7 @@ public:
 	bool get_return_value(const uint8_t *ptr, Variant& r_variant) const override;
 	bool serialize_value_into(const Variant& value, uint8_t *buffer) const override;
 
-	static Ref<CFFIStructType> from_dictionary(const String& name, const Dictionary& fields);
+	static Ref<CFFIStructType> from_dictionary(const String& name, const Dictionary& fields, CFFIScope *type_scope);
 
 protected:
 	static void _bind_methods();

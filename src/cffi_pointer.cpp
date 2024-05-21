@@ -35,7 +35,7 @@ Ref<CFFIType> CFFIPointer::get_element_type() const {
 }
 
 Ref<CFFIPointer> CFFIPointer::cast_elements(const Variant& type) const {
-	Ref<CFFIType> new_type = CFFIType::from_variant(type);
+	Ref<CFFIType> new_type = CFFIType::from_variant(type, nullptr);
 	if (new_type.is_valid()) {
 		return Ref<CFFIPointer>(memnew(CFFIPointer(new_type, address)));
 	}

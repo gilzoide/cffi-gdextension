@@ -28,7 +28,6 @@ static void initialize(ModuleInitializationLevel level) {
 	ClassDB::register_abstract_class<CFFIPointer>();
 	ClassDB::register_abstract_class<CFFIValue>();
 	ClassDB::register_abstract_class<CFFI>();
-	CFFIScope::register_builtin_types();
 	CFFI::get_or_create_singleton();
 }
 
@@ -36,7 +35,6 @@ static void deinitialize(ModuleInitializationLevel level) {
 	if (level != MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
 	}
-	CFFIScope::clear_builtin_types();
 	CFFI::delete_singleton();
 }
 

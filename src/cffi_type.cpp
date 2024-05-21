@@ -181,9 +181,16 @@ Ref<CFFIValue> CFFIType::alloc(bool initialize_with_zeros) {
 	return memnew(CFFIValue(this, initialize_with_zeros));
 }
 
-Ref<CFFIType> CFFIType::from_variant(const Variant& var) {
-	CFFIType *type = Object::cast_to<CFFIType>(var);
-	return type ? type : CFFI::get_singleton()->get_type(var);
+Ref<CFFIType> CFFIType::from_variant(const Variant& var, CFFIScope *type_scope) {
+	if (CFFIType *type = Object::cast_to<CFFIType>(var)) {
+		return type;
+	}
+	else {
+		if (type_scope == nullptr) {
+			type_scope = CFFI::get_singleton();
+		}
+		return type_scope->find_type(var);
+	}
 }
 
 void CFFIType::_bind_methods() {

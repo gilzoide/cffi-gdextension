@@ -85,10 +85,10 @@ Ref<CFFIFunction> CFFILibraryHandle::get_function(const String& name, const Vari
 	void *address = os_get_symbol(library_handle, name.ascii().get_data());
 	ERR_FAIL_COND_V_MSG(address == nullptr, nullptr, os_get_last_error());
 
-	auto return_type = CFFIType::from_variant(return_type_var);
+	auto return_type = CFFIType::from_variant(return_type_var, this);
 	ERR_FAIL_COND_V_MSG(return_type == nullptr, nullptr, String("Could not find return type: %s") % return_type_var.stringify());
 
-	CFFITypeTuple argument_types = CFFITypeTuple::from_array(argument_types_arr);
+	CFFITypeTuple argument_types = CFFITypeTuple::from_array(argument_types_arr, this);
 	ERR_FAIL_COND_V_MSG(argument_types.size() != argument_types_arr.size(), nullptr, "Invalid argument types");
 	return memnew(CFFIFunction(name, address, return_type, argument_types, is_variadic));
 }

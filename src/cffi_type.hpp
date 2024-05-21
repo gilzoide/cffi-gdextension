@@ -9,6 +9,7 @@ using namespace godot;
 
 namespace cffi {
 
+class CFFIScope;
 class CFFIValue;
 
 class CFFIType : public RefCounted {
@@ -31,7 +32,7 @@ public:
 
 	Ref<CFFIValue> alloc(bool initialize_with_zeros = true);
 
-	static Ref<CFFIType> from_variant(const Variant& var);
+	static Ref<CFFIType> from_variant(const Variant& var, CFFIScope *type_scope);
 
 protected:
 	static void _bind_methods();
