@@ -52,7 +52,7 @@ int64_t CFFIStructType::offset_of(const StringName& field_name) const {
 	return offsets[*index_ptr];
 }
 
-Dictionary CFFIStructType::get_dictionary_value(const uint8_t *ptr) const {
+Dictionary CFFIStructType::get_dictionary_from_struct_data(const uint8_t *ptr) const {
 	Dictionary dict;
 	for (auto it : field_map) {
 		int index = it.value;

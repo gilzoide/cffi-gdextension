@@ -61,7 +61,7 @@ Ref<CFFIPointer> CFFIValue::address_of(const StringName& field) const {
 Dictionary CFFIValue::to_dictionary() const {
 	auto struct_type = Object::cast_to<CFFIStructType>(type.ptr());
 	ERR_FAIL_COND_V_EDMSG(!struct_type, Dictionary(), "Only struct and union values support to_dictionary");
-	return struct_type->get_dictionary_value(address);
+	return struct_type->get_dictionary_from_struct_data(address);
 }
 
 bool CFFIValue::_get(const StringName& property_name, Variant& r_value) const {
@@ -98,7 +98,7 @@ void CFFIValue::_bind_methods() {
 String CFFIValue::_to_string() const {
 	Variant value;
 	if (auto struct_type = Object::cast_to<CFFIStructType>(type.ptr())) {
-		value = struct_type->get_dictionary_value(address);
+		value = struct_type->get_dictionary_from_struct_data(address);
 	}
 	else {
 		value = get_value();

@@ -1,7 +1,6 @@
 #ifndef __CFFI_SCOPE_HPP__
 #define __CFFI_SCOPE_HPP__
 
-#include <ffi.h>
 #include <godot_cpp/templates/hash_map.hpp>
 #include <godot_cpp/classes/ref_counted.hpp>
 
