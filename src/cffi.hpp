@@ -8,8 +8,6 @@ using namespace godot;
 namespace cffi {
 
 class CFFILibraryHandle;
-class CFFIStructType;
-class CFFIType;
 
 class CFFI : public CFFIScope {
 	GDCLASS(CFFI, CFFIScope);

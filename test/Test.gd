@@ -5,7 +5,7 @@ static var get_answer = NativePlugin.get_function("get_answer", "int")
 static var double_int = NativePlugin.get_function("double_int", "int", ["int"])
 static var double_float = NativePlugin.get_function("double_float", "float", ["float"])
 static var get_message = NativePlugin.get_function("get_message", "const char *")
-static var ExampleStruct = CFFI.define_struct("ExampleStruct", {
+static var ExampleStruct = NativePlugin.define_struct("ExampleStruct", {
 	"a": "int",
 	"b": "int",
 })
