@@ -15,6 +15,7 @@ class CFFIValue : public RefCounted {
 public:
 	CFFIValue();
 	CFFIValue(Ref<CFFIType> type, bool initialize_with_zeros = true);
+	CFFIValue(Ref<CFFIType> type, const uint8_t *existing_data);
 	~CFFIValue();
 
 	Ref<CFFIType> get_type() const;

@@ -8,8 +8,16 @@ namespace cffi {
 CFFIValue::CFFIValue() {}
 CFFIValue::CFFIValue(Ref<CFFIType> type, bool initialize_with_zeros) : type(type) {
 	address = (uint8_t *) memalloc(type->get_size());
+	ERR_FAIL_COND_EDMSG(address == nullptr, String("Could not allocate %d bytes for %s") % Array::make(type->get_size(), type->get_name()));
 	if (initialize_with_zeros) {
 		memset(address, 0, type->get_size());
+	}
+}
+CFFIValue::CFFIValue(Ref<CFFIType> type, const uint8_t *existing_data) : type(type) {
+	address = (uint8_t *) memalloc(type->get_size());
+	ERR_FAIL_COND_EDMSG(address == nullptr, String("Could not allocate %d bytes for %s") % Array::make(type->get_size(), type->get_name()));
+	if (existing_data) {
+		memcpy(address, existing_data, type->get_size());
 	}
 }
 

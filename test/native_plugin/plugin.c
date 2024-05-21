@@ -1,3 +1,8 @@
+typedef struct {
+	int a;
+	int b;
+} ExampleStruct;
+
 int get_answer() {
     return 42;
 }
@@ -8,6 +13,13 @@ int double_int(int i) {
 
 int double_float(float f) {
 	return f + f;
+}
+
+ExampleStruct get_example_struct() {
+	return (ExampleStruct) {
+		.a = 1,
+		.b = 2,
+	};
 }
 
 const char *get_message() {
