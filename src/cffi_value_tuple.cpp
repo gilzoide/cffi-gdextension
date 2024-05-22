@@ -9,11 +9,11 @@ using namespace godot;
 namespace cffi {
 
 CFFIValueTuple::CFFIValueTuple() {}
-CFFIValueTuple::CFFIValueTuple(const PackedByteArray& bytes, const PackedInt32Array& byteOffsets) : bytes(bytes) {
-	value_addresses.resize(byteOffsets.size());
+CFFIValueTuple::CFFIValueTuple(const PackedByteArray& bytes, const PackedInt32Array& byte_offsets) : bytes(bytes) {
+	value_addresses.resize(byte_offsets.size());
 	const uint8_t *ptr = this->bytes.ptr();
-	for (int i = 0; i < byteOffsets.size(); i++) {
-		value_addresses[i] = (void *) (ptr + byteOffsets[i]);
+	for (int i = 0; i < byte_offsets.size(); i++) {
+		value_addresses[i] = (void *) (ptr + byte_offsets[i]);
 	}
 }
 
