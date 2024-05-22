@@ -9,11 +9,19 @@ namespace cffi {
 
 class CFFILibraryHandle;
 
+/**
+ * CFFI singleton, the global FFI type scope and entrypoint for opening libraries.
+ */
 class CFFI : public CFFIScope {
 	GDCLASS(CFFI, CFFIScope);
 public:
 	CFFI();
-	Ref<CFFILibraryHandle> open(const String& name) const;
+	/**
+	 * Opens a native library by its name or path.
+	 *
+	 * @see CFFILibraryHandle::open
+	 */
+	Ref<CFFILibraryHandle> open(const String& name_or_path) const;
 
 	static CFFI *get_singleton();
 	static CFFI *get_or_create_singleton();
