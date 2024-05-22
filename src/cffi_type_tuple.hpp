@@ -11,26 +11,55 @@ namespace cffi {
 class CFFIType;
 class CFFIScope;
 typedef LocalVector<Ref<CFFIType>> CFFITypeVector;
-typedef LocalVector<ffi_type*> ffi_typeVector;
 
+/**
+ * Tuple of FFI types.
+ * Used to define FFI functions' argument types, as well as struct and union types.
+ */
 class CFFITypeTuple {
 public:
+	/**
+	 * Create an empty type tuple.
+	 */
 	CFFITypeTuple();
+	/**
+	 * Create a type tuple from `field`.
+	 */
 	CFFITypeTuple(CFFITypeVector&& fields);
+	/**
+	 * Create a type tuple from `field`.
+	 */
 	CFFITypeTuple(const CFFITypeVector& fields);
 
+	/**
+	 * Get the tuple size.
+	 */
 	uint32_t size() const;
+	/**
+	 * Get the tuple's inner fields list.
+	 */
 	const CFFITypeVector& get_fields() const;
 
+	/**
+	 * Get a String representing this type tuple "(type0, type1, ...)".
+	 */
 	String to_string() const;
 
+	/**
+	 * Get the raw data pointer usable by the FFI.
+	 */
 	ffi_type **get_element_types();
 
+	/**
+	 * Create a type tuple from an Array of types.
+	 *
+	 * @see CFFIType::from_variant
+	 */
 	static CFFITypeTuple from_array(const Array& array, CFFIScope *type_scope);
 
 protected:
 	CFFITypeVector fields;
-	ffi_typeVector ffi_fields;
+	LocalVector<ffi_type*> ffi_fields;
 };
 
 }
