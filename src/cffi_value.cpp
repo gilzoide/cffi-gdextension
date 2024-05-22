@@ -37,7 +37,7 @@ Variant CFFIValue::get_value() const {
 	return var;
 }
 
-bool CFFIValue::set_value(const Variant& value) const {
+bool CFFIValue::set_value(const Variant& value) {
 	return type->serialize_value_into(value, address);
 }
 
