@@ -21,8 +21,8 @@ public:
 	int64_t offset_of(const StringName& field_name) const;
 
 	Dictionary get_dictionary_from_struct_data(const uint8_t *ptr) const;
-	bool get_return_value(const uint8_t *ptr, Variant& r_variant) const override;
-	bool serialize_value_into(const Variant& value, uint8_t *buffer) const override;
+	bool data_to_variant(const uint8_t *ptr, Variant& r_variant) const override;
+	bool variant_to_data(const Variant& value, uint8_t *buffer) const override;
 
 	static Ref<CFFIStructType> from_dictionary(const String& name, const Dictionary& fields, CFFIScope *type_scope);
 

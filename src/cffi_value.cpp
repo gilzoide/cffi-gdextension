@@ -33,12 +33,12 @@ Ref<CFFIType> CFFIValue::get_type() const {
 
 Variant CFFIValue::get_value() const {
 	Variant var;
-	type->get_return_value(address, var);
+	type->data_to_variant(address, var);
 	return var;
 }
 
 bool CFFIValue::set_value(const Variant& value) {
-	return type->serialize_value_into(value, address);
+	return type->variant_to_data(value, address);
 }
 
 Ref<CFFIPointer> CFFIValue::get_address() const {

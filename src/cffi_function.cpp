@@ -16,7 +16,7 @@ Variant CFFIFunction::invoke(const CFFIValueTuple& argument_data) {
 	return_data.resize(MAX(return_type->get_ffi_type().size, sizeof(ffi_arg)));
 	ffi_call(&ffi_handle, (void(*)()) address, (void *) return_data.ptr(), (void **) argument_data.get_value_addresses());
 	Variant return_value;
-	bool return_type_valid = return_type->get_return_value(return_data, return_value);
+	bool return_type_valid = return_type->data_to_variant(return_data, return_value);
 	ERR_FAIL_COND_V_MSG(!return_type_valid, Variant(), "Return type is not supported");
 	return return_value;
 }

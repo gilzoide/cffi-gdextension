@@ -27,16 +27,16 @@ const String& CFFIType::get_name() const {
 	return name;
 }
 
-bool CFFIType::get_return_value(const PackedByteArray& data, Variant& r_variant) const {
+bool CFFIType::data_to_variant(const PackedByteArray& data, Variant& r_variant) const {
 	if (data.size() < ffi_handle.size) {
 		ERR_PRINT_ED(String("Expected at least %d bytes for %s, got %d") % Array::make((uint64_t) ffi_handle.size, name, data.size()));
 		return false;
 	}
 
-	return get_return_value(data.ptr(), r_variant);
+	return data_to_variant(data.ptr(), r_variant);
 }
 
-bool CFFIType::get_return_value(const uint8_t *ptr, Variant& r_variant) const {
+bool CFFIType::data_to_variant(const uint8_t *ptr, Variant& r_variant) const {
 	switch (ffi_handle.type) {
 		case FFI_TYPE_VOID:
 			r_variant = Variant();
@@ -104,13 +104,13 @@ bool CFFIType::get_return_value(const uint8_t *ptr, Variant& r_variant) const {
 	return true;
 }
 
-bool CFFIType::serialize_value_into(const Variant& value, PackedByteArray& buffer) const {
+bool CFFIType::variant_to_data(const Variant& value, PackedByteArray& buffer) const {
 	int64_t previous_size = buffer.size();
 	buffer.resize(previous_size + ffi_handle.size);
-	return serialize_value_into(value, buffer.ptrw() + previous_size);
+	return variant_to_data(value, buffer.ptrw() + previous_size);
 }
 
-bool CFFIType::serialize_value_into(const Variant& value, uint8_t *buffer) const {
+bool CFFIType::variant_to_data(const Variant& value, uint8_t *buffer) const {
 	switch (ffi_handle.type) {
 		case FFI_TYPE_VOID:
 			break;

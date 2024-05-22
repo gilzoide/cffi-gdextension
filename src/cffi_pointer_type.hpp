@@ -15,8 +15,8 @@ public:
 
 	Ref<CFFIType> get_element_type() const;
 
-	bool get_return_value(const uint8_t *ptr, Variant& r_variant) const override;
-	bool serialize_value_into(const Variant& value, uint8_t *buffer) const override;
+	bool data_to_variant(const uint8_t *ptr, Variant& r_variant) const override;
+	bool variant_to_data(const Variant& value, uint8_t *buffer) const override;
 
 protected:
 	Ref<CFFIType> element_type;

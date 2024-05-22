@@ -14,13 +14,13 @@ Ref<CFFIType> CFFIPointerType::get_element_type() const {
 	return element_type;
 }
 
-bool CFFIPointerType::get_return_value(const uint8_t *ptr, Variant& r_variant) const {
+bool CFFIPointerType::data_to_variant(const uint8_t *ptr, Variant& r_variant) const {
 	uint8_t *value = *(uint8_t **) ptr;
 	r_variant = memnew(CFFIPointer(element_type, value));
 	return true;
 }
 
-bool CFFIPointerType::serialize_value_into(const Variant& value, uint8_t *buffer) const {
+bool CFFIPointerType::variant_to_data(const Variant& value, uint8_t *buffer) const {
 	switch (value.get_type()) {
 		case Variant::Type::PACKED_BYTE_ARRAY: {
 			PackedByteArray bytes = value;

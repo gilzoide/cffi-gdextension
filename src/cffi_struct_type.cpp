@@ -56,17 +56,17 @@ Dictionary CFFIStructType::get_dictionary_from_struct_data(const uint8_t *ptr) c
 	Dictionary dict;
 	for (auto it : field_map) {
 		int index = it.value;
-		fields[index]->get_return_value(ptr + offsets[index], dict[it.key]);
+		fields[index]->data_to_variant(ptr + offsets[index], dict[it.key]);
 	}
 	return dict;
 }
 
-bool CFFIStructType::get_return_value(const uint8_t *ptr, Variant& r_variant) const {
+bool CFFIStructType::data_to_variant(const uint8_t *ptr, Variant& r_variant) const {
 	r_variant = memnew(CFFIValue(Ref<CFFIType>(this), ptr));
 	return true;
 }
 
-bool CFFIStructType::serialize_value_into(const Variant& value, uint8_t *buffer) const {
+bool CFFIStructType::variant_to_data(const Variant& value, uint8_t *buffer) const {
 	switch (value.get_type()) {
 		case Variant::Type::DICTIONARY: {
 			Dictionary dict = value;
@@ -75,7 +75,7 @@ bool CFFIStructType::serialize_value_into(const Variant& value, uint8_t *buffer)
 				Variant value = dict.get(it.key, Variant());
 				size_t offset = offsets[it.value];
 				if (value.booleanize()) {
-					field_type->serialize_value_into(value, buffer + offset);
+					field_type->variant_to_data(value, buffer + offset);
 				}
 				else {
 					memset(buffer + offset, 0, field_type->get_size());
