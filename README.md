@@ -75,7 +75,7 @@ static var ExampleStruct = native_plugin_dll.define_struct("ExampleStruct", {
     "b": "int",
 })
 static var get_message = native_plugin_dll.get_function("get_message", "const char *")
-static var get_a = native_plugin_dll.get_function("get_message", "int", ["ExampleStruct"])
+static var get_a = native_plugin_dll.get_function("get_a", "int", ["ExampleStruct"])
 
 
 func _ready():
@@ -85,7 +85,7 @@ func _ready():
 
     var example_struct = ExampleStruct.alloc()
     example_struct.a = 42
-    var a = get_a(example_struct)
+    var a = get_a.invoke(example_struct)
     assert(a == example_struct.a)
     assert(a == 42)
 ```
