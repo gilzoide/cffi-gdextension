@@ -67,8 +67,8 @@ macos = "res://native_plugin_macos.dylib"
 # script.gd
 extends Node
 
-# Using ".ffilibrary" files is the easiest way to bundle FFI libraries
-# You can also use `CFFI.open` to open libraries by name or path directly
+# Using ".ffilibrary" files is the preferred way of bundling FFI libraries in projects.
+# You can also use `CFFI.open` to load libraries by name or path directly instead.
 static var native_plugin_dll = load("res://native_plugin.ffilibrary").open()
 static var ExampleStruct = native_plugin_dll.define_struct("ExampleStruct", {
     "a": "int",
