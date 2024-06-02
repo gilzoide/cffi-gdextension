@@ -64,6 +64,15 @@ public:
 	 */
 	bool variant_to_data(const Variant& value, uint8_t *buffer) const override;
 
+	/**
+	 * Create a struct type with `name` and `fields`.
+	 *
+	 * `fields` keys should be strings, while its values can be either strings or `CFFIType`s.
+	 * @note Iterating a Dictionary returns the values in insertion order.
+	 *       Thus the order of definition for the struct fields is guaranteed to be the same as in the dictionary.
+	 *
+	 * @return New struct type definition or `null` if an error occurred.
+	 */
 	static Ref<CFFIStructType> from_dictionary(const String& name, const Dictionary& fields, CFFIScope *type_scope);
 
 protected:

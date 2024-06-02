@@ -8,7 +8,7 @@ namespace cffi {
 
 Ref<CFFIType> CFFIScope::find_type(const String& name) const {
 	CFFITypeParser parser;
-	ERR_FAIL_COND_V_EDMSG(!parser.parse(name), nullptr, String("Invalid type \"%s\"") % name);
+	ERR_FAIL_COND_V_EDMSG(!parser.parse(name), nullptr, String("Invalid type name \"%s\"") % name);
 
 	// pointer types
 	auto& base_name = parser.get_base_name();
