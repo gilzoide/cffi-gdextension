@@ -8,7 +8,7 @@ CFFIFunction::CFFIFunction() {}
 CFFIFunction::CFFIFunction(const String& name, void *address, const Ref<CFFIType>& return_type, const CFFITypeTuple& argument_types, bool is_variadic, ffi_abi abi)
 	: name(name), address(address), return_type(return_type), argument_types(argument_types), is_variadic(is_variadic)
 {
-	ffi_prep_cif(&ffi_handle, abi, argument_types.size(), &return_type->get_ffi_type(), this->argument_types.get_argument_types());
+	ffi_prep_cif(&ffi_handle, abi, argument_types.size(), &return_type->get_ffi_type(), this->argument_types.get_element_types());
 }
 
 Variant CFFIFunction::invoke(const CFFIValueTuple& argument_data) {
@@ -16,7 +16,7 @@ Variant CFFIFunction::invoke(const CFFIValueTuple& argument_data) {
 	return_data.resize(MAX(return_type->get_ffi_type().size, sizeof(ffi_arg)));
 	ffi_call(&ffi_handle, (void(*)()) address, (void *) return_data.ptr(), (void **) argument_data.get_value_addresses());
 	Variant return_value;
-	bool return_type_valid = return_type->get_return_value(return_data, return_value);
+	bool return_type_valid = return_type->data_to_variant(return_data, return_value);
 	ERR_FAIL_COND_V_MSG(!return_type_valid, Variant(), "Return type is not supported");
 	return return_value;
 }

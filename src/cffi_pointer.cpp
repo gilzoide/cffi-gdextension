@@ -18,7 +18,7 @@ Ref<CFFIPointer> CFFIPointer::offset_by(int offset) const {
 
 Variant CFFIPointer::get_value(int index) const {
 	Variant value;
-	if (element_type->get_return_value(address_offset_by(index), value)) {
+	if (element_type->data_to_variant(address_offset_by(index), value)) {
 		return value;
 	}
 	else {
@@ -27,7 +27,7 @@ Variant CFFIPointer::get_value(int index) const {
 }
 
 bool CFFIPointer::set_value(const Variant& value, int index) const {
-	return element_type->serialize_value_into(value, address_offset_by(index));
+	return element_type->variant_to_data(value, address_offset_by(index));
 }
 
 Ref<CFFIType> CFFIPointer::get_element_type() const {
@@ -35,7 +35,7 @@ Ref<CFFIType> CFFIPointer::get_element_type() const {
 }
 
 Ref<CFFIPointer> CFFIPointer::cast_elements(const Variant& type) const {
-	Ref<CFFIType> new_type = CFFIType::from_variant(type);
+	Ref<CFFIType> new_type = CFFIType::from_variant(type, nullptr);
 	if (new_type.is_valid()) {
 		return Ref<CFFIPointer>(memnew(CFFIPointer(new_type, address)));
 	}
@@ -80,6 +80,7 @@ String CFFIPointer::get_string_from_wchar(int length) const {
 }
 
 PackedByteArray CFFIPointer::get_buffer(int length) const {
+	ERR_FAIL_COND_V_EDMSG(length < 0, PackedByteArray(), "Buffer length cannot be negative");
 	int length_in_bytes = length * element_type->get_size();
 	PackedByteArray array;
 	array.resize(length_in_bytes);
@@ -88,10 +89,11 @@ PackedByteArray CFFIPointer::get_buffer(int length) const {
 }
 
 Array CFFIPointer::to_array(int length) const {
+	ERR_FAIL_COND_V_EDMSG(length < 0, Array(), "Array length cannot be negative");
 	Array array;
 	array.resize(length);
 	for (int i = 0; i < length; i++) {
-		if (!element_type->get_return_value(address_offset_by(i), array[i])) {
+		if (!element_type->data_to_variant(address_offset_by(i), array[i])) {
 			return Array();
 		}
 	}

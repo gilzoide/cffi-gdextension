@@ -16,10 +16,34 @@ class CFFIValueTuple;
 class CFFIFunction : public RefCounted {
 	GDCLASS(CFFIFunction, RefCounted);
 public:
+	/**
+	 * Necessary to define a Godot class.
+	 * @warning Never use this constructor.
+	 */
 	CFFIFunction();
+	/**
+	 * @param name  Function name. Used only for printing.
+	 * @param address  Native function address, got from `dlsym` or `GetProcAddress`.
+	 * @param return_type  Return type. Must not be null.
+	 * @param argument_types  Argument types as a tuple.
+	 * @param is_variadic  Flag for variadic functions. For now, it's ignored.
+	 * @param abi  FFI ABI. When in doubt, use the default value `FFI_DEFAULT_ABI`.
+	 */
 	CFFIFunction(const String& name, void *address, const Ref<CFFIType>& return_type, const CFFITypeTuple& argument_types, bool is_variadic = false, ffi_abi abi = FFI_DEFAULT_ABI);
 
+	/**
+	 * Invoke the function passing `arguments`.
+	 *
+	 * The number of arguments must match the function's prototype.
+	 * If any of the argument values don't match the type defined by the prototype, the call returns an error.
+	 */
 	Variant invokev(const Array& arguments);
+	/**
+	 * Invoke the function passing arguments from a variadic call.
+	 *
+	 * The number of arguments must match the function's prototype.
+	 * If any of the argument values don't match the type defined by the prototype, the call returns an error.
+	 */
 	Variant invoke_variadic(const Variant **args, GDExtensionInt arg_count, GDExtensionCallError &error);
 
 protected:

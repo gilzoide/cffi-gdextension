@@ -1,7 +1,5 @@
 #include "cffi_type_parser.hpp"
 
-#include <godot_cpp/classes/reg_ex_match.hpp>
-
 namespace cffi {
 
 bool CFFITypeParser::is_valid() const {
@@ -13,7 +11,7 @@ void CFFITypeParser::clear() {
 	pointer_level = 0;
 }
 
-String CFFITypeParser::get_base_name() const {
+const String& CFFITypeParser::get_base_name() const {
 	return name;
 }
 

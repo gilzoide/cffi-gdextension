@@ -1,25 +1,27 @@
 #ifndef __CFFI_HPP__
 #define __CFFI_HPP__
 
-#include <ffi.h>
-#include <godot_cpp/templates/hash_map.hpp>
-#include <godot_cpp/classes/ref_counted.hpp>
+#include "cffi_scope.hpp"
 
 using namespace godot;
 
 namespace cffi {
 
 class CFFILibraryHandle;
-class CFFIType;
 
-class CFFI : public Object {
-	GDCLASS(CFFI, Object);
+/**
+ * CFFI singleton, the global FFI type scope and entrypoint for opening libraries.
+ */
+class CFFI : public CFFIScope {
+	GDCLASS(CFFI, CFFIScope);
 public:
 	CFFI();
-
-	Ref<CFFIType> get_type(const String& name) const;
-
-	Ref<CFFILibraryHandle> open(const String& name) const;
+	/**
+	 * Opens a native library by its name or path.
+	 *
+	 * @see CFFILibraryHandle::open
+	 */
+	Ref<CFFILibraryHandle> open(const String& name_or_path) const;
 
 	static CFFI *get_singleton();
 	static CFFI *get_or_create_singleton();
@@ -27,10 +29,6 @@ public:
 
 protected:
 	static void _bind_methods();
-
-	bool _get(const StringName& property_name, Variant& r_value) const;
-
-	HashMap<String, Ref<CFFIType>> builtin_types;
 
 private:
 	static CFFI *instance;

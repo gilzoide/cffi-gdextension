@@ -1,65 +1,50 @@
 #include "cffi.hpp"
 #include "cffi_library_handle.hpp"
-#include "cffi_pointer_type.hpp"
-#include "cffi_type_parser.hpp"
+#include "cffi_type.hpp"
 
 #include <godot_cpp/classes/engine.hpp>
 
 namespace cffi {
 
 CFFI::CFFI() {
-	builtin_types["void"] = Ref<CFFIType>(memnew(CFFIType("void", ffi_type_void)));
-	builtin_types["uint8"] = Ref<CFFIType>(memnew(CFFIType("uint8", ffi_type_uint8)));
-	builtin_types["sint8"] = Ref<CFFIType>(memnew(CFFIType("sint8", ffi_type_sint8)));
-	builtin_types["uint16"] = Ref<CFFIType>(memnew(CFFIType("uint16", ffi_type_uint16)));
-	builtin_types["sint16"] = Ref<CFFIType>(memnew(CFFIType("sint16", ffi_type_sint16)));
-	builtin_types["uint32"] = Ref<CFFIType>(memnew(CFFIType("uint32", ffi_type_uint32)));
-	builtin_types["sint32"] = Ref<CFFIType>(memnew(CFFIType("sint32", ffi_type_sint32)));
-	builtin_types["uint64"] = Ref<CFFIType>(memnew(CFFIType("uint64", ffi_type_uint64)));
-	builtin_types["sint64"] = Ref<CFFIType>(memnew(CFFIType("sint64", ffi_type_void)));
-	builtin_types["float"] = Ref<CFFIType>(memnew(CFFIType("float", ffi_type_float)));
-	builtin_types["double"] = Ref<CFFIType>(memnew(CFFIType("double", ffi_type_double)));
-	builtin_types["pointer"] = Ref<CFFIType>(memnew(CFFIType("pointer", ffi_type_pointer)));
-	builtin_types["long double"] = Ref<CFFIType>(memnew(CFFIType("long double", ffi_type_longdouble)));
+	defined_types["void"] = Ref<CFFIType>(memnew(CFFIType("void", ffi_type_void)));
+	defined_types["uint8"] = Ref<CFFIType>(memnew(CFFIType("uint8", ffi_type_uint8)));
+	defined_types["sint8"] = Ref<CFFIType>(memnew(CFFIType("sint8", ffi_type_sint8)));
+	defined_types["uint16"] = Ref<CFFIType>(memnew(CFFIType("uint16", ffi_type_uint16)));
+	defined_types["sint16"] = Ref<CFFIType>(memnew(CFFIType("sint16", ffi_type_sint16)));
+	defined_types["uint32"] = Ref<CFFIType>(memnew(CFFIType("uint32", ffi_type_uint32)));
+	defined_types["sint32"] = Ref<CFFIType>(memnew(CFFIType("sint32", ffi_type_sint32)));
+	defined_types["uint64"] = Ref<CFFIType>(memnew(CFFIType("uint64", ffi_type_uint64)));
+	defined_types["sint64"] = Ref<CFFIType>(memnew(CFFIType("sint64", ffi_type_void)));
+	defined_types["float"] = Ref<CFFIType>(memnew(CFFIType("float", ffi_type_float)));
+	defined_types["double"] = Ref<CFFIType>(memnew(CFFIType("double", ffi_type_double)));
+	defined_types["pointer"] = Ref<CFFIType>(memnew(CFFIType("pointer", ffi_type_pointer)));
+	defined_types["long double"] = Ref<CFFIType>(memnew(CFFIType("long double", ffi_type_longdouble)));
 #ifdef FFI_TARGET_HAS_COMPLEX_TYPE
-	builtin_types["complex float"] = Ref<CFFIType>(memnew(CFFIType("complex float", ffi_type_complex_float)));
-	builtin_types["complex double"] = Ref<CFFIType>(memnew(CFFIType("complex double", ffi_type_complex_double)));
-	builtin_types["complex longdouble"] = Ref<CFFIType>(memnew(CFFIType("complex longdouble", ffi_type_complex_longdouble)));
+	defined_types["complex float"] = Ref<CFFIType>(memnew(CFFIType("complex float", ffi_type_complex_float)));
+	defined_types["complex double"] = Ref<CFFIType>(memnew(CFFIType("complex double", ffi_type_complex_double)));
+	defined_types["complex longdouble"] = Ref<CFFIType>(memnew(CFFIType("complex longdouble", ffi_type_complex_longdouble)));
 #endif
 
 	// libffi aliases
-	builtin_types["char"] = Ref<CFFIType>(memnew(CFFIType("char", ffi_type_schar)));
-	builtin_types["unsigned char"] = Ref<CFFIType>(memnew(CFFIType("unsigned char", ffi_type_uchar)));
-	builtin_types["short"] = Ref<CFFIType>(memnew(CFFIType("short", ffi_type_sshort)));
-	builtin_types["unsigned short"] = Ref<CFFIType>(memnew(CFFIType("unsigned short", ffi_type_ushort)));
-	builtin_types["int"] = Ref<CFFIType>(memnew(CFFIType("int", ffi_type_sint)));
-	builtin_types["unsigned int"] = Ref<CFFIType>(memnew(CFFIType("unsigned int", ffi_type_uint)));
-	builtin_types["long"] = Ref<CFFIType>(memnew(CFFIType("long", ffi_type_slong)));
-	builtin_types["unsigned long"] = Ref<CFFIType>(memnew(CFFIType("unsigned long", ffi_type_ulong)));
+	defined_types["char"] = Ref<CFFIType>(memnew(CFFIType("char", ffi_type_schar)));
+	defined_types["unsigned char"] = Ref<CFFIType>(memnew(CFFIType("unsigned char", ffi_type_uchar)));
+	defined_types["short"] = Ref<CFFIType>(memnew(CFFIType("short", ffi_type_sshort)));
+	defined_types["unsigned short"] = Ref<CFFIType>(memnew(CFFIType("unsigned short", ffi_type_ushort)));
+	defined_types["int"] = Ref<CFFIType>(memnew(CFFIType("int", ffi_type_sint)));
+	defined_types["unsigned int"] = Ref<CFFIType>(memnew(CFFIType("unsigned int", ffi_type_uint)));
+	defined_types["long"] = Ref<CFFIType>(memnew(CFFIType("long", ffi_type_slong)));
+	defined_types["unsigned long"] = Ref<CFFIType>(memnew(CFFIType("unsigned long", ffi_type_ulong)));
 
 	// stdint.h aliases
-	builtin_types["int8_t"] = builtin_types["sint8"];
-	builtin_types["uint8_t"] = builtin_types["uint8"];
-	builtin_types["int16_t"] = builtin_types["sint16"];
-	builtin_types["uint16_t"] = builtin_types["uint16"];
-	builtin_types["int32_t"] = builtin_types["sint32"];
-	builtin_types["uint32_t"] = builtin_types["uint32"];
-	builtin_types["int64_t"] = builtin_types["sint64"];
-	builtin_types["uint64_t"] = builtin_types["uint64"];
-}
-
-Ref<CFFIType> CFFI::get_type(const String& name) const {
-	CFFITypeParser parser;
-	ERR_FAIL_COND_V_EDMSG(!parser.parse(name), nullptr, String("Invalid type \"%s\"") % name);
-
-	// pointer types
-	auto base_type = builtin_types.getptr(parser.get_base_name());
-	ERR_FAIL_COND_V_EDMSG(base_type == nullptr, nullptr, String("Invalid type \"%s\"") % name);
-	auto type = *base_type;
-	for (int i = 0; i < parser.get_pointer_level(); i++) {
-		type = Ref<CFFIType>(memnew(CFFIPointerType(type)));
-	}
-	return type;
+	defined_types["int8_t"] = defined_types["sint8"];
+	defined_types["uint8_t"] = defined_types["uint8"];
+	defined_types["int16_t"] = defined_types["sint16"];
+	defined_types["uint16_t"] = defined_types["uint16"];
+	defined_types["int32_t"] = defined_types["sint32"];
+	defined_types["uint32_t"] = defined_types["uint32"];
+	defined_types["int64_t"] = defined_types["sint64"];
+	defined_types["uint64_t"] = defined_types["uint64"];
 }
 
 Ref<CFFILibraryHandle> CFFI::open(const String& name) const {
@@ -67,19 +52,7 @@ Ref<CFFILibraryHandle> CFFI::open(const String& name) const {
 }
 
 void CFFI::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_type", "name"), &CFFI::get_type);
 	ClassDB::bind_method(D_METHOD("open", "library_name"), &CFFI::open);
-}
-
-bool CFFI::_get(const StringName& property_name, Variant& r_value) const {
-	auto type = get_type(property_name);
-	if (type.is_valid()) {
-		r_value = type;
-		return true;
-	}
-	else {
-		return false;
-	}
 }
 
 CFFI *CFFI::get_singleton() {

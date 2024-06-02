@@ -9,11 +9,11 @@ using namespace godot;
 namespace cffi {
 
 CFFIValueTuple::CFFIValueTuple() {}
-CFFIValueTuple::CFFIValueTuple(const PackedByteArray& bytes, const PackedInt32Array& byteOffsets) : bytes(bytes) {
-	value_addresses.resize(byteOffsets.size());
+CFFIValueTuple::CFFIValueTuple(const PackedByteArray& bytes, const PackedInt32Array& byte_offsets) : bytes(bytes) {
+	value_addresses.resize(byte_offsets.size());
 	const uint8_t *ptr = this->bytes.ptr();
-	for (int i = 0; i < byteOffsets.size(); i++) {
-		value_addresses[i] = (void *) (ptr + byteOffsets[i]);
+	for (int i = 0; i < byte_offsets.size(); i++) {
+		value_addresses[i] = (void *) (ptr + byte_offsets[i]);
 	}
 }
 
@@ -33,7 +33,7 @@ CFFIValueTuple CFFIValueTuple::from_varargs(const CFFITypeTuple& type_tuple, con
 	PackedInt32Array offsets;
 	for (GDExtensionInt i = 0; i < arg_count; i++) {
 		offsets.append(buffer.size());
-		ERR_FAIL_COND_V(!fields[i]->serialize_value_into(*args[i], buffer), CFFIValueTuple());
+		ERR_FAIL_COND_V(!fields[i]->variant_to_data(*args[i], buffer), CFFIValueTuple());
 	}
 	return CFFIValueTuple(buffer, offsets);
 }
@@ -46,7 +46,7 @@ CFFIValueTuple CFFIValueTuple::from_array(const CFFITypeTuple& type_tuple, const
 	PackedInt32Array offsets;
 	for (int64_t i = 0; i < array.size(); i++) {
 		offsets.append(buffer.size());
-		ERR_FAIL_COND_V(!fields[i]->serialize_value_into(array[i], buffer), CFFIValueTuple());
+		ERR_FAIL_COND_V(!fields[i]->variant_to_data(array[i], buffer), CFFIValueTuple());
 	}
 	return CFFIValueTuple(buffer, offsets);
 }
