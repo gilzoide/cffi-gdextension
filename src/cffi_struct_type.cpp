@@ -61,6 +61,20 @@ Dictionary CFFIStructType::get_dictionary_from_struct_data(const uint8_t *ptr) c
 	return dict;
 }
 
+void CFFIStructType::dictionary_to_data(const Dictionary& dict, uint8_t *buffer) const {
+	for (auto it : field_map) {
+		auto field_type = fields[it.value];
+		Variant value = dict.get(it.key, Variant());
+		size_t offset = offsets[it.value];
+		if (value.booleanize()) {
+			field_type->variant_to_data(value, buffer + offset);
+		}
+		else {
+			memset(buffer + offset, 0, field_type->get_size());
+		}
+	}
+}
+
 bool CFFIStructType::data_to_variant(const uint8_t *ptr, Variant& r_variant) const {
 	r_variant = memnew(CFFIValue(Ref<CFFIType>(this), ptr));
 	return true;
@@ -69,18 +83,7 @@ bool CFFIStructType::data_to_variant(const uint8_t *ptr, Variant& r_variant) con
 bool CFFIStructType::variant_to_data(const Variant& value, uint8_t *buffer) const {
 	switch (value.get_type()) {
 		case Variant::Type::DICTIONARY: {
-			Dictionary dict = value;
-			for (auto it : field_map) {
-				auto field_type = fields[it.value];
-				Variant value = dict.get(it.key, Variant());
-				size_t offset = offsets[it.value];
-				if (value.booleanize()) {
-					field_type->variant_to_data(value, buffer + offset);
-				}
-				else {
-					memset(buffer + offset, 0, field_type->get_size());
-				}
-			}
+			dictionary_to_data(value, buffer);
 			return true;
 		}
 

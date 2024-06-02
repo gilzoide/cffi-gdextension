@@ -21,6 +21,8 @@ public:
 	int64_t offset_of(const StringName& field_name) const;
 
 	Dictionary get_dictionary_from_struct_data(const uint8_t *ptr) const;
+	void dictionary_to_data(const Dictionary& value, uint8_t *buffer) const;
+
 	bool data_to_variant(const uint8_t *ptr, Variant& r_variant) const override;
 	bool variant_to_data(const Variant& value, uint8_t *buffer) const override;
 
