@@ -45,6 +45,10 @@ Ref<CFFIPointer> CFFIValue::get_address() const {
 	return memnew(CFFIPointer(type, address));
 }
 
+Ref<CFFIValue> CFFIValue::duplicate() const {
+	return memnew(CFFIValue(type, address));
+}
+
 Ref<CFFIPointer> CFFIValue::address_of(const StringName& field) const {
 	auto struct_type = Object::cast_to<CFFIStructType>(type.ptr());
 	ERR_FAIL_COND_V_EDMSG(!struct_type, nullptr, "Only struct and union values support address_of");
@@ -91,6 +95,7 @@ void CFFIValue::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_value"), &CFFIValue::get_value);
 	ClassDB::bind_method(D_METHOD("set_value", "value"), &CFFIValue::set_value);
 	ClassDB::bind_method(D_METHOD("get_address"), &CFFIValue::get_address);
+	ClassDB::bind_method(D_METHOD("duplicate"), &CFFIValue::duplicate);
 	ClassDB::bind_method(D_METHOD("address_of", "field_name"), &CFFIValue::address_of);
 	ClassDB::bind_method(D_METHOD("to_dictionary"), &CFFIValue::to_dictionary);
 }

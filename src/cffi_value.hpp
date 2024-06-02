@@ -64,6 +64,11 @@ public:
 	 */
 	Ref<CFFIPointer> get_address() const;
 
+	/**
+	 * Duplicate this value into a new managed `CFFIValue`.
+	 */
+	Ref<CFFIValue> duplicate() const;
+
 	// MARK: Struct/Union values only
 	/**
 	 * Get the address of a Struct or Union field.
