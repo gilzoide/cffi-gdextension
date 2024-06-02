@@ -80,6 +80,7 @@ String CFFIPointer::get_string_from_wchar(int length) const {
 }
 
 PackedByteArray CFFIPointer::get_buffer(int length) const {
+	ERR_FAIL_COND_V_EDMSG(length < 0, PackedByteArray(), "Buffer length cannot be negative");
 	int length_in_bytes = length * element_type->get_size();
 	PackedByteArray array;
 	array.resize(length_in_bytes);
@@ -88,6 +89,7 @@ PackedByteArray CFFIPointer::get_buffer(int length) const {
 }
 
 Array CFFIPointer::to_array(int length) const {
+	ERR_FAIL_COND_V_EDMSG(length < 0, Array(), "Array length cannot be negative");
 	Array array;
 	array.resize(length);
 	for (int i = 0; i < length; i++) {

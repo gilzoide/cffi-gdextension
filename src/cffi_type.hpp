@@ -65,11 +65,17 @@ public:
 	/**
 	 * Write the Variant `value` into `buffer`.
 	 *
+	 * Not all types support all kinds of values.
+	 * For example, trying to set an element of struct type with a value of `true` will give an error.
+	 *
 	 * @return True if the conversion succeeded, false otherwise.
 	 */
 	bool variant_to_data(const Variant& value, PackedByteArray& buffer) const;
 	/**
 	 * Write the Variant `value` into `buffer`.
+	 *
+	 * Not all types support all kinds of values.
+	 * For example, trying to set an element of struct type with a value of `true` will give an error.
 	 *
 	 * @return True if the conversion succeeded, false otherwise.
 	 */
