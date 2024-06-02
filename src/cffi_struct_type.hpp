@@ -58,6 +58,8 @@ public:
 	/**
 	 * Write the Variant `value` into `buffer`.
 	 *
+	 * Only Dictionary and CFFIValues with this struct type are supported.
+	 *
 	 * @return True if the conversion succeeded, false otherwise.
 	 */
 	bool variant_to_data(const Variant& value, uint8_t *buffer) const override;

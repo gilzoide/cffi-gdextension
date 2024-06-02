@@ -1,3 +1,4 @@
+#include "cffi_pointer.hpp"
 #include "cffi_struct_type.hpp"
 #include "cffi_type_tuple.hpp"
 #include "cffi_value.hpp"
@@ -89,7 +90,10 @@ bool CFFIStructType::variant_to_data(const Variant& value, uint8_t *buffer) cons
 
 		case Variant::Type::OBJECT: {
 			if (auto ffi_value = Object::cast_to<CFFIValue>(value)) {
-				// TODO
+				if (ffi_value->get_type() == this) {
+					memcpy(buffer, ffi_value->get_address()->address_offset_by(0), get_size());
+					return true;
+				}
 			}
 		}
 
