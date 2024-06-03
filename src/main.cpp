@@ -3,6 +3,7 @@
 #include "cffi.hpp"
 #include "cffi_function.hpp"
 #include "cffi_library_handle.hpp"
+#include "cffi_owned_value.hpp"
 #include "cffi_pointer.hpp"
 #include "cffi_pointer_type.hpp"
 #include "cffi_scope.hpp"
@@ -26,6 +27,7 @@ static void initialize(ModuleInitializationLevel level) {
 	ClassDB::register_abstract_class<CFFIStructType>();
 	ClassDB::register_abstract_class<CFFIPointer>();
 	ClassDB::register_abstract_class<CFFIValue>();
+	ClassDB::register_abstract_class<CFFIOwnedValue>();
 	ClassDB::register_abstract_class<CFFI>();
 	CFFI::get_or_create_singleton();
 }

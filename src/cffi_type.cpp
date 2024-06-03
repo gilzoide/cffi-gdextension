@@ -1,6 +1,6 @@
-#include "cffi_type.hpp"
 #include "cffi.hpp"
-#include "cffi_value.hpp"
+#include "cffi_owned_value.hpp"
+#include "cffi_type.hpp"
 
 namespace cffi {
 
@@ -178,7 +178,7 @@ bool CFFIType::variant_to_data(const Variant& value, uint8_t *buffer) const {
 }
 
 Ref<CFFIValue> CFFIType::alloc(bool initialize_with_zeros) {
-	return memnew(CFFIValue(this, initialize_with_zeros));
+	return memnew(CFFIOwnedValue(this, initialize_with_zeros));
 }
 
 Ref<CFFIType> CFFIType::from_variant(const Variant& var, CFFIScope *type_scope) {

@@ -1,7 +1,7 @@
 #include "cffi_pointer.hpp"
 #include "cffi_struct_type.hpp"
 #include "cffi_type_tuple.hpp"
-#include "cffi_value.hpp"
+#include "cffi_owned_value.hpp"
 
 #define ROUND_UP(size, alignment) ((size) + ((alignment) - 1)) & (~((alignment) - 1))
 
@@ -77,7 +77,7 @@ void CFFIStructType::dictionary_to_data(const Dictionary& dict, uint8_t *buffer)
 }
 
 bool CFFIStructType::data_to_variant(const uint8_t *ptr, Variant& r_variant) const {
-	r_variant = memnew(CFFIValue(Ref<CFFIType>(this), ptr));
+	r_variant = memnew(CFFIOwnedValue(Ref<CFFIType>(this), ptr));
 	return true;
 }
 
