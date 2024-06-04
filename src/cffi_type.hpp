@@ -3,14 +3,13 @@
 
 #include <ffi.h>
 #include <godot_cpp/classes/ref_counted.hpp>
-#include <godot_cpp/classes/stream_peer_buffer.hpp>
 
 using namespace godot;
 
 namespace cffi {
 
 class CFFIScope;
-class CFFIValue;
+class CFFIOwnedValue;
 
 /**
  * Godot class that represents an FFI type.
@@ -87,7 +86,7 @@ public:
 	 * @param initialize_with_zeros  If true, the allocated value will be zero-initialized.
 	 *        Otherwise, the allocated memory will not be initialized and may contain garbage data.
 	 */
-	Ref<CFFIValue> alloc(bool initialize_with_zeros = true);
+	Ref<CFFIOwnedValue> alloc(bool initialize_with_zeros = true);
 
 	/**
 	 * Get the type represented by `var`.

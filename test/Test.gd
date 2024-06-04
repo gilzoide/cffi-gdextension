@@ -21,8 +21,8 @@ func _ready():
 	print(message_str)
 	text = message_str
 	
-	var example_struct: CFFIValue = get_example_struct.invoke()
-	var new_example_struct: CFFIValue = ExampleStruct.alloc()
+	var example_struct: CFFIOwnedValue = get_example_struct.invoke()
+	var new_example_struct: CFFIOwnedValue = ExampleStruct.alloc()
 	printt(example_struct, new_example_struct)
 	new_example_struct.set_value(example_struct)
 	printt(example_struct, new_example_struct)
