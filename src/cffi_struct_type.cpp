@@ -89,9 +89,9 @@ bool CFFIStructType::variant_to_data(const Variant& value, uint8_t *buffer) cons
 		}
 
 		case Variant::Type::OBJECT: {
-			if (auto ffi_value = Object::cast_to<CFFIValue>(value)) {
-				if (ffi_value->get_type() == this) {
-					memcpy(buffer, ffi_value->get_address()->address_offset_by(0), get_size());
+			if (auto ffi_value = Object::cast_to<CFFIPointer>(value)) {
+				if (ffi_value->get_element_type() == this) {
+					memcpy(buffer, ffi_value->address_offset_by(0), get_size());
 					return true;
 				}
 			}

@@ -1,7 +1,7 @@
 #ifndef __CFFI_OWNED_VALUE_HPP__
 #define __CFFI_OWNED_VALUE_HPP__
 
-#include "cffi_value.hpp"
+#include "cffi_pointer.hpp"
 
 using namespace godot;
 
@@ -12,8 +12,8 @@ class CFFIType;
 /**
  * Godot object that stores a typed FFI value.
  */
-class CFFIOwnedValue : public CFFIValue {
-	GDCLASS(CFFIOwnedValue, CFFIValue);
+class CFFIOwnedValue : public CFFIPointer {
+	GDCLASS(CFFIOwnedValue, CFFIPointer);
 public:
 	/**
 	 * Necessary to define a Godot class.
@@ -44,8 +44,16 @@ public:
 	 */
 	~CFFIOwnedValue();
 
+	/**
+	 * Get base address.
+	 *
+	 * Alias for `offset_by(0)`.
+	 */
+	Ref<CFFIPointer> get_base_address() const;
+
 protected:
-	String _to_string() const;
+	static void _bind_methods();
+	String _to_string() const override;
 };
 
 }

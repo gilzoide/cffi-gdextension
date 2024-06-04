@@ -6,7 +6,7 @@ namespace cffi {
 
 CFFIOwnedValue::CFFIOwnedValue() {}
 CFFIOwnedValue::CFFIOwnedValue(Ref<CFFIType> type, bool initialize_with_zeros)
-	: CFFIValue(type, (uint8_t *) memalloc(type->get_size()))
+	: CFFIPointer(type, (uint8_t *) memalloc(type->get_size()))
 {
 	ERR_FAIL_COND_EDMSG(address == nullptr, String("Could not allocate %d bytes for %s") % Array::make(type->get_size(), type->get_name()));
 	if (initialize_with_zeros) {
@@ -14,7 +14,7 @@ CFFIOwnedValue::CFFIOwnedValue(Ref<CFFIType> type, bool initialize_with_zeros)
 	}
 }
 CFFIOwnedValue::CFFIOwnedValue(Ref<CFFIType> type, const uint8_t *existing_data)
-	: CFFIValue(type, (uint8_t *) memalloc(type->get_size()))
+	: CFFIPointer(type, (uint8_t *) memalloc(type->get_size()))
 {
 	ERR_FAIL_COND_EDMSG(address == nullptr, String("Could not allocate %d bytes for %s") % Array::make(type->get_size(), type->get_name()));
 	if (existing_data) {
@@ -28,16 +28,23 @@ CFFIOwnedValue::~CFFIOwnedValue() {
 	}
 }
 
+Ref<CFFIPointer> CFFIOwnedValue::get_base_address() const {
+	return offset_by(0);
+}
+
+void CFFIOwnedValue::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_base_address"), &CFFIOwnedValue::get_base_address);
+}
 
 String CFFIOwnedValue::_to_string() const {
 	Variant value;
-	if (auto struct_type = Object::cast_to<CFFIStructType>(type.ptr())) {
+	if (auto struct_type = Object::cast_to<CFFIStructType>(element_type.ptr())) {
 		value = struct_type->get_dictionary_from_struct_data(address);
 	}
 	else {
 		value = get_value();
 	}
-	return String("[%s:(%s) %s]") % Array::make(get_class(), type->get_name(), value);
+	return String("[%s:(%s) %s]") % Array::make(get_class(), element_type->get_name(), value);
 }
 
 }

@@ -7,6 +7,7 @@ using namespace godot;
 
 namespace cffi {
 
+class CFFIOwnedValue;
 class CFFIType;
 
 /**
@@ -77,6 +78,11 @@ public:
 	Ref<CFFIPointer> cast_elements(const Variant& element_type) const;
 
 	/**
+	 * Duplicate data into a new `CFFIOwnedValue`.
+	 */
+	Ref<CFFIOwnedValue> duplicate() const;
+
+	/**
 	 * Get a String from this pointer, using ASCII encoding.
 	 *
 	 * @warning Users are responsible for knowing if a pointer is valid before dereferencing it.
@@ -135,7 +141,7 @@ public:
 	 * @param length  Buffer length, in number of elements.
 	 *                For example, a buffer of length 2 taken from a pointer to `int32_t` would have 8 bytes.
 	 */
-	PackedByteArray get_buffer(int length) const;
+	PackedByteArray to_byte_array(int length) const;
 	/**
 	 * Get an Array with the values pointed by this pointer using `get_value`.
 	 *
@@ -145,9 +151,27 @@ public:
 	 */
 	Array to_array(int length) const;
 
+	// MARK: Struct/Union values only
+	/**
+	 * Get the address of a Struct or Union field.
+	 *
+	 * @note Only available on values of Struct or Union types.
+	 *
+	 * @return The address of the existing field, or null if it cannot be found.
+	 */
+	Ref<CFFIPointer> get_field(const StringName& field_name) const;
+	/**
+	 * Get a Dictionary representation of this value.
+	 *
+	 * @note Only available on values of Struct or Union types.
+	 */
+	Dictionary to_dictionary() const;
+
 protected:
 	static void _bind_methods();
-	String _to_string() const;
+	bool _get(const StringName& property_name, Variant& r_value) const;
+	bool _set(const StringName& property_name, const Variant& value);
+	virtual String _to_string() const;
 
 	Ref<CFFIType> element_type;
 	uint8_t *address;

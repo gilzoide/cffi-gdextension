@@ -177,7 +177,7 @@ bool CFFIType::variant_to_data(const Variant& value, uint8_t *buffer) const {
 	return true;
 }
 
-Ref<CFFIValue> CFFIType::alloc(bool initialize_with_zeros) {
+Ref<CFFIOwnedValue> CFFIType::alloc(bool initialize_with_zeros) {
 	return memnew(CFFIOwnedValue(this, initialize_with_zeros));
 }
 
