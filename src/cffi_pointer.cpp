@@ -150,7 +150,12 @@ void CFFIPointer::_bind_methods() {
 bool CFFIPointer::_get(const StringName& property_name, Variant& r_value) const {
 	auto field_ptr = get_field(property_name);
 	if (field_ptr.is_valid()) {
-		r_value = field_ptr->get_value();
+		if (Object::cast_to<CFFIStructType>(field_ptr->element_type.ptr())) {
+			r_value = field_ptr;
+		}
+		else {
+			r_value = field_ptr->get_value();
+		}
 		return true;
 	}
 	else {
