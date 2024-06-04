@@ -55,7 +55,7 @@ public:
 	 *
 	 * @see CFFIType::from_variant
 	 */
-	static CFFITypeTuple from_array(const Array& array, CFFIScope *type_scope);
+	static CFFITypeTuple from_array(const Array& array, const CFFIScope *type_scope);
 
 protected:
 	CFFITypeVector fields;

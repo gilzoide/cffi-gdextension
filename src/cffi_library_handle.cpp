@@ -81,7 +81,7 @@ Ref<CFFILibraryHandle> CFFILibraryHandle::open(const String& name) {
 	return memnew(CFFILibraryHandle(library_handle));
 }
 
-Ref<CFFIFunction> CFFILibraryHandle::get_function(const String& name, const Variant& return_type_var, const Array& argument_types_arr, bool is_variadic) {
+Ref<CFFIFunction> CFFILibraryHandle::get_function(const String& name, const Variant& return_type_var, const Array& argument_types_arr, bool is_variadic) const {
 	void *address = os_get_symbol(library_handle, name.ascii().get_data());
 	ERR_FAIL_COND_V_MSG(address == nullptr, nullptr, os_get_last_error());
 

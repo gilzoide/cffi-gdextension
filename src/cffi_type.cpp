@@ -181,7 +181,7 @@ Ref<CFFIOwnedValue> CFFIType::alloc(bool initialize_with_zeros) {
 	return memnew(CFFIOwnedValue(this, initialize_with_zeros));
 }
 
-Ref<CFFIType> CFFIType::from_variant(const Variant& var, CFFIScope *type_scope) {
+Ref<CFFIType> CFFIType::from_variant(const Variant& var, const CFFIScope *type_scope) {
 	if (CFFIType *type = Object::cast_to<CFFIType>(var)) {
 		return type;
 	}

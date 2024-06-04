@@ -35,7 +35,7 @@ ffi_type **CFFITypeTuple::get_element_types() {
 	return ffi_fields.ptr();
 }
 
-CFFITypeTuple CFFITypeTuple::from_array(const Array& array, CFFIScope *type_scope) {
+CFFITypeTuple CFFITypeTuple::from_array(const Array& array, const CFFIScope *type_scope) {
 	CFFITypeVector fields;
 	fields.resize(array.size());
 	for (int64_t i = 0; i < array.size(); i++) {

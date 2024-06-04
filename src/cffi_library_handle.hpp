@@ -29,7 +29,7 @@ public:
 	 * Users are responsible for passing the correct return type and array of argument types.
 	 * @warning Passing the wrong types and calling the returned function may crash your application and/or Godot editor.
 	 */
-	Ref<CFFIFunction> get_function(const String& name, const Variant& return_type, const Array& argument_types, bool is_variadic = false);
+	Ref<CFFIFunction> get_function(const String& name, const Variant& return_type, const Array& argument_types, bool is_variadic = false) const;
 
 	/**
 	 * Opens a dynamic library by its name or path.

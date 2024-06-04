@@ -99,7 +99,7 @@ public:
 	 * @return If `var` is an instance of `CFFIType`, returns the type unchanged.
 	 *         Otherwise, searches for a type registered in `type_scope` using `var` as name.
 	 */
-	static Ref<CFFIType> from_variant(const Variant& var, CFFIScope *type_scope);
+	static Ref<CFFIType> from_variant(const Variant& var, const CFFIScope *type_scope);
 
 protected:
 	static void _bind_methods();
