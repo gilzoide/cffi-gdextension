@@ -7,10 +7,10 @@ using namespace godot;
 
 namespace cffi {
 
-class CFFIType;
-
 /**
- * Godot object that stores a typed FFI value.
+ * Godot object that stores a pointer with managed memory.
+ *
+ * This object allocates memory for the value upon construction and releases it when destroyed.
  */
 class CFFIOwnedValue : public CFFIPointer {
 	GDCLASS(CFFIOwnedValue, CFFIPointer);
