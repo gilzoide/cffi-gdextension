@@ -18,9 +18,8 @@ WIP [libffi](https://github.com/libffi/libffi) bindings for [Godot 4.1+](https:/
   + TODO: arrays, union, enums, function pointers
 - Scoped type definitions, so that different types can be defined with the same name in different libraries.
 - Instantiate FFI types using `CFFIType.alloc`.
-  The returned `CFFIValue` is RefCounted and releases the memory automatically whenever it gets destroyed.
-- Get/set struct fields by name from `CFFIValue`s
-  + TODO: support this in `CFFIPointer`s
+  The returned `CFFIOwnedValue` is RefCounted and releases the memory automatically whenever it gets destroyed.
+- Get/set struct fields by name from `CFFIPointer`s
 - Construct `String`s and `PackedByteArray`s from `CFFIPointer`s with a single method call
 - Use Dictionaries as literal struct values, for example when calling a function
 
@@ -95,7 +94,6 @@ The script [Test.gd](test/Test.gd) shows how to use the FFI to call the native l
 
 
 ## TODO
-- Support _get/_set fields by name from pointers to struct
 - Accept a pointer when expecting a value, just dereference it automagically
   + Accept a value when expecting pointer? Could be useful in function calls, but not when setting struct fields
 - Support defining and using unions
