@@ -31,7 +31,7 @@ WIP [libffi](https://github.com/libffi/libffi) bindings for [Godot 4.1+](https:/
    This file will be imported as a [CFFILibrary](addons/cffi/cffi_library.gd) Resource.
 4. Call `CFFILibrary.open()` to open a `CFFILibraryHandle`
 5. Get native functions using `CFFILibraryHandle.get_function` and invoke them with `invoke` or `invokev`.
-6. Mess with native data using `CFFIValue`s and `CFFIPointer`s, hopefully not crashing your app
+6. Mess with native data using `CFFIPointer`s, hopefully not crashing your app
 7. Enjoy 🍾
 
 
@@ -104,3 +104,9 @@ The script [Test.gd](test/Test.gd) shows how to use the FFI to call the native l
 - Define enum values?
   Enum constants can easily be defined as constants in GDScript directly, so this isn't a requirement.
   Would be nice for self documenting function arguments/return types, though.
+
+
+## Open-source libraries
+CFFI GDExtension uses the following open-source libraries:
+- [libffi](https://github.com/libffi/libffi) ([License](https://github.com/libffi/libffi/blob/master/LICENSE))
+- [godot-cpp](https://github.com/godotengine/godot-cpp) ([License](https://github.com/godotengine/godot-cpp/blob/master/LICENSE.md))
