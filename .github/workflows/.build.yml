@@ -21,8 +21,6 @@ jobs:
           - platform: linux
             arch: x86_32
             packages: [g++-multilib]
-          - platform: windows
-            packages: [g++-mingw-w64]
           - platform: android
             arch: arm64
             target: template_debug
