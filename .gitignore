@@ -16,3 +16,4 @@ build/
 *.dylib
 *.framework
 compile_commands.json
+src/generated/

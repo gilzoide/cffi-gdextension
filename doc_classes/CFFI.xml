@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CFFI" inherits="CFFIScope" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="open" qualifiers="const">
+			<return type="CFFILibraryHandle" />
+			<param index="0" name="library_name" type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+</class>

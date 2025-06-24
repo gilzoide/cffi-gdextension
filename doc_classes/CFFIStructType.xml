@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CFFIStructType" inherits="CFFIType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="offset_of" qualifiers="const">
+			<return type="int" />
+			<param index="0" name="field_name" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="type_of" qualifiers="const">
+			<return type="CFFIType" />
+			<param index="0" name="field_name" type="StringName" />
+			<description>
+			</description>
+		</method>
+	</methods>
+</class>

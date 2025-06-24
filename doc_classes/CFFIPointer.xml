@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CFFIPointer" inherits="RefCounted" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="cast_elements" qualifiers="const">
+			<return type="CFFIPointer" />
+			<param index="0" name="element_type" type="Variant" />
+			<description>
+			</description>
+		</method>
+		<method name="duplicate" qualifiers="const">
+			<return type="CFFIOwnedValue" />
+			<description>
+			</description>
+		</method>
+		<method name="get_element_type" qualifiers="const">
+			<return type="CFFIType" />
+			<description>
+			</description>
+		</method>
+		<method name="get_field" qualifiers="const">
+			<return type="CFFIPointer" />
+			<param index="0" name="field_name" type="StringName" />
+			<description>
+			</description>
+		</method>
+		<method name="get_string_from_ascii" qualifiers="const">
+			<return type="String" />
+			<param index="0" name="length" type="int" default="-1" />
+			<description>
+			</description>
+		</method>
+		<method name="get_string_from_utf8" qualifiers="const">
+			<return type="String" />
+			<param index="0" name="length" type="int" default="-1" />
+			<description>
+			</description>
+		</method>
+		<method name="get_string_from_utf16" qualifiers="const">
+			<return type="String" />
+			<param index="0" name="length" type="int" default="-1" />
+			<description>
+			</description>
+		</method>
+		<method name="get_string_from_utf32" qualifiers="const">
+			<return type="String" />
+			<param index="0" name="length" type="int" default="-1" />
+			<description>
+			</description>
+		</method>
+		<method name="get_string_from_wchar" qualifiers="const">
+			<return type="String" />
+			<param index="0" name="length" type="int" default="-1" />
+			<description>
+			</description>
+		</method>
+		<method name="get_value" qualifiers="const">
+			<return type="Variant" />
+			<param index="0" name="index" type="int" default="0" />
+			<description>
+			</description>
+		</method>
+		<method name="offset_by" qualifiers="const">
+			<return type="CFFIPointer" />
+			<param index="0" name="offset" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="set_value" qualifiers="const">
+			<return type="bool" />
+			<param index="0" name="value" type="Variant" />
+			<param index="1" name="index" type="int" default="0" />
+			<description>
+			</description>
+		</method>
+		<method name="to_array" qualifiers="const">
+			<return type="Array" />
+			<param index="0" name="length" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="to_byte_array" qualifiers="const">
+			<return type="PackedByteArray" />
+			<param index="0" name="length" type="int" />
+			<description>
+			</description>
+		</method>
+		<method name="to_dictionary" qualifiers="const">
+			<return type="Dictionary" />
+			<description>
+			</description>
+		</method>
+	</methods>
+</class>

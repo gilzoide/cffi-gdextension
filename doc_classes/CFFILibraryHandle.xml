@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CFFILibraryHandle" inherits="CFFIScope" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_function" qualifiers="const">
+			<return type="CFFIFunction" />
+			<param index="0" name="name" type="String" />
+			<param index="1" name="return_type" type="Variant" />
+			<param index="2" name="argument_types" type="Array" default="[]" />
+			<param index="3" name="is_variadic" type="bool" default="false" />
+			<description>
+			</description>
+		</method>
+	</methods>
+</class>

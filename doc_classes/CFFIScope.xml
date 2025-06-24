@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CFFIScope" inherits="RefCounted" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="define_struct">
+			<return type="CFFIStructType" />
+			<param index="0" name="name" type="String" />
+			<param index="1" name="fields" type="Dictionary" />
+			<description>
+			</description>
+		</method>
+		<method name="find_type" qualifiers="const">
+			<return type="CFFIType" />
+			<param index="0" name="name" type="String" />
+			<description>
+			</description>
+		</method>
+	</methods>
+</class>
