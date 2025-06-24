@@ -2,6 +2,7 @@
 
 entry_symbol = "cffi_entrypoint"
 compatibility_minimum = "4.1"
+reloadable = true
 
 [libraries]
 
