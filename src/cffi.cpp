@@ -52,7 +52,7 @@ Ref<CFFILibraryHandle> CFFI::open(const String& name) const {
 }
 
 void CFFI::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("open", "library_name"), &CFFI::open);
+	ClassDB::bind_method(D_METHOD("open", "name_or_path"), &CFFI::open);
 }
 
 CFFI *CFFI::get_singleton() {

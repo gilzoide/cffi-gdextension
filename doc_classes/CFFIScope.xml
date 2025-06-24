@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="CFFIScope" inherits="RefCounted" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
 	<brief_description>
+		CFFI type scopes, so that different libraries can have distinct struct definitions with the same name.
 	</brief_description>
 	<description>
 	</description>
@@ -12,12 +13,19 @@
 			<param index="0" name="name" type="String" />
 			<param index="1" name="fields" type="Dictionary" />
 			<description>
+				Defines a new struct type.
+				[param name] cannot have any pointer levels.
+				If a struct with the same name is found in this scope, [code]null[/code] is returned and an error printed.
 			</description>
 		</method>
 		<method name="find_type" qualifiers="const">
 			<return type="CFFIType" />
 			<param index="0" name="name" type="String" />
 			<description>
+				Finds a type by [param name].
+				If the base type name cannot be found in this scope, the global scope (the [CFFI] singleton) is searched.
+				Pointers and CV qualifiers are supported.
+				This method is called when accessing properties by name, so that [code]some_cffi_scope["int"][/code] returns the CFFIType for [code]int[/code].
 			</description>
 		</method>
 	</methods>

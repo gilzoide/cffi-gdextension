@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="CFFILibraryHandle" inherits="CFFIScope" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
 	<brief_description>
+		Native dynamic library handle, where native functions live.
 	</brief_description>
 	<description>
 	</description>
@@ -14,6 +15,10 @@
 			<param index="2" name="argument_types" type="Array" default="[]" />
 			<param index="3" name="is_variadic" type="bool" default="false" />
 			<description>
+				Get the function named [param name] from the library.
+				[param name] should be a symbol exported by the native library.
+				Users are responsible for passing the correct return type and array of argument types. Types may be either [CFFIType] or a String, for example [code]"int"[/code] or [code]"const char *"[/code].
+				[b]Warning:[/b] passing the wrong types and calling the returned function may crash your application and/or Godot editor.
 			</description>
 		</method>
 	</methods>

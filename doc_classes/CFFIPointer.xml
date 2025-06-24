@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="CFFIPointer" inherits="RefCounted" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
 	<brief_description>
+		FFI pointers wrapped in a RefCounted object.
 	</brief_description>
 	<description>
+		This class is merely a representation of raw pointers in a Godot object.
+		Users are responsible for knowing when a pointer is valid or not and manage them accordingly.
+		[b]Warning:[/b] misuse of pointers may crash your application and/or the Godot editor.
 	</description>
 	<tutorials>
 	</tutorials>
@@ -11,64 +15,96 @@
 			<return type="CFFIPointer" />
 			<param index="0" name="element_type" type="Variant" />
 			<description>
+				Get a new pointer with the same base address, but pointing to a different element type.
+				Use this to cast between pointer types.
+				[param element_type] should be either a [String] or [CFFIType].
 			</description>
 		</method>
 		<method name="duplicate" qualifiers="const">
 			<return type="CFFIOwnedValue" />
 			<description>
+				Duplicate data into a new [CFFIOwnedValue].
+				Note that this only duplicates the data at the base address, that is, the element at offset 0.
 			</description>
 		</method>
 		<method name="get_element_type" qualifiers="const">
 			<return type="CFFIType" />
 			<description>
+				Get the type of elements pointed to by this pointer.
 			</description>
 		</method>
 		<method name="get_field" qualifiers="const">
 			<return type="CFFIPointer" />
 			<param index="0" name="field_name" type="StringName" />
 			<description>
+				Get the address of a Struct or Union field named [param field_name].
+				Returns the address of the existing field, or null if it cannot be found.
+				[b]Note:[/b] only available on values of Struct or Union types.
 			</description>
 		</method>
 		<method name="get_string_from_ascii" qualifiers="const">
 			<return type="String" />
 			<param index="0" name="length" type="int" default="-1" />
 			<description>
+				Get a String from this pointer, using ASCII encoding.
+				This pointer should point to elements with 1 byte, such as [code]char[/code] or [code]int8_t[/code].
+				It's an error to read ASCII strings from elements with more than 1 byte.
+				[param length] determines the length of the string in bytes. Pass [code]-1[/code] to read null-terminated strings.
 			</description>
 		</method>
 		<method name="get_string_from_utf8" qualifiers="const">
 			<return type="String" />
 			<param index="0" name="length" type="int" default="-1" />
 			<description>
+				Get a String from this pointer, using UTF-8 encoding.
+				This pointer should point to elements with 1 byte, such as [code]char[/code] or [code]int8_t[/code].
+				It's an error to read UTF-8 strings from elements with more than 1 byte.
+				[param length] determines the length of the string in bytes. Pass [code]-1[/code] to read null-terminated strings.
 			</description>
 		</method>
 		<method name="get_string_from_utf16" qualifiers="const">
 			<return type="String" />
 			<param index="0" name="length" type="int" default="-1" />
 			<description>
+				Get a String from this pointer, using UTF-16 encoding.
+				This pointer should point to elements with 2 bytes, such as [code]char16_t[/code] or [code]int16_t[/code].
+				It's an error to read UTF-16 strings from elements with any size other than 2 bytes.
+				[param length] determines the length of the string in 2-byte chars. Pass [code]-1[/code] to read null-terminated strings.
 			</description>
 		</method>
 		<method name="get_string_from_utf32" qualifiers="const">
 			<return type="String" />
 			<param index="0" name="length" type="int" default="-1" />
 			<description>
+				Get a String from this pointer, using UTF-16 encoding.
+				This pointer should point to elements with 4 bytes, such as [code]char32_t[/code] or [code]int32_t[/code].
+				It's an error to read UTF-16 strings from elements with any size other than 4 bytes.
+				[param length] determines the length of the string in 4-byte chars. Pass [code]-1[/code] to read null-terminated strings.
 			</description>
 		</method>
 		<method name="get_string_from_wchar" qualifiers="const">
 			<return type="String" />
 			<param index="0" name="length" type="int" default="-1" />
 			<description>
+				Get a String from a pointer to [code]wchar_t[/code].
+				[param length] determines the length of the string in [code]sizeof(wchar_t)[/code] sized chars. Pass [code]-1[/code] to read null-terminated wide strings.
 			</description>
 		</method>
 		<method name="get_value" qualifiers="const">
 			<return type="Variant" />
 			<param index="0" name="index" type="int" default="0" />
 			<description>
+				Get the value at [param index].
+				[b]Warning:[/b] users are responsible for knowing if a pointer index is valid before dereferencing it.
 			</description>
 		</method>
 		<method name="offset_by" qualifiers="const">
 			<return type="CFFIPointer" />
 			<param index="0" name="offset" type="int" />
 			<description>
+				Returns a new pointer pointing to the base address offset by [param offset] elements.
+				Calling this with a 0 offset returns a copy of the base pointer.
+				[b]Note:[/b] the element type is taken into consideration when offsetting pointers. For example, a pointer to [code]uint32_t[/code] offset by 1 element will offset the pointer by 4 bytes.
 			</description>
 		</method>
 		<method name="set_value" qualifiers="const">
@@ -76,23 +112,33 @@
 			<param index="0" name="value" type="Variant" />
 			<param index="1" name="index" type="int" default="0" />
 			<description>
+				Set the value at [param index].
+				Not all types support all kinds of values. For example, trying to set an element of struct type with a value of [code]true[/code] will error.
+				Returns whether the value was set correctly.
+				[b]Warning:[/b] users are responsible for knowing if a pointer index is valid before dereferencing it.
 			</description>
 		</method>
 		<method name="to_array" qualifiers="const">
 			<return type="Array" />
 			<param index="0" name="length" type="int" />
 			<description>
+				Get an [Array] with the values pointed by this pointer using [method get_value].
+				[param length] determines the array length, in number of elements.
 			</description>
 		</method>
 		<method name="to_byte_array" qualifiers="const">
 			<return type="PackedByteArray" />
 			<param index="0" name="length" type="int" />
 			<description>
+				Get a copy of the memory pointed by this pointer as a [PackedByteArray].
+				[param length] determines the number of elements copied into the buffer. For example, a buffer of length of 2 taken from a pointer to [code]int32_t[/code] would have 8 bytes.
 			</description>
 		</method>
 		<method name="to_dictionary" qualifiers="const">
 			<return type="Dictionary" />
 			<description>
+				Get a Dictionary representation of this value.
+				[b]Note:[/b] only available on values of Struct or Union types.
 			</description>
 		</method>
 	</methods>

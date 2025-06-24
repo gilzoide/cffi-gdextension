@@ -10,12 +10,16 @@
 		<method name="invoke" qualifiers="const vararg">
 			<return type="Variant" />
 			<description>
+				Invoke the function forwading the passed arguments.
+				The number of arguments must match the function's prototype. If any of the argument values don't match the type defined by the prototype, the call errors and returns [code]null[/code].
 			</description>
 		</method>
 		<method name="invokev">
 			<return type="Variant" />
-			<param index="0" name="arg_array" type="Array" />
+			<param index="0" name="args" type="Array" />
 			<description>
+				Invoke the function passing it all arguments in [param args].
+				The number of arguments must match the function's prototype. If any of the argument values don't match the type defined by the prototype, the call errors and returns [code]null[/code].
 			</description>
 		</method>
 	</methods>

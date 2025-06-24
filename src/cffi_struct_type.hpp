@@ -12,6 +12,9 @@ namespace cffi {
 
 class CFFIScope;
 
+/**
+ * `CFFIType` specialized for Struct types.
+ */
 class CFFIStructType : public CFFITypeTuple, public CFFIType {
 	GDCLASS(CFFIStructType, CFFIType);
 public:
