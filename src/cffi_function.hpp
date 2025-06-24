@@ -35,14 +35,14 @@ public:
 	 * Invoke the function passing `arguments`.
 	 *
 	 * The number of arguments must match the function's prototype.
-	 * If any of the argument values don't match the type defined by the prototype, the call returns an error.
+	 * If any of the argument values don't match the type defined by the prototype, the call errors and returns `null`.
 	 */
 	Variant invokev(const Array& arguments);
 	/**
 	 * Invoke the function passing arguments from a variadic call.
 	 *
 	 * The number of arguments must match the function's prototype.
-	 * If any of the argument values don't match the type defined by the prototype, the call returns an error.
+	 * If any of the argument values don't match the type defined by the prototype, the call errors and returns `null`.
 	 */
 	Variant invoke_variadic(const Variant **args, GDExtensionInt arg_count, GDExtensionCallError &error);
 

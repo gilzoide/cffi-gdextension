@@ -47,7 +47,7 @@ public:
 	/**
 	 * Get the value at `index`.
 	 *
-	 * @warning Users are responsible for knowing if a pointer is valid before dereferencing it.
+	 * @warning Users are responsible for knowing if a pointer index is valid before dereferencing it.
 	 *
 	 * @see CFFIType::data_to_variant
 	 */
@@ -55,7 +55,7 @@ public:
 	/**
 	 * Set the value at `index`.
 	 *
-	 * @warning Users are responsible for knowing if a pointer is valid before dereferencing it.
+	 * @warning Users are responsible for knowing if a pointer index is valid before dereferencing it.
 	 * Not all types support all kinds of values.
 	 * For example, trying to set an element of struct type with a value of `true` will give an error.
 	 *
@@ -79,6 +79,8 @@ public:
 
 	/**
 	 * Duplicate data into a new `CFFIOwnedValue`.
+	 *
+	 * @note This only duplicates the data at the base address, that is, the element at offset 0.
 	 */
 	Ref<CFFIOwnedValue> duplicate() const;
 

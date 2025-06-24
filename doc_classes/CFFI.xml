@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CFFI" inherits="CFFIScope" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+		The global FFI type scope and entrypoint for opening libraries.
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="open" qualifiers="const">
+			<return type="CFFILibraryHandle" />
+			<param index="0" name="name_or_path" type="String" />
+			<description>
+				Opens a native library by its name or file path.
+				[param name_or_path] may be the name of the library, for example [code]"cffi"[/code], or a file path like [code]"res://some_dir/cffi.dll"[/code].
+				Paths starting with [code]res://[/code] reference files inside the project in editor. In built games, the directory part is ignored and the library is searched for in the executable path.
+				Returns the open library handle or [code]null[/code] if the library could not be opened.
+			</description>
+		</method>
+	</methods>
+</class>

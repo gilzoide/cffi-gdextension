@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CFFIOwnedValue" inherits="CFFIPointer" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+		Godot object that stores a pointer with managed memory, which is released automatically.
+	</brief_description>
+	<description>
+		This object can be allocated using [method CFFIType.alloc]. This object is also returned by [CFFIFunction]s that return struct values.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="get_base_address" qualifiers="const">
+			<return type="CFFIPointer" />
+			<description>
+				Get base address pointer, alias for [code]offset_by(0)[/code].
+			</description>
+		</method>
+	</methods>
+</class>

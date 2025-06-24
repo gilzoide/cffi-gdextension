@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CFFIStructType" inherits="CFFIType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+		[CFFIType] specialized for Struct types.
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="offset_of" qualifiers="const">
+			<return type="int" />
+			<param index="0" name="field_name" type="StringName" />
+			<description>
+				Get the offset of the field named [param field_name].
+				Returns [code]-1[/code] if the field cannot be found in the struct.
+			</description>
+		</method>
+		<method name="type_of" qualifiers="const">
+			<return type="CFFIType" />
+			<param index="0" name="field_name" type="StringName" />
+			<description>
+				Get the type of the field named [param field_name].
+				Returns [code]null[/code] if the field cannot be found in the struct.
+			</description>
+		</method>
+	</methods>
+</class>

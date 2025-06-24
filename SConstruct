@@ -8,12 +8,6 @@ env.Tool("compilation_db")
 compiledb = env.CompilationDatabase("compile_commands.json")
 env.Alias("compiledb", compiledb)
 
-# Compile with debugging symbols
-if ARGUMENTS.get("debugging_symbols") == 'true':
-    if "-O2" in env["CCFLAGS"]:
-        env["CCFLAGS"].remove("-O2")
-    env.Append(CCFLAGS=["-g", "-O0"])
-
 # Setup variant build dir for each setup
 def remove_prefix(s, prefix):
     return s[len(prefix):] if s.startswith(prefix) else s
@@ -99,6 +93,9 @@ sources = [
     f"{build_dir}/{path.basename(str(cpp))}"
     for cpp in Glob("src/*.cpp")
 ]
+if env["target"] in ["editor", "template_debug"]:
+    doc_data = env.GodotCPPDocData("src/generated/doc_data.gen.cpp", source=Glob("doc_classes/*.xml"))
+    sources.append(doc_data)
 library = env.SharedLibrary(
     "addons/cffi/build/libcffi{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
     source=sources,
