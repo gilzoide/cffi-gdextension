@@ -1,3 +1,5 @@
+#include <string.h>
+
 typedef struct {
 	int a;
 	int b;
@@ -24,4 +26,8 @@ ExampleStruct get_example_struct() {
 
 const char *get_message() {
 	return "Hello world!";
+}
+
+void fill_message(char *msg, int buffer_size) {
+	strncpy(msg, "Hello world!", buffer_size);
 }
