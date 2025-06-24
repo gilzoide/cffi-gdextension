@@ -24,7 +24,7 @@ bool CFFIPointerType::variant_to_data(const Variant& value, uint8_t *buffer) con
 	switch (value.get_type()) {
 		case Variant::Type::PACKED_BYTE_ARRAY: {
 			PackedByteArray bytes = value;
-			*(uint8_t **) buffer = bytes.ptrw();
+			*(const uint8_t **) buffer = bytes.ptr();
 			return true;
 		}
 

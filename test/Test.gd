@@ -9,6 +9,7 @@ static var get_answer = NativePlugin.get_function("get_answer", "int")
 static var double_int = NativePlugin.get_function("double_int", "int", ["int"])
 static var double_float = NativePlugin.get_function("double_float", "float", ["float"])
 static var get_message = NativePlugin.get_function("get_message", "const char *")
+static var fill_message = NativePlugin.get_function("fill_message", "void", ["char *", "int"])
 static var get_example_struct = NativePlugin.get_function("get_example_struct", "ExampleStruct")
 
 
@@ -26,3 +27,8 @@ func _ready():
 	printt(example_struct, new_example_struct)
 	new_example_struct.set_value(example_struct)
 	printt(example_struct, new_example_struct)
+
+	var buffer = PackedByteArray()
+	buffer.resize(128)
+	fill_message.invoke(buffer, buffer.size())
+	print(buffer.get_string_from_utf8())
