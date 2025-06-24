@@ -37,15 +37,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install libltdl-dev ${{ join(matrix.packages, ' ') }}
       - name: Setup godot-cpp
         uses: ./lib/godot-cpp/.github/actions/setup-godot-cpp
         with:
           platform: ${{ matrix.platform }}
           windows-compiler: mingw
-      - name: Install additional dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install libltdl-dev ${{ join(matrix.packages, ' ') }}
       - name: Cache SCons files
         uses: actions/cache@v4
         with:
@@ -76,13 +76,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
+      - name: Install dependencies
+        run: |
+          brew install autoconf automake libtool texinfo
       - name: Setup godot-cpp
         uses: ./lib/godot-cpp/.github/actions/setup-godot-cpp
         with:
           platform: ${{ matrix.platform }}
-      - name: Install additional dependencies
-        run: |
-          brew install autoconf automake libtool texinfo
       - name: Cache SCons files
         uses: actions/cache@v4
         with:
