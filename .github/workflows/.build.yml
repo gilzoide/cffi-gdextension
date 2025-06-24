@@ -32,14 +32,9 @@ jobs:
           - platform: android
             arch: arm32
             target: template_debug
-            scons-args: android_api_level=19
           - platform: android
             arch: arm32
             target: template_release
-            scons-args: android_api_level=19
-          - platform: android
-            arch: x86_32
-            scons-args: android_api_level=19
     steps:
       - uses: actions/checkout@v4
         with:
@@ -47,7 +42,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install scons ${{ join(matrix.packages, ' ') }}
+          sudo apt-get install scons libltdl-dev ${{ join(matrix.packages, ' ') }}
       - name: Cache SCons files
         uses: actions/cache@v4
         with:
