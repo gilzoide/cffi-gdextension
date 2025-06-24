@@ -41,4 +41,7 @@ bool CFFIPointerType::variant_to_data(const Variant& value, uint8_t *buffer) con
 	ERR_FAIL_V_EDMSG(false, String("Invalid type \"%s\" for pointer type \"%s\"") % Array::make(value.get_type_name(value.get_type()), name));
 }
 
+void CFFIPointerType::_bind_methods() {
+}
+
 }

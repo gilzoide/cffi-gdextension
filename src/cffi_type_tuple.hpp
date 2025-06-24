@@ -2,6 +2,7 @@
 #define __CFFI_TYPE_TUPLE_HPP__
 
 #include <ffi.h>
+#include <godot_cpp/classes/ref.hpp>
 #include <godot_cpp/templates/local_vector.hpp>
 
 using namespace godot;
@@ -23,11 +24,11 @@ public:
 	 */
 	CFFITypeTuple();
 	/**
-	 * Create a type tuple from `field`.
+	 * Create a type tuple from `fields`.
 	 */
 	CFFITypeTuple(CFFITypeVector&& fields);
 	/**
-	 * Create a type tuple from `field`.
+	 * Create a type tuple from `fields`.
 	 */
 	CFFITypeTuple(const CFFITypeVector& fields);
 

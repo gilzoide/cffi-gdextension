@@ -44,6 +44,8 @@ public:
 	bool variant_to_data(const Variant& value, uint8_t *buffer) const override;
 
 protected:
+	static void _bind_methods();
+
 	Ref<CFFIType> element_type;
 };
 
