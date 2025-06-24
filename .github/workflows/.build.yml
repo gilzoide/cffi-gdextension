@@ -21,6 +21,8 @@ jobs:
           - platform: linux
             arch: x86_32
             packages: [g++-multilib]
+          - platform: windows
+            packages: [g++-mingw-w64]
           - platform: android
             arch: arm64
             target: template_debug
@@ -45,7 +47,7 @@ jobs:
         uses: ./lib/godot-cpp/.github/actions/setup-godot-cpp
         with:
           platform: ${{ matrix.platform }}
-          windows-compiler: mingw
+          windows-compiler: msvc
       - name: Cache SCons files
         uses: actions/cache@v4
         with:
