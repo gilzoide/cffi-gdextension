@@ -9,11 +9,8 @@ compiledb = env.CompilationDatabase("compile_commands.json")
 env.Alias("compiledb", compiledb)
 
 # Setup variant build dir for each setup
-def remove_prefix(s, prefix):
-    return s[len(prefix):] if s.startswith(prefix) else s
-
-build_dir = "build/{}".format(remove_prefix(env["suffix"], "."))
-env.VariantDir(build_dir, 'src', duplicate=False)
+build_dir = f"build/{env["suffix"][1:]}"
+env.VariantDir(build_dir, "src", duplicate=False)
 
 # libffi stuff
 target_triple_map = {
@@ -43,9 +40,6 @@ target_triple_map = {
     },
 }
 
-CC = env["CXX"].replace("clang++", "clang").replace("g++", "gcc").replace("c++", "cc")
-CXX = env["CXX"]
-CFLAGS = env["CCFLAGS"]
 target_triple = target_triple_map[env["platform"]][env["arch"]]
 ffi_output = f"{build_dir}/libffi"
 ffi_autogen = env.Command(
@@ -61,9 +55,9 @@ ffi_configure = env.Command(
         f" && cd {ffi_output}"
         f" && ../../../lib/libffi/configure --disable-shared"
             f" --host {target_triple}"
-            f" \"CC={CC}\""
-            f" \"CXX={CXX}\""
-            f" \"CFLAGS={CFLAGS}\""
+            f" \"CC={env["CC"]}\""
+            f" \"CXX={env["CXX"]}\""
+            f" \"CFLAGS={env["CCFLAGS"]}\""
     )
 )
 ffi_staticlib = env.Command(
@@ -97,7 +91,7 @@ if env["target"] in ["editor", "template_debug"]:
     doc_data = env.GodotCPPDocData("src/generated/doc_data.gen.cpp", source=Glob("doc_classes/*.xml"))
     sources.append(doc_data)
 library = env.SharedLibrary(
-    "addons/cffi/build/libcffi{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+    f"addons/cffi/build/libcffi{env["suffix"]}{env["SHLIBSUFFIX"]}",
     source=sources,
 )
 env.Depends(library, ffi_h)

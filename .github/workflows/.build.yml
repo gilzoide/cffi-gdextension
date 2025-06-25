@@ -32,14 +32,9 @@ jobs:
           - platform: android
             arch: arm32
             target: template_debug
-            scons-args: android_api_level=19
           - platform: android
             arch: arm32
             target: template_release
-            scons-args: android_api_level=19
-          - platform: android
-            arch: x86_32
-            scons-args: android_api_level=19
     steps:
       - uses: actions/checkout@v4
         with:
@@ -47,7 +42,12 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install scons ${{ join(matrix.packages, ' ') }}
+          sudo apt-get install libltdl-dev ${{ join(matrix.packages, ' ') }}
+      - name: Setup godot-cpp
+        uses: ./lib/godot-cpp/.github/actions/setup-godot-cpp
+        with:
+          platform: ${{ matrix.platform }}
+          windows-compiler: msvc
       - name: Cache SCons files
         uses: actions/cache@v4
         with:
@@ -80,7 +80,11 @@ jobs:
           submodules: true
       - name: Install dependencies
         run: |
-          brew install scons autoconf automake libtool texinfo
+          brew install autoconf automake libtool texinfo
+      - name: Setup godot-cpp
+        uses: ./lib/godot-cpp/.github/actions/setup-godot-cpp
+        with:
+          platform: ${{ matrix.platform }}
       - name: Cache SCons files
         uses: actions/cache@v4
         with:
