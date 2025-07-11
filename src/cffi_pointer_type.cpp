@@ -16,7 +16,12 @@ Ref<CFFIType> CFFIPointerType::get_element_type() const {
 
 bool CFFIPointerType::data_to_variant(const uint8_t *ptr, Variant& r_variant) const {
 	uint8_t *value = *(uint8_t **) ptr;
-	r_variant = memnew(CFFIPointer(element_type, value));
+	if (value) {
+		r_variant = memnew(CFFIPointer(element_type, value));
+	}
+	else {
+		r_variant = nullptr;
+	}
 	return true;
 }
 
