@@ -93,10 +93,10 @@ bool CFFIType::data_to_variant(const uint8_t *ptr, Variant& r_variant) const {
 			break;
 
 		case FFI_TYPE_STRUCT:
-			ERR_FAIL_V_EDMSG(false, "Struct type is not supported yet");
+			ERR_FAIL_V_EDMSG(false, "Struct type is not supported");
 
 		case FFI_TYPE_POINTER:
-			ERR_FAIL_V_EDMSG(false, "Pointer type is not supported yet");
+			ERR_FAIL_V_EDMSG(false, "Pointer type is not supported");
 
 		case FFI_TYPE_COMPLEX:
 			ERR_FAIL_V_EDMSG(false, "Complex type is not supported yet");
@@ -166,10 +166,10 @@ bool CFFIType::variant_to_data(const Variant& value, uint8_t *buffer) const {
 			break;
 
 		case FFI_TYPE_STRUCT:
-			ERR_FAIL_V_EDMSG(false, "Struct type is not supported yet");
+			ERR_FAIL_V_EDMSG(false, "Struct type is not supported");
 
 		case FFI_TYPE_POINTER:
-			ERR_FAIL_V_EDMSG(false, "Pointer type is not supported yet");
+			ERR_FAIL_V_EDMSG(false, "Pointer type is not supported");
 
 		case FFI_TYPE_COMPLEX:
 			ERR_FAIL_V_EDMSG(false, "Complex type is not supported yet");

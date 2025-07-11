@@ -16,24 +16,33 @@ Ref<CFFIType> CFFIPointerType::get_element_type() const {
 
 bool CFFIPointerType::data_to_variant(const uint8_t *ptr, Variant& r_variant) const {
 	uint8_t *value = *(uint8_t **) ptr;
-	r_variant = memnew(CFFIPointer(element_type, value));
+	if (value) {
+		r_variant = memnew(CFFIPointer(element_type, value));
+	}
+	else {
+		r_variant = nullptr;
+	}
 	return true;
 }
 
 bool CFFIPointerType::variant_to_data(const Variant& value, uint8_t *buffer) const {
 	switch (value.get_type()) {
+		case Variant::Type::NIL:
+			*(const uint8_t **) buffer = nullptr;
+			return true;
+
 		case Variant::Type::PACKED_BYTE_ARRAY: {
 			PackedByteArray bytes = value;
 			*(const uint8_t **) buffer = bytes.ptr();
 			return true;
 		}
 
-		case Variant::Type::OBJECT: {
+		case Variant::Type::OBJECT:
 			if (auto pointer_value = Object::cast_to<CFFIPointer>(value)) {
 				*(uint8_t **) buffer = pointer_value->address_offset_by(0);
 				return true;
 			}
-		}
+			break;
 
 		default:
 			break;
