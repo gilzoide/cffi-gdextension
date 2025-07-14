@@ -50,6 +50,15 @@ const char *get_message() {
 int get_a(ExampleStruct s) {
     return s.a;
 }
+
+int my_strlen(const char *s) {
+    int len = 0;
+    while (*s) {
+        len++;
+        s++;
+    }
+    return len;
+}
 ```
 
 ```ini
@@ -75,6 +84,7 @@ static var ExampleStruct = native_plugin_dll.define_struct("ExampleStruct", {
 })
 static var get_message = native_plugin_dll.get_function("get_message", "const char *")
 static var get_a = native_plugin_dll.get_function("get_a", "int", ["ExampleStruct"])
+static var my_strlen = native_plugin_dll.get_function("my_strlen", "int", ["const char *])
 
 
 func _ready():
@@ -87,6 +97,9 @@ func _ready():
     var a = get_a.invoke(example_struct)
     assert(a == example_struct.a)
     assert(a == 42)
+
+    var message_length = my_strlen.invoke("Hello World!")
+    assert(message_length == 12)
 ```
 
 There is also an example [native_plugin.ffilibrary](test/native_plugin/native_plugin.ffilibrary) in the "test/native_plugin" folder showing how to setup a native library resource.
