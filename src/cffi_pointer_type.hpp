@@ -29,11 +29,19 @@ public:
 	Ref<CFFIType> get_element_type() const;
 
 	/**
-	 * Write a `CFFIPointer` to `r_variant`.
-	 *
-	 * @return True.
-	 */
+	* Write a `CFFIPointer` to `r_variant`.
+	*
+	* @return True.
+	*/
 	bool data_to_variant(const uint8_t *ptr, Variant& r_variant) const override;
+	/**
+	 * Write the Variant `value` into `buffer`.
+	 *
+	 * Only PackedByteArray, String and CFFIPointers are supported.
+	 *
+	 * @return True if the conversion succeeded, false otherwise.
+	 */
+	bool variant_to_data(const Variant& value, PackedByteArray& buffer) const override;
 	/**
 	 * Write the Variant `value` into `buffer`.
 	 *

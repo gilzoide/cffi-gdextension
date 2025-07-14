@@ -91,7 +91,7 @@ String CFFIPointer::get_string_from_wchar(int length) const {
 
 PackedByteArray CFFIPointer::to_byte_array(int length) const {
 	ERR_FAIL_COND_V_EDMSG(length < 0, PackedByteArray(), "Buffer length cannot be negative");
-	int length_in_bytes = length * element_type->get_size();
+	int64_t length_in_bytes = length * element_type->get_size();
 	PackedByteArray array;
 	array.resize(length_in_bytes);
 	memcpy(array.ptrw(), address, length_in_bytes);
@@ -119,7 +119,7 @@ Ref<CFFIPointer> CFFIPointer::get_field(const StringName& field) const {
 		return nullptr;
 	}
 
-	int offset = struct_type->offset_of(field);
+	int64_t offset = struct_type->offset_of(field);
 	return memnew(CFFIPointer(field_type, address + offset));
 }
 

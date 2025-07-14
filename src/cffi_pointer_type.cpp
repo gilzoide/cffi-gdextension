@@ -1,4 +1,5 @@
 #include "cffi_pointer_type.hpp"
+#include "cffi.hpp"
 #include "cffi_pointer.hpp"
 
 namespace cffi {
@@ -23,6 +24,39 @@ bool CFFIPointerType::data_to_variant(const uint8_t *ptr, Variant& r_variant) co
 		r_variant = nullptr;
 	}
 	return true;
+}
+
+bool CFFIPointerType::variant_to_data(const Variant& value, PackedByteArray& buffer) const {
+	int64_t previous_size = buffer.size();
+	buffer.resize(previous_size + ffi_handle.size);
+	switch (value.get_type()) {
+		case Variant::Type::STRING:
+		case Variant::Type::STRING_NAME: {
+			size_t element_size = element_type->get_ffi_type().size;
+			switch (element_size) {
+				case 1:
+					buffer.append_array(CFFI::null_terminated_utf8_buffer(value));
+					break;
+
+				case 2:
+					buffer.append_array(CFFI::null_terminated_utf16_buffer(value));
+					break;
+
+				case 4:
+					buffer.append_array(CFFI::null_terminated_utf32_buffer(value));
+					break;
+
+				default:
+					ERR_FAIL_V_MSG(false, String("String is incompatible with pointer for element of size %d. Only pointers to elements of size 1, 2 or 4 are supported.") % Array::make((uint64_t) element_size));
+			}
+			void **ptr = (void **) (buffer.ptrw() + previous_size);
+			*ptr = ptr + 1;
+			return true;
+		}
+
+		default:
+			return variant_to_data(value, buffer.ptrw() + previous_size);
+	}
 }
 
 bool CFFIPointerType::variant_to_data(const Variant& value, uint8_t *buffer) const {

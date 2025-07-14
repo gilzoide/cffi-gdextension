@@ -69,7 +69,7 @@ public:
 	 *
 	 * @return True if the conversion succeeded, false otherwise.
 	 */
-	bool variant_to_data(const Variant& value, PackedByteArray& buffer) const;
+	virtual bool variant_to_data(const Variant& value, PackedByteArray& buffer) const;
 	/**
 	 * Write the Variant `value` into `buffer`.
 	 *

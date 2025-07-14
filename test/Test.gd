@@ -11,6 +11,7 @@ static var double_float = NativePlugin.get_function("double_float", "float", ["f
 static var get_message = NativePlugin.get_function("get_message", "const char *")
 static var fill_message = NativePlugin.get_function("fill_message", "void", ["char *", "int"])
 static var get_example_struct = NativePlugin.get_function("get_example_struct", "ExampleStruct")
+static var str_length = NativePlugin.get_function("str_length", "int", ["const char *", "int"])
 
 
 func _ready():
@@ -32,3 +33,6 @@ func _ready():
 	buffer.resize(128)
 	fill_message.invoke(buffer, buffer.size())
 	print(buffer.get_string_from_utf8())
+
+	var hello_length = str_length.invoke("Hello beautiful people!", 100)
+	print(hello_length)
