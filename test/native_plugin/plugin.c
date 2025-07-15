@@ -31,3 +31,16 @@ const char *get_message() {
 void fill_message(char *msg, int buffer_size) {
 	strncpy(msg, "Hello world!", buffer_size);
 }
+
+int str_length(const char *msg, int max_length) {
+	if (!msg) {
+		return 0;
+	}
+
+	int i = 0;
+	while (*msg && i < max_length) {
+		i++;
+		msg++;
+	}
+	return i;
+}

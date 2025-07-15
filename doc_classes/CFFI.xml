@@ -8,6 +8,41 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="null_terminated_ascii_buffer" qualifiers="static">
+			<return type="PackedByteArray" />
+			<param index="0" name="str" type="String" />
+			<description>
+				Similar to [method String.to_ascii_buffer], but adds a trailing null character so that the buffer is ready to be passed to C APIs that expect null-terminated strings.
+			</description>
+		</method>
+		<method name="null_terminated_utf8_buffer" qualifiers="static">
+			<return type="PackedByteArray" />
+			<param index="0" name="str" type="String" />
+			<description>
+				Similar to [method String.to_utf8_buffer], but adds a trailing null character so that the buffer is ready to be passed to C APIs that expect null-terminated strings.
+			</description>
+		</method>
+		<method name="null_terminated_utf16_buffer" qualifiers="static">
+			<return type="PackedByteArray" />
+			<param index="0" name="str" type="String" />
+			<description>
+				Similar to [method String.to_utf16_buffer], but adds a trailing null character so that the buffer is ready to be passed to C APIs that expect null-terminated strings.
+			</description>
+		</method>
+		<method name="null_terminated_utf32_buffer" qualifiers="static">
+			<return type="PackedByteArray" />
+			<param index="0" name="str" type="String" />
+			<description>
+				Similar to [method String.to_utf32_buffer], but adds a trailing null character so that the buffer is ready to be passed to C APIs that expect null-terminated strings.
+			</description>
+		</method>
+		<method name="null_terminated_wchar_buffer" qualifiers="static">
+			<return type="PackedByteArray" />
+			<param index="0" name="str" type="String" />
+			<description>
+				Similar to [method String.to_wchar_buffer], but adds a trailing null character so that the buffer is ready to be passed to C APIs that expect null-terminated strings.
+			</description>
+		</method>
 		<method name="open" qualifiers="const">
 			<return type="CFFILibraryHandle" />
 			<param index="0" name="name_or_path" type="String" />

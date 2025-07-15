@@ -51,8 +51,48 @@ Ref<CFFILibraryHandle> CFFI::open(const String& name) const {
 	return CFFILibraryHandle::open(name);
 }
 
+PackedByteArray CFFI::null_terminated_ascii_buffer(const String& str) {
+	PackedByteArray buffer = str.to_ascii_buffer();
+	buffer.append(0);
+	return buffer;
+}
+
+PackedByteArray CFFI::null_terminated_utf8_buffer(const String& str) {
+	PackedByteArray buffer = str.to_utf8_buffer();
+	buffer.append(0);
+	return buffer;
+}
+
+PackedByteArray CFFI::null_terminated_utf16_buffer(const String& str) {
+	PackedByteArray buffer = str.to_utf16_buffer();
+	buffer.append(0);
+	buffer.append(0);
+	return buffer;
+}
+
+PackedByteArray CFFI::null_terminated_utf32_buffer(const String& str) {
+	PackedByteArray buffer = str.to_utf32_buffer();
+	for (int i = 0; i < sizeof(char32_t); i++) {
+		buffer.append(0);
+	}
+	return buffer;
+}
+
+PackedByteArray CFFI::null_terminated_wchar_buffer(const String& str) {
+	PackedByteArray buffer = str.to_wchar_buffer();
+	for (int i = 0; i < sizeof(wchar_t); i++) {
+		buffer.append(0);
+	}
+	return buffer;
+}
+
 void CFFI::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("open", "name_or_path"), &CFFI::open);
+	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("null_terminated_ascii_buffer", "str"), &CFFI::null_terminated_ascii_buffer);
+	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("null_terminated_utf8_buffer", "str"), &CFFI::null_terminated_utf8_buffer);
+	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("null_terminated_utf16_buffer", "str"), &CFFI::null_terminated_utf16_buffer);
+	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("null_terminated_utf32_buffer", "str"), &CFFI::null_terminated_utf32_buffer);
+	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("null_terminated_wchar_buffer", "str"), &CFFI::null_terminated_wchar_buffer);
 }
 
 CFFI *CFFI::get_singleton() {
