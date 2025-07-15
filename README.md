@@ -98,6 +98,7 @@ func _ready():
     assert(a == example_struct.a)
     assert(a == 42)
 
+    # Strings are passed as null-terminated buffers to pointer arguments
     var message_length = my_strlen.invoke("Hello World!")
     assert(message_length == 12)
 ```
