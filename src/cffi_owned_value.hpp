@@ -42,7 +42,7 @@ public:
 	/**
 	 * Frees the allocated memory for this value.
 	 */
-	~CFFIOwnedValue();
+	virtual ~CFFIOwnedValue();
 
 	/**
 	 * Get base address.

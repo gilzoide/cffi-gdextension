@@ -20,7 +20,7 @@ public:
 	 * @warning Never use this constructor.
 	 */
 	CFFILibraryHandle();
-	~CFFILibraryHandle();
+	virtual ~CFFILibraryHandle();
 
 	/**
 	 * Get the function named `name` from the library.
