@@ -84,7 +84,7 @@ static var ExampleStruct = native_plugin_dll.define_struct("ExampleStruct", {
 })
 static var get_message = native_plugin_dll.get_function("get_message", "const char *")
 static var get_a = native_plugin_dll.get_function("get_a", "int", ["ExampleStruct"])
-static var my_strlen = native_plugin_dll.get_function("my_strlen", "int", ["const char *])
+static var my_strlen = native_plugin_dll.get_function("my_strlen", "int", ["const char *"])
 
 
 func _ready():
