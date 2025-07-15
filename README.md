@@ -82,17 +82,19 @@ static var ExampleStruct = native_plugin_dll.define_struct("ExampleStruct", {
     "a": "int",
     "b": "int",
 })
-static var get_message = native_plugin_dll.get_function("get_message", "const char *")
+static var get_message = native_plugin_dll.get_function("get_message", "const char *", [])
 static var get_a = native_plugin_dll.get_function("get_a", "int", ["ExampleStruct"])
 static var my_strlen = native_plugin_dll.get_function("my_strlen", "int", ["const char *"])
 
 
 func _ready():
+    # Get strings from raw pointers
     var message_ptr: CFFIPointer = get_message.invoke()
     var message = message_ptr.get_string_from_utf8()
     print(message)  # "Hello world!"
 
-    var example_struct = ExampleStruct.alloc()
+    # Allocate and access struct values
+    var example_struct: CFFIOwnedValue = ExampleStruct.alloc()
     example_struct.a = 42
     var a = get_a.invoke(example_struct)
     assert(a == example_struct.a)
