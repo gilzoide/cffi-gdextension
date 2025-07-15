@@ -15,7 +15,7 @@ CFFI::CFFI() {
 	defined_types["uint32"] = Ref<CFFIType>(memnew(CFFIType("uint32", ffi_type_uint32)));
 	defined_types["sint32"] = Ref<CFFIType>(memnew(CFFIType("sint32", ffi_type_sint32)));
 	defined_types["uint64"] = Ref<CFFIType>(memnew(CFFIType("uint64", ffi_type_uint64)));
-	defined_types["sint64"] = Ref<CFFIType>(memnew(CFFIType("sint64", ffi_type_void)));
+	defined_types["sint64"] = Ref<CFFIType>(memnew(CFFIType("sint64", ffi_type_sint64)));
 	defined_types["float"] = Ref<CFFIType>(memnew(CFFIType("float", ffi_type_float)));
 	defined_types["double"] = Ref<CFFIType>(memnew(CFFIType("double", ffi_type_double)));
 	defined_types["pointer"] = Ref<CFFIType>(memnew(CFFIType("pointer", ffi_type_pointer)));
