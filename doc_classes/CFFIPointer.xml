@@ -38,7 +38,7 @@
 			<param index="0" name="field_name" type="StringName" />
 			<description>
 				Get the address of a Struct or Union field named [param field_name].
-				Returns the address of the existing field, or null if it cannot be found.
+				Returns the address of the existing field, or [code]null[/code] if it cannot be found.
 				[b]Note:[/b] only available on values of Struct or Union types.
 			</description>
 		</method>
