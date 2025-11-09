@@ -11,6 +11,8 @@ static var double_float = NativePlugin.get_function("double_float", "float", ["f
 static var get_message = NativePlugin.get_function("get_message", "const char *")
 static var fill_message = NativePlugin.get_function("fill_message", "void", ["char *", "int"])
 static var get_example_struct = NativePlugin.get_function("get_example_struct", "ExampleStruct")
+static var example_struct_get_a = NativePlugin.get_function("example_struct_get_a", "int", ["ExampleStruct"])
+static var example_struct_pointer_get_a = NativePlugin.get_function("example_struct_pointer_get_a", "int", ["const ExampleStruct *"])
 static var str_length = NativePlugin.get_function("str_length", "int", ["const char *", "int"])
 
 
@@ -28,6 +30,9 @@ func _ready():
 	printt(example_struct, new_example_struct)
 	new_example_struct.set_value(example_struct)
 	printt(example_struct, new_example_struct)
+
+	assert(example_struct.a == example_struct_get_a.invoke(example_struct))
+	assert(example_struct.a == example_struct_pointer_get_a.invoke(example_struct))
 
 	var buffer = PackedByteArray()
 	buffer.resize(128)

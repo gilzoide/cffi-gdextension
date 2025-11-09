@@ -24,6 +24,14 @@ ExampleStruct get_example_struct() {
 	};
 }
 
+int example_struct_get_a(ExampleStruct s) {
+	return s.a;
+}
+
+int example_struct_pointer_get_a(const ExampleStruct *s) {
+	return s->a;
+}
+
 const char *get_message() {
 	return "Hello world!";
 }
