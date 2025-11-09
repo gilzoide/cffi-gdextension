@@ -12,7 +12,8 @@ config_version=5
 
 config/name="cffi"
 run/main_scene="res://Main.tscn"
-config/features=PackedStringArray("4.4", "GL Compatibility")
+config/features=PackedStringArray("4.5", "GL Compatibility")
+config/icon="uid://dhec73e2x860i"
 
 [editor_plugins]
 
