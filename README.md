@@ -1,7 +1,11 @@
 # CFFI GDExtension
+[![Godot Asset Library page](https://img.shields.io/static/v1?logo=godotengine&label=asset%20library&color=478CBF&message=0.1.0)](https://godotengine.org/asset-library/asset/4470)
 [![Build](https://github.com/gilzoide/cffi-gdextension/actions/workflows/.build.yml/badge.svg?branch=main)](https://github.com/gilzoide/cffi-gdextension/actions/workflows/.build.yml)
 
+
 WIP [libffi](https://github.com/libffi/libffi) bindings for [Godot 4.1+](https://godotengine.org/).
+
+Available at the [Asset Library](https://godotengine.org/asset-library/asset/4470).
 
 > **Warning**
 >
@@ -115,7 +119,7 @@ The script [Test.gd](test/Test.gd) shows how to use the FFI to call the native l
 - Support defining and using unions
 - Support FFI array types, both fixed and variable length
 - Support function pointers
-- Support variadic native functions (the `variadic` flag is there, but the `ffi_cif` is not being prep'd correctly)
+- Support variadic native function calls (the `variadic` flag is there, but the `ffi_cif` is not being prep'd correctly)
 - Support `[dependencies]` section in ".ffilibrary" files
 - Define enum values?
   Enum constants can easily be defined as constants in GDScript directly, so this isn't a requirement.
