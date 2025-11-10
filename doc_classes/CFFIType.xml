@@ -16,6 +16,16 @@
 				If [param initialize_with_zeros] is true, the allocated value will be zero-initialized. Otherwise, the allocated memory will not be initialized and may contain garbage data.
 			</description>
 		</method>
+		<method name="alloc_array">
+			<return type="CFFIOwnedValue" />
+			<param index="0" name="size" type="int" />
+			<param index="1" name="initialize_with_zeros" type="bool" default="true" />
+			<description>
+				Allocates a new array with [param size] elements of this type.
+				[param size] must be a positive number.
+				If [param initialize_with_zeros] is true, the allocated array will be zero-initialized. Otherwise, the allocated memory will not be initialized and may contain garbage data.
+			</description>
+		</method>
 		<method name="get_alignment" qualifiers="const">
 			<return type="int" />
 			<description>

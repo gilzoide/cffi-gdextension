@@ -178,7 +178,12 @@ bool CFFIType::variant_to_data(const Variant& value, uint8_t *buffer) const {
 }
 
 Ref<CFFIOwnedValue> CFFIType::alloc(bool initialize_with_zeros) {
-	return memnew(CFFIOwnedValue(this, initialize_with_zeros));
+	return alloc_array(1, initialize_with_zeros);
+}
+
+Ref<CFFIOwnedValue> CFFIType::alloc_array(int64_t size, bool initialize_with_zeros) {
+	ERR_FAIL_COND_V_MSG(size <= 0, nullptr, "Size must be positive");
+	return memnew(CFFIOwnedValue(this, size, initialize_with_zeros));
 }
 
 Ref<CFFIType> CFFIType::from_variant(const Variant& var, const CFFIScope *type_scope) {
@@ -198,6 +203,7 @@ void CFFIType::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_size"), &CFFIType::get_size);
 	ClassDB::bind_method(D_METHOD("get_alignment"), &CFFIType::get_alignment);
 	ClassDB::bind_method(D_METHOD("alloc", "initialize_with_zeros"), &CFFIType::alloc, DEFVAL(true));
+	ClassDB::bind_method(D_METHOD("alloc_array", "size", "initialize_with_zeros"), &CFFIType::alloc_array, DEFVAL(true));
 }
 
 String CFFIType::_to_string() const {

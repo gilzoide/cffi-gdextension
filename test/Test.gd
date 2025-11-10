@@ -41,3 +41,10 @@ func _ready():
 
 	var hello_length = str_length.invoke("Hello beautiful people!", 100)
 	print(hello_length)
+	
+	var charp = CFFI.find_type("char")
+	var hi_msg = charp.alloc_array(3, false)
+	hi_msg.set_value(ord('h'), 0)
+	hi_msg.set_value(ord('i'), 1)
+	hi_msg.set_value(0, 2)
+	printt(hi_msg.get_string_from_ascii())

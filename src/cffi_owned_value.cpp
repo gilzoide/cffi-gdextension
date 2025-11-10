@@ -5,20 +5,20 @@
 namespace cffi {
 
 CFFIOwnedValue::CFFIOwnedValue() {}
-CFFIOwnedValue::CFFIOwnedValue(Ref<CFFIType> type, bool initialize_with_zeros)
-	: CFFIPointer(type, (uint8_t *) memalloc(type->get_size()))
+CFFIOwnedValue::CFFIOwnedValue(Ref<CFFIType> type, int64_t size, bool initialize_with_zeros)
+	: CFFIPointer(type, (uint8_t *) memalloc(size * type->get_size()))
 {
-	ERR_FAIL_COND_EDMSG(address == nullptr, String("Could not allocate %d bytes for %s") % Array::make(type->get_size(), type->get_name()));
+	ERR_FAIL_COND_EDMSG(address == nullptr, String("Could not allocate %d bytes for %s") % Array::make(size * type->get_size(), type->get_name()));
 	if (initialize_with_zeros) {
 		memset(address, 0, type->get_size());
 	}
 }
-CFFIOwnedValue::CFFIOwnedValue(Ref<CFFIType> type, const uint8_t *existing_data)
-	: CFFIPointer(type, (uint8_t *) memalloc(type->get_size()))
+CFFIOwnedValue::CFFIOwnedValue(Ref<CFFIType> type, int64_t size, const uint8_t *existing_data)
+	: CFFIPointer(type, (uint8_t *) memalloc(size * type->get_size()))
 {
-	ERR_FAIL_COND_EDMSG(address == nullptr, String("Could not allocate %d bytes for %s") % Array::make(type->get_size(), type->get_name()));
+	ERR_FAIL_COND_EDMSG(address == nullptr, String("Could not allocate %d bytes for %s") % Array::make(size * type->get_size(), type->get_name()));
 	if (existing_data) {
-		memcpy(address, existing_data, type->get_size());
+		memcpy(address, existing_data, size * type->get_size());
 	}
 }
 

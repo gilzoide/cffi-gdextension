@@ -27,6 +27,14 @@
 				Note that this only duplicates the data at the base address, that is, the element at offset 0.
 			</description>
 		</method>
+		<method name="duplicate_array" qualifiers="const">
+			<return type="CFFIOwnedValue" />
+			<param index="0" name="size" type="int" />
+			<description>
+				Duplicate data into a new [CFFIOwnedValue].
+				[param size] represents the number of elements to duplicate. Must be a positive number.
+			</description>
+		</method>
 		<method name="get_element_type" qualifiers="const">
 			<return type="CFFIType" />
 			<description>

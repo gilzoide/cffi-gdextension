@@ -51,7 +51,12 @@ Ref<CFFIPointer> CFFIPointer::cast_elements(const Variant& type) const {
 }
 
 Ref<CFFIOwnedValue> CFFIPointer::duplicate() const {
-	return memnew(CFFIOwnedValue(element_type, address));
+	return duplicate_array(1);
+}
+
+Ref<CFFIOwnedValue> CFFIPointer::duplicate_array(int64_t size) const {
+	ERR_FAIL_COND_V_MSG(size <= 0, nullptr, "Size must be positive");
+	return memnew(CFFIOwnedValue(element_type, size, address));
 }
 
 String CFFIPointer::get_string_from_ascii(int length) const {
@@ -132,6 +137,7 @@ Dictionary CFFIPointer::to_dictionary() const {
 void CFFIPointer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("cast_elements", "element_type"), &CFFIPointer::cast_elements);
 	ClassDB::bind_method(D_METHOD("duplicate"), &CFFIPointer::duplicate);
+	ClassDB::bind_method(D_METHOD("duplicate_array", "size"), &CFFIPointer::duplicate_array);
 	ClassDB::bind_method(D_METHOD("get_element_type"), &CFFIPointer::get_element_type);
 	ClassDB::bind_method(D_METHOD("get_field", "field_name"), &CFFIPointer::get_field);
 	ClassDB::bind_method(D_METHOD("get_string_from_ascii", "length"), &CFFIPointer::get_string_from_ascii, DEFVAL(-1));

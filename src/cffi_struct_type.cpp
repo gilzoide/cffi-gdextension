@@ -77,7 +77,7 @@ void CFFIStructType::dictionary_to_data(const Dictionary& dict, uint8_t *buffer)
 }
 
 bool CFFIStructType::data_to_variant(const uint8_t *ptr, Variant& r_variant) const {
-	r_variant = memnew(CFFIOwnedValue(Ref<CFFIType>(this), ptr));
+	r_variant = memnew(CFFIOwnedValue(Ref<CFFIType>(this), 1, ptr));
 	return true;
 }
 

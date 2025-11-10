@@ -89,6 +89,15 @@ public:
 	Ref<CFFIOwnedValue> alloc(bool initialize_with_zeros = true);
 
 	/**
+	 * Allocates a new value of this type.
+	 *
+	 * @param size  Size of the array, must be a positive number.
+	 * @param initialize_with_zeros  If true, the allocated value will be zero-initialized.
+	 *        Otherwise, the allocated memory will not be initialized and may contain garbage data.
+	 */
+	Ref<CFFIOwnedValue> alloc_array(int64_t size, bool initialize_with_zeros = true);
+
+	/**
 	 * Get the type represented by `var`.
 	 *
 	 * @param var  Variant that represents a type.
