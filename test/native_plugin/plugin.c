@@ -24,6 +24,15 @@ ExampleStruct get_example_struct() {
 	};
 }
 
+ExampleStruct* get_global_example_struct() {
+	static ExampleStruct g;
+	return &g;
+}
+
+void get_global_example_struct_ptr(ExampleStruct** ptr) {
+	*ptr = get_global_example_struct();
+}
+
 int example_struct_get_a(ExampleStruct s) {
 	return s.a;
 }

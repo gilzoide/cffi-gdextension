@@ -11,6 +11,8 @@ static var double_float = NativePlugin.get_function("double_float", "float", ["f
 static var get_message = NativePlugin.get_function("get_message", "const char *")
 static var fill_message = NativePlugin.get_function("fill_message", "void", ["char *", "int"])
 static var get_example_struct = NativePlugin.get_function("get_example_struct", "ExampleStruct")
+static var get_global_example_struct = NativePlugin.get_function("get_global_example_struct", "ExampleStruct*")
+static var get_global_example_struct_ptr = NativePlugin.get_function("get_global_example_struct_ptr", "void", ["ExampleStruct**"])
 static var example_struct_get_a = NativePlugin.get_function("example_struct_get_a", "int", ["ExampleStruct"])
 static var example_struct_pointer_get_a = NativePlugin.get_function("example_struct_pointer_get_a", "int", ["const ExampleStruct *"])
 static var str_length = NativePlugin.get_function("str_length", "int", ["const char *", "int"])
@@ -48,3 +50,10 @@ func _ready():
 	hi_msg.set_value(ord('i'), 1)
 	hi_msg.set_value(0, 2)
 	printt(hi_msg.get_string_from_ascii())
+	
+	var global_example_struct_ptr: CFFIPointer = get_global_example_struct.invoke()
+	assert(global_example_struct_ptr != null)
+	
+	var example_struct_ptr = NativePlugin["ExampleStruct*"].alloc()
+	get_global_example_struct_ptr.invoke(example_struct_ptr)
+	assert(example_struct_ptr.get_value().get_address() == global_example_struct_ptr.get_address())
