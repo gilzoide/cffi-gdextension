@@ -35,7 +35,8 @@ Available at the [Asset Library](https://godotengine.org/asset-library/asset/447
    This file will be imported as a [CFFILibrary](addons/cffi/cffi_library.gd) Resource.
 4. Call `CFFILibrary.open()` to open a `CFFILibraryHandle`
 5. Get native functions using `CFFILibraryHandle.get_function` and invoke them with `invoke` or `invokev`.
-6. Mess with native data using `CFFIPointer`s, hopefully not crashing your app
+6. Get native global variables using `CFFILibraryHandle.get_global`.
+7. Mess with native data using `CFFIPointer`s, hopefully not crashing your app
 7. Enjoy 🍾
 
 
