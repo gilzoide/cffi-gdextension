@@ -31,6 +31,12 @@ public:
 	CFFIPointer(Ref<CFFIType> element_type, uint8_t *address);
 
 	/**
+	 * Get the pointer address as an integer.
+	 *
+	 * Useful to compare pointers for equality.
+	 */
+	int64_t get_address() const;
+	/**
 	 * Get the raw pointer address, offset by `offset`.
 	 *
 	 * To get the base pointer, call this with `offset` as 0.

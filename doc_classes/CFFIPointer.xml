@@ -35,6 +35,13 @@
 				[param size] represents the number of elements to duplicate. Must be a positive number.
 			</description>
 		</method>
+		<method name="get_address" qualifiers="const">
+			<return type="int" />
+			<description>
+				Get the pointer address as an integer.
+				Useful to compare pointers for equality.
+			</description>
+		</method>
 		<method name="get_element_type" qualifiers="const">
 			<return type="CFFIType" />
 			<description>

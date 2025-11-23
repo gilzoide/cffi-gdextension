@@ -1,6 +1,5 @@
 #include "cffi_owned_value.hpp"
 #include "cffi_pointer.hpp"
-#include "cffi_pointer_type.hpp"
 #include "cffi_struct_type.hpp"
 
 namespace cffi {
@@ -12,6 +11,10 @@ CFFIPointer::CFFIPointer(Ref<CFFIType> element_type, uint8_t *address)
 	: element_type(element_type)
 	, address(address)
 {
+}
+
+int64_t CFFIPointer::get_address() const {
+	return (intptr_t) address;
 }
 
 uint8_t *CFFIPointer::address_offset_by(int offset) const {
@@ -135,6 +138,7 @@ Dictionary CFFIPointer::to_dictionary() const {
 }
 
 void CFFIPointer::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_address"), &CFFIPointer::get_address);
 	ClassDB::bind_method(D_METHOD("cast_elements", "element_type"), &CFFIPointer::cast_elements);
 	ClassDB::bind_method(D_METHOD("duplicate"), &CFFIPointer::duplicate);
 	ClassDB::bind_method(D_METHOD("duplicate_array", "size"), &CFFIPointer::duplicate_array);
