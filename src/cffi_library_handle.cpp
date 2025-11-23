@@ -1,5 +1,6 @@
 #include "cffi_library_handle.hpp"
 #include "cffi_function.hpp"
+#include "cffi_pointer.hpp"
 #include "cffi_type.hpp"
 
 #include <godot_cpp/classes/os.hpp>
@@ -93,8 +94,19 @@ Ref<CFFIFunction> CFFILibraryHandle::get_function(const String& name, const Vari
 	return memnew(CFFIFunction(name, address, return_type, argument_types, is_variadic));
 }
 
+Ref<CFFIPointer> CFFILibraryHandle::get_global(const String& name, const Variant& type_var) {
+	void *address = os_get_symbol(library_handle, name.ascii().get_data());
+	ERR_FAIL_COND_V_MSG(address == nullptr, nullptr, os_get_last_error());
+
+	auto type = CFFIType::from_variant(type_var, this);
+	ERR_FAIL_COND_V_MSG(type == nullptr, nullptr, String("Could not find type: %s") % type_var.stringify());
+
+	return memnew(CFFIPointer(type, (uint8_t *) address));
+}
+
 void CFFILibraryHandle::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_function", "name", "return_type", "argument_types", "is_variadic"), &CFFILibraryHandle::get_function, DEFVAL(Array()), DEFVAL(false));
+	ClassDB::bind_method(D_METHOD("get_global", "name", "type"), &CFFILibraryHandle::get_global);
 }
 
 String CFFILibraryHandle::_to_string() const {

@@ -7,7 +7,7 @@ WIP [libffi](https://github.com/libffi/libffi) bindings for [Godot 4.1+](https:/
 
 Available at the [Asset Library](https://godotengine.org/asset-library/asset/4470).
 
-> **Warning**
+> ⚠️ **Warning**
 >
 > Misuse may easily crash the Godot editor and built games/apps, use with caution!
 
@@ -63,6 +63,8 @@ int my_strlen(const char *s) {
     }
     return len;
 }
+
+int global_int_variable;
 ```
 
 ```ini
@@ -82,13 +84,17 @@ extends Node
 # Using ".ffilibrary" files is the preferred way of bundling FFI libraries in projects.
 # You can also use `CFFI.open` to load libraries by name or path directly instead.
 static var native_plugin_dll = load("res://native_plugin.ffilibrary").open()
+# Define the same structs as the native library
 static var ExampleStruct = native_plugin_dll.define_struct("ExampleStruct", {
     "a": "int",
     "b": "int",
 })
+# Get functions by name, making sure to use the correct return and argument types
 static var get_message = native_plugin_dll.get_function("get_message", "const char *", [])
 static var get_a = native_plugin_dll.get_function("get_a", "int", ["ExampleStruct"])
 static var my_strlen = native_plugin_dll.get_function("my_strlen", "int", ["const char *"])
+# Get pointer to global variables by name
+static var global_int_variable = native_plugin_dll.get_global("global_int_variable", "int")
 
 
 func _ready():
@@ -107,6 +113,9 @@ func _ready():
     # Strings are passed as null-terminated buffers to pointer arguments
     var message_length = my_strlen.invoke("Hello World!")
     assert(message_length == 12)
+
+    # Global variables
+    assert(global_int_variable.get_value() == 0)
 ```
 
 There is also an example [native_plugin.ffilibrary](test/native_plugin/native_plugin.ffilibrary) in the "test/native_plugin" folder showing how to setup a native library resource.

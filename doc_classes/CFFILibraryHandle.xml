@@ -21,5 +21,16 @@
 				[b]Warning:[/b] passing the wrong types and calling the returned function may crash your application and/or Godot editor.
 			</description>
 		</method>
+		<method name="get_global">
+			<return type="CFFIPointer" />
+			<param index="0" name="name" type="String" />
+			<param index="1" name="type" type="Variant" />
+			<description>
+				Get a pointer to the global variable named [param name] from the library.
+				[param name] should be a symbol exported by the native library.
+				Users are responsible for passing the correct type. Types may be either [CFFIType] or a String, for example [code]"int"[/code] or [code]"const char *"[/code].
+				[b]Warning:[/b] Passing the wrong type and dereferencing the returned pointer may crash your application and/or Godot editor.
+			</description>
+		</method>
 	</methods>
 </class>

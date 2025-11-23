@@ -1,5 +1,7 @@
 #include <string.h>
 
+int global_int;
+
 typedef struct {
 	int a;
 	int b;
