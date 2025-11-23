@@ -52,7 +52,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .scons-cache/
-          key: ${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.target }}-${{ hashfiles('.gitmodules', 'src/**') }}
+          key: ${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.target }}-${{ hashfiles('.gitmodules', 'src/*.cpp', 'src/*.hpp') }}
           restore-keys: |
             ${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.target }}-
       - name: Build artifact
@@ -89,7 +89,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .scons-cache/
-          key: ${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.target }}-${{ hashfiles('.gitmodules', 'src/**') }}
+          key: ${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.target }}-${{ hashfiles('.gitmodules', 'src/*.cpp', 'src/*.hpp') }}
           restore-keys: |
             ${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.target }}-
       - name: Build artifact
