@@ -6,7 +6,7 @@
 - `CFFIPointer.duplicate_array` to duplicate more than one element from a pointer as an `CFFIOwnedValue`
 - `CFFIPointer.get_address` method to get the base address of a pointer.
   Useful to compare pointers by value.
-- 
+- Support for passing any packed array (other than PackedStringArray) as pointer to native functions.
 
 
 ## [0.1.0](https://github.com/gilzoide/cffi-gdextension/releases/tag/0.1.0)

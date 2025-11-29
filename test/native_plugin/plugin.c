@@ -19,6 +19,14 @@ int double_float(float f) {
 	return f + f;
 }
 
+int sum_ints(const int *ints, int size) {
+	int sum = 0;
+	for (int i = 0; i < size; i++) {
+		sum += ints[i];
+	}
+	return sum;
+}
+
 ExampleStruct get_example_struct() {
 	return (ExampleStruct) {
 		.a = 1,
