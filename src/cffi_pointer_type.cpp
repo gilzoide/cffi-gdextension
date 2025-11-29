@@ -70,6 +70,46 @@ bool CFFIPointerType::variant_to_data(const Variant& value, uint8_t *buffer) con
 			*(const uint8_t **) buffer = bytes.ptr();
 			return true;
 		}
+		case Variant::Type::PACKED_INT32_ARRAY: {
+			PackedInt32Array bytes = value;
+			*(const int32_t **) buffer = bytes.ptr();
+			return true;
+		}
+		case Variant::Type::PACKED_INT64_ARRAY: {
+			PackedInt64Array bytes = value;
+			*(const int64_t **) buffer = bytes.ptr();
+			return true;
+		}
+		case Variant::Type::PACKED_FLOAT32_ARRAY: {
+			PackedFloat32Array bytes = value;
+			*(const float **) buffer = bytes.ptr();
+			return true;
+		}
+		case Variant::Type::PACKED_FLOAT64_ARRAY: {
+			PackedFloat64Array bytes = value;
+			*(const double **) buffer = bytes.ptr();
+			return true;
+		}
+		case Variant::Type::PACKED_VECTOR2_ARRAY: {
+			PackedVector2Array bytes = value;
+			*(const Vector2 **) buffer = bytes.ptr();
+			return true;
+		}
+		case Variant::Type::PACKED_VECTOR3_ARRAY: {
+			PackedVector3Array bytes = value;
+			*(const Vector3 **) buffer = bytes.ptr();
+			return true;
+		}
+		case Variant::Type::PACKED_VECTOR4_ARRAY: {
+			PackedVector4Array bytes = value;
+			*(const Vector4 **) buffer = bytes.ptr();
+			return true;
+		}
+		case Variant::Type::PACKED_COLOR_ARRAY: {
+			PackedColorArray bytes = value;
+			*(const Color **) buffer = bytes.ptr();
+			return true;
+		}
 
 		case Variant::Type::OBJECT:
 			if (auto pointer_value = Object::cast_to<CFFIPointer>(value)) {
