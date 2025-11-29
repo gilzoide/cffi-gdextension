@@ -8,6 +8,7 @@ using namespace godot;
 
 namespace cffi {
 
+class CFFICallableFunction;
 class CFFIStructType;
 class CFFIType;
 
@@ -35,6 +36,16 @@ public:
 	 * @see CFFIStructType::from_dictionary
 	 */
 	Ref<CFFIStructType> define_struct(const String& name, const Dictionary& fields);
+
+	/**
+	 * Create a new CFFICallableFunction from a Callable and the function's prototype.
+	 *
+	 * This way you can pass Callables to native code as function pointers.
+	 * You are responsible for keeping the CFFICallableFunction alive while native code has access to it.
+	 *
+	 * If `callable` or any of the passed types are not valid, `null` is returned and an error printed.
+	 */
+	Ref<CFFICallableFunction> create_function(const Callable& callable, const Variant& return_type, const Array& argument_types);
 
 protected:
 	bool _get(const StringName& property_name, Variant& r_value) const;

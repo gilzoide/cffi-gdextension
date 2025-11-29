@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="CFFIFunction" inherits="RefCounted" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
 	<brief_description>
+		Object that represents a native function pointer.
 	</brief_description>
 	<description>
+		[CFFIFunction]s can be invoked from GDScript, stored in struct fields or passed as arguments.
 	</description>
 	<tutorials>
 	</tutorials>

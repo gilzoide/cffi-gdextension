@@ -8,6 +8,18 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="create_function">
+			<return type="CFFICallableFunction" />
+			<param index="0" name="callable" type="Callable" />
+			<param index="1" name="return_type" type="Variant" />
+			<param index="2" name="argument_types" type="Array" default="[]" />
+			<description>
+				Create a new native function from a [Callable] and the function's prototype.
+				This way you can pass Callables to native code as function pointers. You are responsible for keeping the [CFFICallableFunction] alive while native code has access to it.
+				You are responsible for passing the correct return type and array of argument types. Types may be either [CFFIType] or a String, for example [code]"int"[/code] or [code]"const char *"[/code].
+				If [param callable] or any of the passed types are not valid, [code]null[/code] is returned and an error printed.
+			</description>
+		</method>
 		<method name="define_struct">
 			<return type="CFFIStructType" />
 			<param index="0" name="name" type="String" />

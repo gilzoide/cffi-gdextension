@@ -13,6 +13,11 @@ namespace cffi {
 class CFFITypeTuple;
 class CFFIValueTuple;
 
+/**
+ * Godot object that represents a native function.
+ *
+ * CFFIFunctions can be invoked from GDScript, stored in struct fields or passed as arguments.
+ */
 class CFFIFunction : public RefCounted {
 	GDCLASS(CFFIFunction, RefCounted);
 public:
@@ -46,13 +51,17 @@ public:
 	 */
 	Variant invoke_variadic(const Variant **args, GDExtensionInt arg_count, GDExtensionCallError &error);
 
+	/**
+	 * Get the function's code address.
+	 */
+	void *get_code_address() const;
+
 protected:
 	static void _bind_methods();
 	String _to_string() const;
 
 	Variant invoke(const CFFIValueTuple& arguments);
 
-private:
 	String name;
 	void *address;
 	ffi_cif ffi_handle;

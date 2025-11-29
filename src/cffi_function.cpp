@@ -8,7 +8,8 @@ CFFIFunction::CFFIFunction() {}
 CFFIFunction::CFFIFunction(const String& name, void *address, const Ref<CFFIType>& return_type, const CFFITypeTuple& argument_types, bool is_variadic, ffi_abi abi)
 	: name(name), address(address), return_type(return_type), argument_types(argument_types), is_variadic(is_variadic)
 {
-	ffi_prep_cif(&ffi_handle, abi, argument_types.size(), &return_type->get_ffi_type(), this->argument_types.get_element_types());
+	ffi_status status = ffi_prep_cif(&ffi_handle, abi, argument_types.size(), &return_type->get_ffi_type(), this->argument_types.get_element_types());
+	ERR_FAIL_COND(status != FFI_OK);
 }
 
 Variant CFFIFunction::invoke(const CFFIValueTuple& argument_data) {
@@ -47,6 +48,10 @@ Variant CFFIFunction::invoke_variadic(const Variant **args, GDExtensionInt arg_c
 
 	CFFIValueTuple argument_data = CFFIValueTuple::from_varargs(argument_types, args, arg_count);
 	return invoke(argument_data);
+}
+
+void *CFFIFunction::get_code_address() const {
+	return address;
 }
 
 void CFFIFunction::_bind_methods() {

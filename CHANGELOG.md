@@ -6,7 +6,9 @@
 - `CFFIPointer.duplicate_array` to duplicate more than one element from a pointer as an `CFFIOwnedValue`
 - `CFFIPointer.get_address` method to get the base address of a pointer.
   Useful to compare pointers by value.
-- 
+- Support for passing `CFFIFunction`s as function pointers to struct fields or native function arguments.
+- Add `CFFICallableFunction` class that wraps `Callable` as native function pointers using libffi's closure API.
+  They can be created using `CFFIScope.create_function`.
 
 
 ## [0.1.0](https://github.com/gilzoide/cffi-gdextension/releases/tag/0.1.0)
