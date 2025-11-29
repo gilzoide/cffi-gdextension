@@ -16,7 +16,7 @@ class CFFIValueTuple;
 /**
  * Godot object that represents a native function.
  *
- * CFFIFunctions represent function pointers and can be stored in struct fields or passed as arguments.
+ * CFFIFunctions can be invoked from GDScript, stored in struct fields or passed as arguments.
  */
 class CFFIFunction : public RefCounted {
 	GDCLASS(CFFIFunction, RefCounted);
