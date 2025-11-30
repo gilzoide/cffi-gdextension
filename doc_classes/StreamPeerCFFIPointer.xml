@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="StreamPeerCFFIPointer" inherits="StreamPeerExtension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+		A stream peer used to handle binary data streams from native pointers.
+	</brief_description>
+	<description>
+		A [StreamPeerCFFIPointer] object keeps an internal cursor which is the offset in bytes to the start of the buffer. Get and put operations are performed at the cursor position and will move the cursor accordingly.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="clear">
+			<return type="void" />
+			<description>
+				Clears the data contained in [pointer] and resets the cursor.
+			</description>
+		</method>
+		<method name="get_position" qualifiers="const">
+			<return type="int" />
+			<description>
+				Returns the current cursor position.
+			</description>
+		</method>
+		<method name="seek">
+			<return type="void" />
+			<param index="0" name="position" type="int" />
+			<description>
+				Moves the cursor to the specified position. [param position] must be a valid index between 0 and [member size].
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="pointer" type="CFFIPointer" setter="set_pointer" getter="get_pointer">
+			Native pointer used as underlying data buffer. Setting this value resets the cursor.
+		</member>
+		<member name="size" type="int" setter="set_size" getter="get_size" default="0">
+			Size of the underlying data buffer, in bytes.
+			[b]Warning:[/b] you are responsible for setting the correct size of the buffer to avoid accessing memory that is out of bounds.
+		</member>
+	</members>
+</class>
