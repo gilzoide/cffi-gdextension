@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CFFICallableFunction" inherits="CFFIFunction" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+		A native function that invokes a user provided [Callable].
+	</brief_description>
+	<description>
+		Instances of [CFFICallableFunction] can be created with [method CFFIScope.create_function].
+		[b]Warning:[/b] you are responsible for keeping this instance alive while native code has access to it. Attepting to invoke a released instance from native code is undefined behavior.
+	</description>
+	<tutorials>
+	</tutorials>
+	<members>
+		<member name="callable" type="Callable" setter="set_callable" getter="get_callable">
+			[Callable] that will be called whenever the native function is invoked.
+		</member>
+	</members>
+</class>

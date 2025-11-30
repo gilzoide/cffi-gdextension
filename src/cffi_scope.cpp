@@ -1,4 +1,5 @@
 #include "cffi.hpp"
+#include "cffi_callable_function.hpp"
 #include "cffi_pointer_type.hpp"
 #include "cffi_struct_type.hpp"
 #include "cffi_scope.hpp"
@@ -43,6 +44,18 @@ Ref<CFFIStructType> CFFIScope::define_struct(const String& name, const Dictionar
 	return type;
 }
 
+Ref<CFFICallableFunction> CFFIScope::create_function(const Callable& callable, const Variant& return_type_var, const Array& argument_types_arr) {
+	ERR_FAIL_COND_V_MSG(!callable.is_valid(), nullptr, "Callable is invalid");
+
+	Ref<CFFIType> return_type = CFFIType::from_variant(return_type_var, this);
+	ERR_FAIL_COND_V_MSG(return_type == nullptr, nullptr, String("Could not find return type: %s") % return_type_var.stringify());
+
+	CFFITypeTuple argument_types = CFFITypeTuple::from_array(argument_types_arr, this);
+	ERR_FAIL_COND_V_MSG(argument_types.size() != argument_types_arr.size(), nullptr, "Invalid argument types");
+
+	return memnew(CFFICallableFunction(callable, return_type, argument_types));
+}
+
 bool CFFIScope::_get(const StringName& property_name, Variant& r_value) const {
 	auto type = find_type(property_name);
 	if (type.is_valid()) {
@@ -57,6 +70,7 @@ bool CFFIScope::_get(const StringName& property_name, Variant& r_value) const {
 void CFFIScope::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("find_type", "name"), &CFFIScope::find_type);
 	ClassDB::bind_method(D_METHOD("define_struct", "name", "fields"), &CFFIScope::define_struct);
+	ClassDB::bind_method(D_METHOD("create_function", "callable", "return_type", "argument_types"), &CFFIScope::create_function, DEFVAL(Array()));
 }
 
 const HashMap<String, Ref<CFFIType>>& CFFIScope::get_globally_defined_types() {

@@ -71,3 +71,9 @@ int str_length(const char *msg, int max_length) {
 	}
 	return i;
 }
+
+void call_function_int(void (*f)(int), int value) {
+	if (f) {
+		f(value);
+	}
+}

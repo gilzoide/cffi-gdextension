@@ -1,5 +1,6 @@
 #include "cffi_pointer_type.hpp"
 #include "cffi.hpp"
+#include "cffi_function.hpp"
 #include "cffi_pointer.hpp"
 
 namespace cffi {
@@ -114,6 +115,10 @@ bool CFFIPointerType::variant_to_data(const Variant& value, uint8_t *buffer) con
 		case Variant::Type::OBJECT:
 			if (auto pointer_value = Object::cast_to<CFFIPointer>(value)) {
 				*(uint8_t **) buffer = pointer_value->address_offset_by(0);
+				return true;
+			}
+			if (auto function_value = Object::cast_to<CFFIFunction>(value)) {
+				*(void **) buffer = function_value->get_code_address();
 				return true;
 			}
 			break;

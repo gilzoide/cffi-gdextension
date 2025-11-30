@@ -17,6 +17,7 @@ static var get_global_example_struct_ptr = NativePlugin.get_function("get_global
 static var example_struct_get_a = NativePlugin.get_function("example_struct_get_a", "int", ["ExampleStruct"])
 static var example_struct_pointer_get_a = NativePlugin.get_function("example_struct_pointer_get_a", "int", ["const ExampleStruct *"])
 static var str_length = NativePlugin.get_function("str_length", "int", ["const char *", "int"])
+static var call_function_int = NativePlugin.get_function("call_function_int", "void", ["void *", "int"])
 
 static var global_int = NativePlugin.get_global("global_int", "int")
 
@@ -70,3 +71,8 @@ func _ready():
 	assert(global_int.get_value() == 0)
 	global_int.set_value(42)
 	assert(NativePlugin.get_global("global_int", "int").get_value() == 42)
+	
+	# Callable as function pointer
+	var print_int_fptr = CFFI.create_function(func(val): print(val), "void", ["int"])
+	print(print_int_fptr, print_int_fptr.callable)
+	call_function_int.invoke(print_int_fptr, 7)
