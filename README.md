@@ -65,6 +65,12 @@ int my_strlen(const char *s) {
     return len;
 }
 
+void call_function_pointer(void (*fptr)(int), int arg1) {
+    if (fptr) {
+        fptr(arg1);
+    }
+}
+
 int global_int_variable;
 ```
 
@@ -94,6 +100,7 @@ static var ExampleStruct = native_plugin_dll.define_struct("ExampleStruct", {
 static var get_message = native_plugin_dll.get_function("get_message", "const char *", [])
 static var get_a = native_plugin_dll.get_function("get_a", "int", ["ExampleStruct"])
 static var my_strlen = native_plugin_dll.get_function("my_strlen", "int", ["const char *"])
+static var call_function_pointer = native_plugin_dll.get_function("call_function_pointer", "void", ["void *", "int"])
 # Get pointer to global variables by name
 static var global_int_variable = native_plugin_dll.get_global("global_int_variable", "int")
 
@@ -114,6 +121,11 @@ func _ready():
     # Strings are passed as null-terminated buffers to pointer arguments
     var message_length = my_strlen.invoke("Hello World!")
     assert(message_length == 12)
+
+    # Create native function from Callables
+    # Make sure to use the correct return and argument types
+    var callable_function_pointer = CFFI.create_function(func(val): print(val), "void", ["int"])
+    call_function_pointer.invoke(callable_function_pointer, 5)  # prints 5
 
     # Global variables
     assert(global_int_variable.get_value() == 0)

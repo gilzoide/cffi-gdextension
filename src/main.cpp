@@ -1,6 +1,7 @@
 #include <godot_cpp/godot.hpp>
 
 #include "cffi.hpp"
+#include "cffi_callable_function.hpp"
 #include "cffi_function.hpp"
 #include "cffi_library_handle.hpp"
 #include "cffi_owned_value.hpp"
@@ -21,6 +22,7 @@ static void initialize(ModuleInitializationLevel level) {
 	ClassDB::register_abstract_class<CFFIScope>();
 	ClassDB::register_abstract_class<CFFILibraryHandle>();
 	ClassDB::register_abstract_class<CFFIFunction>();
+	ClassDB::register_abstract_class<CFFICallableFunction>();
 	ClassDB::register_abstract_class<CFFIType>();
 	ClassDB::register_abstract_class<CFFIPointerType>();
 	ClassDB::register_abstract_class<CFFIStructType>();
