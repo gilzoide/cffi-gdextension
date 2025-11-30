@@ -106,6 +106,78 @@ PackedByteArray CFFIPointer::to_byte_array(int length) const {
 	return array;
 }
 
+PackedInt32Array CFFIPointer::to_int32_array(int length) const {
+	ERR_FAIL_COND_V_EDMSG(length < 0, PackedInt32Array(), "Buffer length cannot be negative");
+	ERR_FAIL_COND_V_EDMSG(element_type->get_size() != sizeof(int32_t), PackedInt32Array(), String("Element mismatch, expected int32_t, found %s") % element_type->get_name());
+	PackedInt32Array array;
+	array.resize(length);
+	memcpy(array.ptrw(), address, length);
+	return array;
+}
+
+PackedInt64Array CFFIPointer::to_int64_array(int length) const {
+	ERR_FAIL_COND_V_EDMSG(length < 0, PackedInt64Array(), "Buffer length cannot be negative");
+	ERR_FAIL_COND_V_EDMSG(element_type->get_size() != sizeof(int64_t), PackedInt64Array(), String("Element mismatch, expected int64_t, found %s") % element_type->get_name());
+	PackedInt64Array array;
+	array.resize(length);
+	memcpy(array.ptrw(), address, length);
+	return array;
+}
+
+PackedFloat32Array CFFIPointer::to_float32_array(int length) const {
+	ERR_FAIL_COND_V_EDMSG(length < 0, PackedFloat32Array(), "Buffer length cannot be negative");
+	ERR_FAIL_COND_V_EDMSG(element_type->get_size() != sizeof(float), PackedFloat32Array(), String("Element mismatch, expected float, found %s") % element_type->get_name());
+	PackedFloat32Array array;
+	array.resize(length);
+	memcpy(array.ptrw(), address, length);
+	return array;
+}
+
+PackedFloat64Array CFFIPointer::to_float64_array(int length) const {
+	ERR_FAIL_COND_V_EDMSG(length < 0, PackedFloat64Array(), "Buffer length cannot be negative");
+	ERR_FAIL_COND_V_EDMSG(element_type->get_size() != sizeof(double), PackedFloat64Array(), String("Element mismatch, expected double, found %s") % element_type->get_name());
+	PackedFloat64Array array;
+	array.resize(length);
+	memcpy(array.ptrw(), address, length);
+	return array;
+}
+
+PackedVector2Array CFFIPointer::to_vector2_array(int length) const {
+	ERR_FAIL_COND_V_EDMSG(length < 0, PackedVector2Array(), "Buffer length cannot be negative");
+	ERR_FAIL_COND_V_EDMSG(element_type->get_size() != sizeof(Vector2), PackedVector2Array(), String("Element mismatch, expected Vector2, found %s") % element_type->get_name());
+	PackedVector2Array array;
+	array.resize(length);
+	memcpy(array.ptrw(), address, length);
+	return array;
+}
+
+PackedVector3Array CFFIPointer::to_vector3_array(int length) const {
+	ERR_FAIL_COND_V_EDMSG(length < 0, PackedVector3Array(), "Buffer length cannot be negative");
+	ERR_FAIL_COND_V_EDMSG(element_type->get_size() != sizeof(Vector3), PackedVector3Array(), String("Element mismatch, expected Vector3, found %s") % element_type->get_name());
+	PackedVector3Array array;
+	array.resize(length);
+	memcpy(array.ptrw(), address, length);
+	return array;
+}
+
+PackedVector4Array CFFIPointer::to_vector4_array(int length) const {
+	ERR_FAIL_COND_V_EDMSG(length < 0, PackedVector4Array(), "Buffer length cannot be negative");
+	ERR_FAIL_COND_V_EDMSG(element_type->get_size() != sizeof(Vector4), PackedVector4Array(), String("Element mismatch, expected Vector4, found %s") % element_type->get_name());
+	PackedVector4Array array;
+	array.resize(length);
+	memcpy(array.ptrw(), address, length);
+	return array;
+}
+
+PackedColorArray CFFIPointer::to_color_array(int length) const {
+	ERR_FAIL_COND_V_EDMSG(length < 0, PackedColorArray(), "Buffer length cannot be negative");
+	ERR_FAIL_COND_V_EDMSG(element_type->get_size() != sizeof(Color), PackedColorArray(), String("Element mismatch, expected Color, found %s") % element_type->get_name());
+	PackedColorArray array;
+	array.resize(length);
+	memcpy(array.ptrw(), address, length);
+	return array;
+}
+
 Array CFFIPointer::to_array(int length) const {
 	ERR_FAIL_COND_V_EDMSG(length < 0, Array(), "Array length cannot be negative");
 	Array array;
@@ -154,6 +226,14 @@ void CFFIPointer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_value", "value", "index"), &CFFIPointer::set_value, DEFVAL(0));
 	ClassDB::bind_method(D_METHOD("to_array", "length"), &CFFIPointer::to_array);
 	ClassDB::bind_method(D_METHOD("to_byte_array", "length"), &CFFIPointer::to_byte_array);
+	ClassDB::bind_method(D_METHOD("to_int32_array", "length"), &CFFIPointer::to_int32_array);
+	ClassDB::bind_method(D_METHOD("to_int64_array", "length"), &CFFIPointer::to_int64_array);
+	ClassDB::bind_method(D_METHOD("to_float32_array", "length"), &CFFIPointer::to_float32_array);
+	ClassDB::bind_method(D_METHOD("to_float64_array", "length"), &CFFIPointer::to_float64_array);
+	ClassDB::bind_method(D_METHOD("to_vector2_array", "length"), &CFFIPointer::to_vector2_array);
+	ClassDB::bind_method(D_METHOD("to_vector3_array", "length"), &CFFIPointer::to_vector3_array);
+	ClassDB::bind_method(D_METHOD("to_vector4_array", "length"), &CFFIPointer::to_vector4_array);
+	ClassDB::bind_method(D_METHOD("to_color_array", "length"), &CFFIPointer::to_color_array);
 	ClassDB::bind_method(D_METHOD("to_dictionary"), &CFFIPointer::to_dictionary);
 }
 

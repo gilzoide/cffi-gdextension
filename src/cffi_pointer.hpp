@@ -159,6 +159,70 @@ public:
 	 */
 	PackedByteArray to_byte_array(int length) const;
 	/**
+	 * Get a copy of the memory pointed by this pointer as a `PackedInt32Array`.
+	 *
+	 * @warning Users are responsible for knowing if a pointer is valid before dereferencing it.
+	 *
+	 * @param length  Buffer length, in number of elements.
+	 */
+	PackedInt32Array to_int32_array(int length) const;
+	/**
+	 * Get a copy of the memory pointed by this pointer as a `PackedInt64Array`.
+	 *
+	 * @warning Users are responsible for knowing if a pointer is valid before dereferencing it.
+	 *
+	 * @param length  Buffer length, in number of elements.
+	 */
+	PackedInt64Array to_int64_array(int length) const;
+	/**
+	 * Get a copy of the memory pointed by this pointer as a `PackedFloat32Array`.
+	 *
+	 * @warning Users are responsible for knowing if a pointer is valid before dereferencing it.
+	 *
+	 * @param length  Buffer length, in number of elements.
+	 */
+	PackedFloat32Array to_float32_array(int length) const;
+	/**
+	 * Get a copy of the memory pointed by this pointer as a `PackedFloat64Array`.
+	 *
+	 * @warning Users are responsible for knowing if a pointer is valid before dereferencing it.
+	 *
+	 * @param length  Buffer length, in number of elements.
+	 */
+	PackedFloat64Array to_float64_array(int length) const;
+	/**
+	 * Get a copy of the memory pointed by this pointer as a `PackedVector2Array`.
+	 *
+	 * @warning Users are responsible for knowing if a pointer is valid before dereferencing it.
+	 *
+	 * @param length  Buffer length, in number of elements.
+	 */
+	PackedVector2Array to_vector2_array(int length) const;
+	/**
+	 * Get a copy of the memory pointed by this pointer as a `PackedVector3Array`.
+	 *
+	 * @warning Users are responsible for knowing if a pointer is valid before dereferencing it.
+	 *
+	 * @param length  Buffer length, in number of elements.
+	 */
+	PackedVector3Array to_vector3_array(int length) const;
+	/**
+	 * Get a copy of the memory pointed by this pointer as a `PackedVector4Array`.
+	 *
+	 * @warning Users are responsible for knowing if a pointer is valid before dereferencing it.
+	 *
+	 * @param length  Buffer length, in number of elements.
+	 */
+	PackedVector4Array to_vector4_array(int length) const;
+	/**
+	 * Get a copy of the memory pointed by this pointer as a `PackedColorArray`.
+	 *
+	 * @warning Users are responsible for knowing if a pointer is valid before dereferencing it.
+	 *
+	 * @param length  Buffer length, in number of elements.
+	 */
+	PackedColorArray to_color_array(int length) const;
+	/**
 	 * Get an Array with the values pointed by this pointer using `get_value`.
 	 *
 	 * @warning Users are responsible for knowing if a pointer is valid before dereferencing it.
