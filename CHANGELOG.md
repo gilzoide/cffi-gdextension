@@ -9,6 +9,7 @@
 - Support for passing `CFFIFunction`s as function pointers to struct fields or native function arguments.
 - Add `CFFICallableFunction` class that wraps `Callable` as native function pointers using libffi's closure API.
   They can be created using `CFFIScope.create_function`.
+- Support for passing any packed array (other than PackedStringArray) as pointer to native functions.
 
 
 ## [0.1.0](https://github.com/gilzoide/cffi-gdextension/releases/tag/0.1.0)
