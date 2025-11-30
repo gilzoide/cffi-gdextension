@@ -140,7 +140,6 @@ The script [Test.gd](test/Test.gd) shows how to use the FFI to call the native l
   + Accept a value when expecting pointer? Could be useful in function calls, but not when setting struct fields
 - Support defining and using unions
 - Support FFI array types, both fixed and variable length
-- Support function pointers
 - Support variadic native function calls (the `variadic` flag is there, but the `ffi_cif` is not being prep'd correctly)
 - Support `[dependencies]` section in ".ffilibrary" files
 - Define enum values?
