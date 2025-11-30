@@ -149,11 +149,83 @@
 				[param length] determines the number of elements copied into the buffer. For example, a buffer of length of 2 taken from a pointer to [code]int32_t[/code] would have 8 bytes.
 			</description>
 		</method>
+		<method name="to_color_array" qualifiers="const">
+			<return type="PackedColorArray" />
+			<param index="0" name="length" type="int" />
+			<description>
+				Get a copy of the memory pointed by this pointer as a [PackedColorArray].
+				[param length] determines the number of elements copied into the buffer.
+				Element type must have the size of a [code]Color[/code].
+			</description>
+		</method>
 		<method name="to_dictionary" qualifiers="const">
 			<return type="Dictionary" />
 			<description>
 				Get a Dictionary representation of this value.
 				[b]Note:[/b] only available on values of Struct or Union types.
+			</description>
+		</method>
+		<method name="to_float32_array" qualifiers="const">
+			<return type="PackedFloat32Array" />
+			<param index="0" name="length" type="int" />
+			<description>
+				Get a copy of the memory pointed by this pointer as a [PackedFloat32Array].
+				[param length] determines the number of elements copied into the buffer.
+				Element type must have the size of a [code]float[/code].
+			</description>
+		</method>
+		<method name="to_float64_array" qualifiers="const">
+			<return type="PackedFloat64Array" />
+			<param index="0" name="length" type="int" />
+			<description>
+				Get a copy of the memory pointed by this pointer as a [PackedFloat64Array].
+				[param length] determines the number of elements copied into the buffer.
+				Element type must have the size of a [code]double[/code].
+			</description>
+		</method>
+		<method name="to_int32_array" qualifiers="const">
+			<return type="PackedInt32Array" />
+			<param index="0" name="length" type="int" />
+			<description>
+				Get a copy of the memory pointed by this pointer as a [PackedInt32Array].
+				[param length] determines the number of elements copied into the buffer.
+				Element type must have the size of a [code]int32_t[/code].
+			</description>
+		</method>
+		<method name="to_int64_array" qualifiers="const">
+			<return type="PackedInt64Array" />
+			<param index="0" name="length" type="int" />
+			<description>
+				Get a copy of the memory pointed by this pointer as a [PackedInt64Array].
+				[param length] determines the number of elements copied into the buffer.
+				Element type must have the size of a [code]int64_t[/code].
+			</description>
+		</method>
+		<method name="to_vector2_array" qualifiers="const">
+			<return type="PackedVector2Array" />
+			<param index="0" name="length" type="int" />
+			<description>
+				Get a copy of the memory pointed by this pointer as a [PackedVector2Array].
+				[param length] determines the number of elements copied into the buffer.
+				Element type must have the size of a [code]Vector2[/code].
+			</description>
+		</method>
+		<method name="to_vector3_array" qualifiers="const">
+			<return type="PackedVector3Array" />
+			<param index="0" name="length" type="int" />
+			<description>
+				Get a copy of the memory pointed by this pointer as a [PackedVector3Array].
+				[param length] determines the number of elements copied into the buffer.
+				Element type must have the size of a [code]Vector3[/code].
+			</description>
+		</method>
+		<method name="to_vector4_array" qualifiers="const">
+			<return type="PackedVector4Array" />
+			<param index="0" name="length" type="int" />
+			<description>
+				Get a copy of the memory pointed by this pointer as a [PackedVector4Array].
+				[param length] determines the number of elements copied into the buffer.
+				Element type must have the size of a [code]Vector4[/code].
 			</description>
 		</method>
 	</methods>
