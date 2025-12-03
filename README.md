@@ -26,6 +26,7 @@ Available at the [Asset Library](https://godotengine.org/asset-library/asset/447
 - Get/set struct fields by name from `CFFIPointer`s
 - Construct `String`s and `PackedByteArray`s from `CFFIPointer`s with a single method call
 - Use Dictionaries as literal struct values, for example when calling a function
+- `StreamPeerCFFIPointer`, a stream peer used to handle binary data streams from native pointers
 
 
 ## Basic usage
