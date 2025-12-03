@@ -59,6 +59,11 @@ func _ready():
 	hi_msg.set_value(0, 2)
 	printt(hi_msg.get_string_from_ascii())
 	
+	var hi_msg_stream = StreamPeerCFFIPointer.new()
+	hi_msg_stream.pointer = hi_msg
+	hi_msg_stream.size = 2
+	printt(hi_msg_stream.get_available_bytes(), hi_msg_stream.get_utf8_string(1), hi_msg_stream.get_utf8_string(1), hi_msg_stream.get_available_bytes())
+	
 	var global_example_struct_ptr: CFFIPointer = get_global_example_struct.invoke()
 	assert(global_example_struct_ptr != null)
 	

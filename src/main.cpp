@@ -10,6 +10,7 @@
 #include "cffi_scope.hpp"
 #include "cffi_struct_type.hpp"
 #include "cffi_type.hpp"
+#include "stream_peer_cffi_pointer.hpp"
 
 using namespace cffi;
 using namespace godot;
@@ -29,6 +30,7 @@ static void initialize(ModuleInitializationLevel level) {
 	ClassDB::register_abstract_class<CFFIPointer>();
 	ClassDB::register_abstract_class<CFFIOwnedValue>();
 	ClassDB::register_abstract_class<CFFI>();
+	ClassDB::register_class<StreamPeerCFFIPointer>();
 	CFFI::get_or_create_singleton();
 }
 

@@ -3,12 +3,13 @@
 
 #include <godot_cpp/classes/ref_counted.hpp>
 
+#include "cffi_type.hpp"
+
 using namespace godot;
 
 namespace cffi {
 
 class CFFIOwnedValue;
-class CFFIType;
 
 /**
  * FFI pointers wrapped in a RefCounted object.
