@@ -21,6 +21,9 @@ public:
 	void set_pointer(Ref<CFFIPointer> pointer);
 	Ref<CFFIPointer> get_pointer() const;
 
+	void set_size_in_bytes(int size);
+	int get_size_in_bytes() const;
+
 	void set_size(int size);
 	int get_size() const;
 
@@ -34,7 +37,7 @@ protected:
 
 private:
 	Ref<CFFIPointer> pointer = nullptr;
-	int size = 0;
+	int size_in_bytes = 0;
 	int cursor = 0;
 };
 

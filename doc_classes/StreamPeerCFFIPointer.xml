@@ -34,6 +34,10 @@
 			Native pointer used as underlying data buffer. Setting this value resets the cursor.
 		</member>
 		<member name="size" type="int" setter="set_size" getter="get_size" default="0">
+			Size of the underlying data buffer, in elements.
+			[b]Warning:[/b] you are responsible for setting the correct size of the buffer to avoid accessing memory that is out of bounds.
+		</member>
+		<member name="size_in_bytes" type="int" setter="set_size_in_bytes" getter="get_size_in_bytes" default="0">
 			Size of the underlying data buffer, in bytes.
 			[b]Warning:[/b] you are responsible for setting the correct size of the buffer to avoid accessing memory that is out of bounds.
 		</member>

@@ -3,7 +3,7 @@
 namespace cffi {
 
 Error StreamPeerCFFIPointer::_get_data(uint8_t *r_buffer, int32_t r_bytes, int32_t *r_received) {
-	ERR_FAIL_COND_V(pointer.is_null(), ERR_INVALID_DATA);
+	ERR_FAIL_COND_V(pointer == nullptr, ERR_INVALID_DATA);
 	*r_received = MIN(r_bytes, _get_available_bytes());
 	memcpy(r_buffer, pointer->address_offset_by(cursor), *r_received);
 	cursor += *r_received;
@@ -15,7 +15,7 @@ Error StreamPeerCFFIPointer::_get_partial_data(uint8_t *r_buffer, int32_t r_byte
 }
 
 Error StreamPeerCFFIPointer::_put_data(const uint8_t *p_data, int32_t p_bytes, int32_t *r_sent) {
-	ERR_FAIL_COND_V(pointer.is_null(), ERR_INVALID_DATA);
+	ERR_FAIL_COND_V(pointer == nullptr, ERR_INVALID_DATA);
 	*r_sent = MIN(p_bytes, _get_available_bytes());
 	memcpy(pointer->address_offset_by(cursor), p_data, *r_sent);
 	cursor += *r_sent;
@@ -27,7 +27,7 @@ Error StreamPeerCFFIPointer::_put_partial_data(const uint8_t *p_data, int32_t p_
 }
 
 int32_t StreamPeerCFFIPointer::_get_available_bytes() const {
-	return size - cursor;
+	return size_in_bytes - cursor;
 }
 
 void StreamPeerCFFIPointer::set_pointer(Ref<CFFIPointer> pointer) {
@@ -39,19 +39,38 @@ Ref<CFFIPointer> StreamPeerCFFIPointer::get_pointer() const {
 	return this->pointer;
 }
 
+void StreamPeerCFFIPointer::set_size_in_bytes(int size_in_bytes) {
+	ERR_FAIL_COND(size_in_bytes < 0);
+	this->size_in_bytes = size_in_bytes;
+}
+
+int StreamPeerCFFIPointer::get_size_in_bytes() const {
+	return size_in_bytes;
+}
+
 void StreamPeerCFFIPointer::set_size(int size) {
 	ERR_FAIL_COND(size < 0);
-	this->size = size;
+	if (pointer == nullptr) {
+		size_in_bytes = size;
+	}
+	else {
+		size_in_bytes = size * pointer->get_element_type()->get_size();
+	}
 }
 
 int StreamPeerCFFIPointer::get_size() const {
-	return size;
+	if (pointer == nullptr) {
+		return size_in_bytes;
+	}
+	else {
+		return size_in_bytes / pointer->get_element_type()->get_size();
+	}
 }
 
 void StreamPeerCFFIPointer::seek(int p_pos) {
-	ERR_FAIL_COND(pointer.is_null());
+	ERR_FAIL_COND(pointer == nullptr);
 	ERR_FAIL_COND(p_pos < 0);
-	ERR_FAIL_COND(p_pos > size);
+	ERR_FAIL_COND(p_pos > size_in_bytes);
 	cursor = p_pos;
 }
 
@@ -61,7 +80,7 @@ int StreamPeerCFFIPointer::get_position() const {
 
 void StreamPeerCFFIPointer::clear() {
 	if (pointer.is_valid()) {
-		memset(pointer->address_offset_by(0), 0, size);
+		memset(pointer->address_offset_by(0), 0, size_in_bytes);
 	}
 	cursor = 0;
 }
@@ -69,6 +88,8 @@ void StreamPeerCFFIPointer::clear() {
 void StreamPeerCFFIPointer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_pointer"), &StreamPeerCFFIPointer::get_pointer);
 	ClassDB::bind_method(D_METHOD("set_pointer", "pointer"), &StreamPeerCFFIPointer::set_pointer);
+	ClassDB::bind_method(D_METHOD("get_size_in_bytes"), &StreamPeerCFFIPointer::get_size_in_bytes);
+	ClassDB::bind_method(D_METHOD("set_size_in_bytes", "size_in_bytes"), &StreamPeerCFFIPointer::set_size_in_bytes);
 	ClassDB::bind_method(D_METHOD("get_size"), &StreamPeerCFFIPointer::get_size);
 	ClassDB::bind_method(D_METHOD("set_size", "size"), &StreamPeerCFFIPointer::set_size);
 
@@ -77,7 +98,8 @@ void StreamPeerCFFIPointer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("clear"), &StreamPeerCFFIPointer::clear);
 
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "pointer", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT, CFFIPointer::get_class_static()), "set_pointer", "get_pointer");
-	ADD_PROPERTY(PropertyInfo(Variant::INT, "size"), "set_size", "get_size");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "size_in_bytes"), "set_size_in_bytes", "get_size_in_bytes");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "size", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_DEFAULT & ~PROPERTY_USAGE_STORAGE), "set_size", "get_size");
 }
 
 }
