@@ -1,5 +1,8 @@
 # Changelog
-## [Unreleased](https://github.com/gilzoide/cffi-gdextension/compare/0.1.0...HEAD)
+## [Unreleased](https://github.com/gilzoide/cffi-gdextension/compare/0.2.0...HEAD)
+
+
+## [0.2.0](https://github.com/gilzoide/cffi-gdextension/releases/tag/0.2.0)
 ### Added
 - Support for accessing global variables with `CFFILibraryHandle.get_global`
 - `CFFIType.alloc_array` to allocate an array of values
