@@ -33,7 +33,8 @@ public:
 	static Ref<CFFIPointer> memcpy(Ref<CFFIPointer> dest, Ref<CFFIPointer> src, int64_t size_bytes);
 	static Ref<CFFIPointer> memmove(Ref<CFFIPointer> dest, Ref<CFFIPointer> src, int64_t size_bytes);
 	static Ref<CFFIPointer> memset(Ref<CFFIPointer> dest, int byte_value, int64_t size_bytes);
-	static bool memcmp(Ref<CFFIPointer> s1, Ref<CFFIPointer> s2, int64_t size_bytes);
+	static int memcmp(Ref<CFFIPointer> s1, Ref<CFFIPointer> s2, int64_t size_bytes);
+	static bool memequal(Ref<CFFIPointer> s1, Ref<CFFIPointer> s2, int64_t size_bytes);
 
 	static CFFI *get_singleton();
 	static CFFI *get_or_create_singleton();

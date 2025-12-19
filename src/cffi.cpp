@@ -107,11 +107,15 @@ Ref<CFFIPointer> CFFI::memset(Ref<CFFIPointer> dest, int byte_value, int64_t siz
 	return dest;
 }
 
-bool CFFI::memcmp(Ref<CFFIPointer> s1, Ref<CFFIPointer> s2, int64_t size_bytes) {
+int CFFI::memcmp(Ref<CFFIPointer> s1, Ref<CFFIPointer> s2, int64_t size_bytes) {
 	if (s1.is_null() || s2.is_null()) {
 		return s1.is_null() != s2.is_null();
 	}
-	return ::memcmp(s1->address_offset_by(0), s2->address_offset_by(0), size_bytes) == 0;
+	return ::memcmp(s1->address_offset_by(0), s2->address_offset_by(0), size_bytes);
+}
+
+bool CFFI::memequal(Ref<CFFIPointer> s1, Ref<CFFIPointer> s2, int64_t size_bytes) {
+	return memcmp(s1, s2, size_bytes) == 0;
 }
 
 void CFFI::_bind_methods() {
@@ -125,6 +129,7 @@ void CFFI::_bind_methods() {
 	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("memmove", "dest", "src", "size_bytes"), &CFFI::memmove);
 	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("memset", "dest", "byte_value", "size_bytes"), &CFFI::memset);
 	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("memcmp", "s1", "s2", "size_bytes"), &CFFI::memcmp);
+	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("memequal", "s1", "s2", "size_bytes"), &CFFI::memequal);
 }
 
 CFFI *CFFI::get_singleton() {
