@@ -1,5 +1,6 @@
 #include "cffi.hpp"
 #include "cffi_library_handle.hpp"
+#include "cffi_pointer.hpp"
 #include "cffi_type.hpp"
 
 #include <godot_cpp/classes/engine.hpp>
@@ -86,6 +87,33 @@ PackedByteArray CFFI::null_terminated_wchar_buffer(const String& str) {
 	return buffer;
 }
 
+Ref<CFFIPointer> CFFI::memcpy(Ref<CFFIPointer> dest, Ref<CFFIPointer> src, int64_t size_bytes) {
+	ERR_FAIL_COND_V(dest.is_null(), nullptr);
+	ERR_FAIL_COND_V(src.is_null(), nullptr);
+	::memcpy(dest->address_offset_by(0), src->address_offset_by(0), size_bytes);
+	return dest;
+}
+
+Ref<CFFIPointer> CFFI::memmove(Ref<CFFIPointer> dest, Ref<CFFIPointer> src, int64_t size_bytes) {
+	ERR_FAIL_COND_V(dest.is_null(), nullptr);
+	ERR_FAIL_COND_V(src.is_null(), nullptr);
+	::memmove(dest->address_offset_by(0), src->address_offset_by(0), size_bytes);
+	return dest;
+}
+
+Ref<CFFIPointer> CFFI::memset(Ref<CFFIPointer> dest, int byte_value, int64_t size_bytes) {
+	ERR_FAIL_COND_V(dest.is_null(), nullptr);
+	::memset(dest->address_offset_by(0), byte_value, size_bytes);
+	return dest;
+}
+
+bool CFFI::memcmp(Ref<CFFIPointer> s1, Ref<CFFIPointer> s2, int64_t size_bytes) {
+	if (s1.is_null() || s2.is_null()) {
+		return s1.is_null() != s2.is_null();
+	}
+	return ::memcmp(s1->address_offset_by(0), s2->address_offset_by(0), size_bytes) == 0;
+}
+
 void CFFI::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("open", "name_or_path"), &CFFI::open);
 	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("null_terminated_ascii_buffer", "str"), &CFFI::null_terminated_ascii_buffer);
@@ -93,6 +121,10 @@ void CFFI::_bind_methods() {
 	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("null_terminated_utf16_buffer", "str"), &CFFI::null_terminated_utf16_buffer);
 	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("null_terminated_utf32_buffer", "str"), &CFFI::null_terminated_utf32_buffer);
 	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("null_terminated_wchar_buffer", "str"), &CFFI::null_terminated_wchar_buffer);
+	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("memcpy", "dest", "src", "size_bytes"), &CFFI::memcpy);
+	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("memmove", "dest", "src", "size_bytes"), &CFFI::memmove);
+	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("memset", "dest", "byte_value", "size_bytes"), &CFFI::memset);
+	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("memcmp", "s1", "s2", "size_bytes"), &CFFI::memcmp);
 }
 
 CFFI *CFFI::get_singleton() {

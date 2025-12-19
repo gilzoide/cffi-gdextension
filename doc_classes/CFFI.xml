@@ -8,6 +8,49 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="memcmp" qualifiers="static">
+			<return type="bool" />
+			<param index="0" name="s1" type="CFFIPointer" />
+			<param index="1" name="s2" type="CFFIPointer" />
+			<param index="2" name="size_bytes" type="int" />
+			<description>
+				Compares the first [param size_bytes] from [param s1] against [param s2].
+				If both [param s1] and [param s2] are [code]null[/code], returns [code]true[/code].
+				If only one of them is [code]null[/code] but the other is not, returns [code]false[/code].
+				Otherwise, returns whether memory pointed to by [param s1] and [param s2] contains the same first [param size_bytes] bytes.
+			</description>
+		</method>
+		<method name="memcpy" qualifiers="static">
+			<return type="CFFIPointer" />
+			<param index="0" name="dest" type="CFFIPointer" />
+			<param index="1" name="src" type="CFFIPointer" />
+			<param index="2" name="size_bytes" type="int" />
+			<description>
+				Copies [param size_bytes] bytes of memory from [param src] to [param dest].
+				If either [param src] or [param dest] is [code]null[/code], this function fails and returns [code]null[/code]. Otherwise, [param dest] is returned.
+				[b]Warning:[/b] if memory pointed to by [param dest] and [param src] might overlap, use [method memmove] instead.
+			</description>
+		</method>
+		<method name="memmove" qualifiers="static">
+			<return type="CFFIPointer" />
+			<param index="0" name="dest" type="CFFIPointer" />
+			<param index="1" name="src" type="CFFIPointer" />
+			<param index="2" name="size_bytes" type="int" />
+			<description>
+				Copies [param size_bytes] bytes of memory from [param src] to [param dest]. Memory pointed to by [param dest] and [param src] may overlap, the copy is always done in a non-destructive manner.
+				If either [param src] or [param dest] is [code]null[/code], this function fails and returns [code]null[/code]. Otherwise, [param dest] is returned.
+			</description>
+		</method>
+		<method name="memset" qualifiers="static">
+			<return type="CFFIPointer" />
+			<param index="0" name="dest" type="CFFIPointer" />
+			<param index="1" name="byte_value" type="int" />
+			<param index="2" name="size_bytes" type="int" />
+			<description>
+				Writes [param size_bytes] bytes of value [param byte_value] to [param dest].
+				If [param dest] is [code]null[/code], this function fails and returns [code]null[/code]. Otherwise, [param dest] is returned.
+			</description>
+		</method>
 		<method name="null_terminated_ascii_buffer" qualifiers="static">
 			<return type="PackedByteArray" />
 			<param index="0" name="str" type="String" />
