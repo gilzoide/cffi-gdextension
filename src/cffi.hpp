@@ -37,7 +37,7 @@ protected:
 	static void _bind_methods();
 
 private:
-	static CFFI *instance;
+	static Ref<CFFI> instance;
 };
 
 }
