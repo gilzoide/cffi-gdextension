@@ -96,25 +96,24 @@ void CFFI::_bind_methods() {
 }
 
 CFFI *CFFI::get_singleton() {
-	return instance;
+	return instance.ptr();
 }
 
 CFFI *CFFI::get_or_create_singleton() {
-	if (!instance) {
-		instance = memnew(CFFI);
-		Engine::get_singleton()->register_singleton(CFFI::get_class_static(), instance);
+	if (instance.is_null()) {
+		instance.instantiate();
+		Engine::get_singleton()->register_singleton(CFFI::get_class_static(), instance.ptr());
 	}
-	return instance;
+	return instance.ptr();
 }
 
 void CFFI::delete_singleton() {
-	if (instance) {
+	if (instance.is_valid()) {
 		Engine::get_singleton()->unregister_singleton(CFFI::get_class_static());
-		memdelete(instance);
-		instance = nullptr;
+		instance.unref();
 	}
 }
 
-CFFI *CFFI::instance;
+Ref<CFFI> CFFI::instance;
 
 }
