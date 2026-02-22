@@ -4,9 +4,13 @@
 - `CFFI.memcpy` and `CFFI.memmove` for copying memory from one pointer to another
 - `CFFI.memset` to fill memory from a pointer with a single byte value
 - `CFFI.memcmp` and `CFFI.memequal` to compare memory from two pointers
+- Support for Android devices with 16KB page size
 
 ### Fixed
 - macOS universal build for x86_64
+
+### Changed
+- Updated godot-cpp to branch `godot-4.5-stable`
 
 
 ## [0.2.0](https://github.com/gilzoide/cffi-gdextension/releases/tag/0.2.0)
