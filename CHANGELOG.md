@@ -1,5 +1,7 @@
 # Changelog
 ## [Unreleased](https://github.com/gilzoide/cffi-gdextension/compare/0.2.0...HEAD)
+### Fixed
+- macOS universal build for x86_64
 
 
 ## [0.2.0](https://github.com/gilzoide/cffi-gdextension/releases/tag/0.2.0)
