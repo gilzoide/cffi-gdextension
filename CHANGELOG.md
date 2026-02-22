@@ -1,5 +1,9 @@
 # Changelog
 ## [Unreleased](https://github.com/gilzoide/cffi-gdextension/compare/0.2.0...HEAD)
+### Added
+- `CFFI.memcpy` and `CFFI.memmove` for copying memory from one pointer to another
+- `CFFI.memset` to fill memory from a pointer with a single byte value
+- `CFFI.memcmp` and `CFFI.memequal` to compare memory from two pointers
 
 
 ## [0.2.0](https://github.com/gilzoide/cffi-gdextension/releases/tag/0.2.0)

@@ -7,6 +7,7 @@ using namespace godot;
 
 namespace cffi {
 
+class CFFIPointer;
 class CFFILibraryHandle;
 
 /**
@@ -28,6 +29,12 @@ public:
 	static PackedByteArray null_terminated_utf16_buffer(const String& str);
 	static PackedByteArray null_terminated_utf32_buffer(const String& str);
 	static PackedByteArray null_terminated_wchar_buffer(const String& str);
+
+	static Ref<CFFIPointer> memcpy(Ref<CFFIPointer> dest, Ref<CFFIPointer> src, int64_t size_bytes);
+	static Ref<CFFIPointer> memmove(Ref<CFFIPointer> dest, Ref<CFFIPointer> src, int64_t size_bytes);
+	static Ref<CFFIPointer> memset(Ref<CFFIPointer> dest, int byte_value, int64_t size_bytes);
+	static int memcmp(Ref<CFFIPointer> s1, Ref<CFFIPointer> s2, int64_t size_bytes);
+	static bool memequal(Ref<CFFIPointer> s1, Ref<CFFIPointer> s2, int64_t size_bytes);
 
 	static CFFI *get_singleton();
 	static CFFI *get_or_create_singleton();
