@@ -81,3 +81,15 @@ func _ready():
 	var print_int_fptr = CFFI.create_function(func(val): print(val), "void", ["int"])
 	print(print_int_fptr, print_int_fptr.callable)
 	call_function_int.invoke(print_int_fptr, 7)
+	
+	# Memcpy
+	var int_array_size = 5
+	var int_array = CFFI["int"].alloc_array(int_array_size)
+	for i in int_array_size:
+		int_array.set_value(i, i)
+	
+	var int_ptr = CFFI["int"].alloc()
+	assert(int_ptr.get_value() == 0)
+	for i in int_array_size:
+		CFFI.memcpy(int_ptr, int_array.offset_by(1), int_ptr.get_element_type().get_size())
+		assert(int_ptr.get_value() == int_array.get_value(1))
