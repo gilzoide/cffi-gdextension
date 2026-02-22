@@ -5,6 +5,9 @@
 - `CFFI.memset` to fill memory from a pointer with a single byte value
 - `CFFI.memcmp` and `CFFI.memequal` to compare memory from two pointers
 
+### Fixed
+- macOS universal build for x86_64
+
 
 ## [0.2.0](https://github.com/gilzoide/cffi-gdextension/releases/tag/0.2.0)
 ### Added

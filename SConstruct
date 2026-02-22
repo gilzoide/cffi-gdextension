@@ -10,68 +10,11 @@ env.Alias("compiledb", compiledb)
 
 # Setup variant build dir for each setup
 build_dir = f"build/{env["suffix"][1:]}"
+env["build_dir"] = build_dir
 env.VariantDir(build_dir, "src", duplicate=False)
 
 # libffi stuff
-target_triple_map = {
-    "windows": {
-        "x86_64": "x86_64-windows",
-        "x86_32": "i686-windows",
-    },
-    "linux": {
-        "x86_64": "x86_64-linux",
-        "x86_32": "i686-linux",
-        "arm64": "arm64-linux",
-    },
-    "macos": {
-        "universal": "arm64-macos",
-        "arm64": "arm64-macos",
-        "x86_64": "x86_64-macos",
-    },
-    "ios": {
-        "universal": "arm64-ios",
-        "arm64": "arm64-ios",
-    },
-    "android": {
-        "arm64": "arm64-android",
-        "arm32": "armv7-android",
-        "x86_64": "x86_64-android",
-        "x86_32": "i686-android",
-    },
-}
-
-target_triple = target_triple_map[env["platform"]][env["arch"]]
-ffi_output = f"{build_dir}/libffi"
-ffi_autogen = env.Command(
-    f"lib/libffi/configure",
-    [],
-    "cd lib/libffi && ./autogen.sh"
-)
-ffi_configure = env.Command(
-    f"{ffi_output}/Makefile",
-    ffi_autogen,
-    (
-        f"mkdir -p {ffi_output}"
-        f" && cd {ffi_output}"
-        f" && ../../../lib/libffi/configure --disable-shared"
-            f" --host {target_triple}"
-            f" \"CC={env["CC"]}\""
-            f" \"CXX={env["CXX"]}\""
-            f" \"CFLAGS={env["CCFLAGS"]}\""
-    )
-)
-ffi_staticlib = env.Command(
-    f"{ffi_output}/.libs/libffi.a",
-    ffi_configure,
-    f"make -C {ffi_output}"
-)
-ffi_h = env.SideEffect(f"{ffi_output}/include/ffi.h", ffi_configure)
-env.Append(
-    CPPPATH=f"{ffi_output}/include",
-    LIBS=[ffi_staticlib],
-)
-# avoid caching single files in CI
-env.NoCache([ffi_autogen, ffi_configure, ffi_staticlib])
+env.Tool("libffi", toolpath=["tools"])
 
 env.Append(CXXFLAGS=[
     # Shared Library suffix, for dlopen/LoadLibrary
@@ -94,6 +37,5 @@ library = env.SharedLibrary(
     f"addons/cffi/build/libcffi{env["suffix"]}{env["SHLIBSUFFIX"]}",
     source=sources,
 )
-env.Depends(library, ffi_h)
 
 Default(library)
