@@ -3,9 +3,42 @@
 #include "cffi_pointer.hpp"
 #include "cffi_type.hpp"
 
+#include <type_traits>
+
 #include <godot_cpp/classes/engine.hpp>
 
 namespace cffi {
+
+template<typename T, typename Map> void register_alias(Map& defined_types, const String& name) {
+	if constexpr (std::is_unsigned_v<T>) {
+		if constexpr (sizeof(T) == sizeof(uint8_t)) {
+			defined_types[name] = defined_types["uint8_t"];
+		}
+		if constexpr (sizeof(T) == sizeof(uint16_t)) {
+			defined_types[name] = defined_types["uint16_t"];
+		}
+		if constexpr (sizeof(T) == sizeof(uint32_t)) {
+			defined_types[name] = defined_types["uint32_t"];
+		}
+		if constexpr (sizeof(T) == sizeof(uint64_t)) {
+			defined_types[name] = defined_types["uint64_t"];
+		}
+	}
+	else {
+		if constexpr (sizeof(T) == sizeof(int8_t)) {
+			defined_types[name] = defined_types["int8_t"];
+		}
+		if constexpr (sizeof(T) == sizeof(int16_t)) {
+			defined_types[name] = defined_types["int16_t"];
+		}
+		if constexpr (sizeof(T) == sizeof(int32_t)) {
+			defined_types[name] = defined_types["int32_t"];
+		}
+		if constexpr (sizeof(T) == sizeof(int64_t)) {
+			defined_types[name] = defined_types["int64_t"];
+		}
+	}
+}
 
 CFFI::CFFI() {
 	defined_types["void"] = Ref<CFFIType>(memnew(CFFIType("void", ffi_type_void)));
@@ -46,6 +79,11 @@ CFFI::CFFI() {
 	defined_types["uint32_t"] = defined_types["uint32"];
 	defined_types["int64_t"] = defined_types["sint64"];
 	defined_types["uint64_t"] = defined_types["uint64"];
+
+	register_alias<size_t>(defined_types, "size_t");
+	register_alias<ssize_t>(defined_types, "ssize_t");
+	register_alias<intptr_t>(defined_types, "intptr_t");
+	register_alias<uintptr_t>(defined_types, "uintptr_t");
 }
 
 Ref<CFFILibraryHandle> CFFI::open(const String& name) const {
