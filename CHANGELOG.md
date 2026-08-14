@@ -1,5 +1,8 @@
 # Changelog
 ## [Unreleased](https://github.com/gilzoide/cffi-gdextension/compare/0.3.0...HEAD)
+### Added
+- `CFFI.get_pointer` for returning the inner pointer from Strings and Packed Arrays.
+  Extremely dangerous (as with anything involving raw pointers), make sure you know what you're doing!
 
 
 ## [0.3.0](https://github.com/gilzoide/cffi-gdextension/releases/tag/0.3.0)

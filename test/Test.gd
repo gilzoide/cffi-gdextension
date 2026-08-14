@@ -96,6 +96,8 @@ func _ready():
 	
 	# Memset + get_pointer
 	var bytes = PackedByteArray([1, 2, 3, 4, 5])
+	for i in bytes:
+		assert(i != 0)
 	var bytes_ptr = CFFI.get_pointer(bytes)
 	CFFI.memset(bytes_ptr, 0, bytes.size())
 	for i in bytes:
