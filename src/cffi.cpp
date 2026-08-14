@@ -1,4 +1,5 @@
 #include "cffi.hpp"
+#include "cffi_function.hpp"
 #include "cffi_library_handle.hpp"
 #include "cffi_pointer.hpp"
 #include "cffi_type.hpp"
@@ -169,6 +170,64 @@ bool CFFI::memequal(Ref<CFFIPointer> s1, Ref<CFFIPointer> s2, int64_t size_bytes
 	return memcmp(s1, s2, size_bytes) == 0;
 }
 
+Ref<CFFIPointer> CFFI::get_pointer(const Variant& value) {
+	switch (value.get_type()) {
+		case Variant::Type::NIL: {
+			return nullptr;
+		}
+		case Variant::Type::STRING: {
+			String s = value;
+			return memnew(CFFIPointer(defined_types["char32_t"], (uint8_t *) s.ptr()));
+		}
+		case Variant::Type::PACKED_BYTE_ARRAY: {
+			PackedByteArray a = value;
+			return memnew(CFFIPointer(defined_types["uint8_t"], (uint8_t *) a.ptr()));
+		}
+		case Variant::Type::PACKED_INT32_ARRAY: {
+			PackedInt32Array a = value;
+			return memnew(CFFIPointer(defined_types["int32_t"], (uint8_t *) a.ptr()));
+		}
+		case Variant::Type::PACKED_INT64_ARRAY: {
+			PackedInt64Array a = value;
+			return memnew(CFFIPointer(defined_types["int64_t"], (uint8_t *) a.ptr()));
+		}
+		case Variant::Type::PACKED_FLOAT32_ARRAY: {
+			PackedFloat32Array a = value;
+			return memnew(CFFIPointer(defined_types["float"], (uint8_t *) a.ptr()));
+		}
+		case Variant::Type::PACKED_FLOAT64_ARRAY: {
+			PackedFloat64Array a = value;
+			return memnew(CFFIPointer(defined_types["double"], (uint8_t *) a.ptr()));
+		}
+		case Variant::Type::PACKED_VECTOR2_ARRAY: {
+			PackedVector2Array a = value;
+			return memnew(CFFIPointer(defined_types["real_t"], (uint8_t *) a.ptr()));
+		}
+		case Variant::Type::PACKED_VECTOR3_ARRAY: {
+			PackedVector3Array a = value;
+			return memnew(CFFIPointer(defined_types["real_t"], (uint8_t *) a.ptr()));
+		}
+		case Variant::Type::PACKED_VECTOR4_ARRAY: {
+			PackedVector4Array a = value;
+			return memnew(CFFIPointer(defined_types["real_t"], (uint8_t *) a.ptr()));
+		}
+		case Variant::Type::PACKED_COLOR_ARRAY: {
+			PackedColorArray a = value;
+			return memnew(CFFIPointer(defined_types["float"], (uint8_t *) a.ptr()));
+		}
+
+		case Variant::Type::OBJECT:
+			if (auto pointer_value = Object::cast_to<CFFIPointer>(value)) {
+				return pointer_value;
+			}
+			break;
+
+		default:
+			break;
+	}
+	ERR_FAIL_V_MSG(nullptr, "Cannot extract pointer from " + Variant::get_type_name(value.get_type()));
+}
+
 void CFFI::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("open", "name_or_path"), &CFFI::open);
 	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("null_terminated_ascii_buffer", "str"), &CFFI::null_terminated_ascii_buffer);
@@ -181,6 +240,7 @@ void CFFI::_bind_methods() {
 	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("memset", "dest", "byte_value", "size_bytes"), &CFFI::memset);
 	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("memcmp", "s1", "s2", "size_bytes"), &CFFI::memcmp);
 	ClassDB::bind_static_method(CFFI::get_class_static(), D_METHOD("memequal", "s1", "s2", "size_bytes"), &CFFI::memequal);
+	ClassDB::bind_method(D_METHOD("get_pointer", "value"), &CFFI::get_pointer);
 }
 
 CFFI *CFFI::get_singleton() {
