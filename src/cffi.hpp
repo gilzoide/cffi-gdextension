@@ -13,8 +13,8 @@ class CFFILibraryHandle;
 /**
  * CFFI singleton, the global FFI type scope and entrypoint for opening libraries.
  */
-class CFFI : public CFFIScope {
-	GDCLASS(CFFI, CFFIScope);
+class CFFI : public Object {
+	GDCLASS(CFFI, Object);
 public:
 	CFFI();
 	/**
@@ -38,15 +38,25 @@ public:
 
 	Ref<CFFIPointer> get_pointer(const Variant& string_or_packed_array);
 
+	// from CFFIScope
+	Ref<CFFIScope> get_scope() const;
+	Ref<CFFIType> find_type(const String& name) const;
+	Ref<CFFIStructType> define_struct(const String& name, const Dictionary& fields);
+	Ref<CFFICallableFunction> create_function(const Callable& callable, const Variant& return_type, const Array& argument_types);
+
+	// Singleton stuff
 	static CFFI *get_singleton();
 	static CFFI *get_or_create_singleton();
 	static void delete_singleton();
 
 protected:
 	static void _bind_methods();
+	bool _get(const StringName& property_name, Variant& r_value) const;
+
+	Ref<CFFIScope> scope;
 
 private:
-	static Ref<CFFI> instance;
+	static CFFI *instance;
 };
 
 }

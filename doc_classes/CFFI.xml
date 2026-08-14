@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<class name="CFFI" inherits="CFFIScope" api_type="extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+<class name="CFFI" inherits="Object" api_type="extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
 	<brief_description>
 		The global FFI type scope and entrypoint for opening libraries.
 	</brief_description>
@@ -8,13 +8,44 @@
 	<tutorials>
 	</tutorials>
 	<methods>
+		<method name="create_function">
+			<return type="CFFICallableFunction" />
+			<param index="0" name="callable" type="Callable" />
+			<param index="1" name="return_type" type="Variant" />
+			<param index="2" name="argument_types" type="Array" default="[]" />
+			<description>
+				Create a new native function from a [Callable] and the function's prototype.
+				This way you can pass Callables to native code as function pointers. You are responsible for keeping the [CFFICallableFunction] alive while native code has access to it.
+				You are responsible for passing the correct return type and array of argument types. Types may be either [CFFIType] or a String, for example [code]"int"[/code] or [code]"const char *"[/code].
+				If [param callable] or any of the passed types are not valid, [code]null[/code] is returned and an error printed.
+			</description>
+		</method>
+		<method name="define_struct">
+			<return type="CFFIStructType" />
+			<param index="0" name="name" type="String" />
+			<param index="1" name="fields" type="Dictionary" />
+			<description>
+				Defines a new struct type.
+				[param name] cannot have any pointer levels.
+				If a struct with the same name is found in the global scope, [code]null[/code] is returned and an error printed.
+			</description>
+		</method>
+		<method name="find_type" qualifiers="const">
+			<return type="CFFIType" />
+			<param index="0" name="name" type="String" />
+			<description>
+				Finds a type by [param name].
+				Pointers and CV qualifiers are supported.
+				This method is called when accessing properties by name, so that [code]CFFI["int"][/code] returns the [CFFIType] for [code]int[/code].
+			</description>
+		</method>
 		<method name="get_pointer">
 			<return type="CFFIPointer" />
 			<param index="0" name="value" type="Variant" />
 			<description>
 				Returns a pointer to the memory of [param value].
-				If [param value] is a [String], returns a pointer to the first character of the string.
-				If [param value] is one of the Packed Array types, returns a pointer to the first element of the array.
+				If [param value] is a [String], returns a pointer to its first character.
+				If [param value] is one of the Packed Array types, returns a pointer to its first element.
 				Instances of [CFFIPointer] are returned as-is.
 				Any other values error and return [code]null[/code].
 				Mostly useful for passing Packed Arrays to [method memcmp], [method memcpy], [method memequal], [method memmove] and [method memset].
@@ -119,4 +150,9 @@
 			</description>
 		</method>
 	</methods>
+	<members>
+		<member name="scope" type="CFFIScope" setter="" getter="get_scope">
+			The global FFI type scope. Contains all built-in types and any struct types defined via [method define_struct].
+		</member>
+	</members>
 </class>

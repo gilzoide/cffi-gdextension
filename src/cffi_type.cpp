@@ -191,10 +191,12 @@ Ref<CFFIType> CFFIType::from_variant(const Variant& var, const CFFIScope *type_s
 		return type;
 	}
 	else {
-		if (type_scope == nullptr) {
-			type_scope = CFFI::get_singleton();
+		if (type_scope) {
+			return type_scope->find_type(var);
 		}
-		return type_scope->find_type(var);
+		else {
+			return CFFI::get_singleton()->find_type(var);
+		}
 	}
 }
 

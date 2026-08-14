@@ -3,6 +3,14 @@
 ### Added
 - `CFFI.get_pointer` for returning the inner pointer from Strings and Packed Arrays.
   Extremely dangerous (as with anything involving raw pointers), make sure you know what you're doing!
+- Built-in C types `size_t`, `ssize_t`, `intptr_t`, `uintptr_t`, `char16_t`, `char32_t` and Godot's `real_t`
+
+### Changed
+- **Breaking**: `CFFI` now inherits from `Object` instead of `CFFIScope`
+  + The API provided by `CFFIScope` was replicated into `CFFI`, so this change will only break if trying to cast CFFI to CFFIScope
+
+### Fixed
+- Godot 4.7 warning: `add_singleton: RefCounted singleton 'CFFI' will be disallowed soon; raw pointer will dangle when last Ref is released. Use Object singleton.`
 
 
 ## [0.3.0](https://github.com/gilzoide/cffi-gdextension/releases/tag/0.3.0)

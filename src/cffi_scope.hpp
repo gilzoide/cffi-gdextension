@@ -51,8 +51,12 @@ protected:
 	bool _get(const StringName& property_name, Variant& r_value) const;
 	static void _bind_methods();
 
+	void setup_builtin_types();
+
 	HashMap<String, Ref<CFFIType>> defined_types;
 	static const HashMap<String, Ref<CFFIType>>& get_globally_defined_types();
+
+	friend class CFFI;
 };
 
 }
