@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://ce22iu6f7ks31"]
+[gd_scene format=3 uid="uid://ce22iu6f7ks31"]
 
 [ext_resource type="Script" uid="uid://pg1olveh3l3b" path="res://Test.gd" id="1_fwhqs"]
 
-[node name="Message" type="Label"]
+[node name="Message" type="Label" unique_id=776804386]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

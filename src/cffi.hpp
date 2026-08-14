@@ -36,6 +36,8 @@ public:
 	static int memcmp(Ref<CFFIPointer> s1, Ref<CFFIPointer> s2, int64_t size_bytes);
 	static bool memequal(Ref<CFFIPointer> s1, Ref<CFFIPointer> s2, int64_t size_bytes);
 
+	Ref<CFFIPointer> get_pointer(const Variant& string_or_packed_array);
+
 	static CFFI *get_singleton();
 	static CFFI *get_or_create_singleton();
 	static void delete_singleton();

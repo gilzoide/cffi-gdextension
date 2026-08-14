@@ -93,3 +93,10 @@ func _ready():
 	for i in int_array_size:
 		CFFI.memcpy(int_ptr, int_array.offset_by(1), int_ptr.get_element_type().get_size())
 		assert(int_ptr.get_value() == int_array.get_value(1))
+	
+	# Memset + get_pointer
+	var bytes = PackedByteArray([1, 2, 3, 4, 5])
+	var bytes_ptr = CFFI.get_pointer(bytes)
+	CFFI.memset(bytes_ptr, 0, bytes.size())
+	for i in bytes:
+		assert(i == 0)
