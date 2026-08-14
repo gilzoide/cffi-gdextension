@@ -10,7 +10,15 @@
 namespace cffi {
 
 template<typename T, typename Map> void register_alias(Map& defined_types, const String& name) {
-	if constexpr (std::is_unsigned_v<T>) {
+	if constexpr (std::is_floating_point_v<T>) {
+		if constexpr (sizeof(T) == sizeof(float)) {
+			defined_types[name] = defined_types["float"];
+		}
+		if constexpr (sizeof(T) == sizeof(double)) {
+			defined_types[name] = defined_types["double"];
+		}
+	}
+	else if constexpr (std::is_unsigned_v<T>) {
 		if constexpr (sizeof(T) == sizeof(uint8_t)) {
 			defined_types[name] = defined_types["uint8_t"];
 		}
@@ -84,6 +92,11 @@ CFFI::CFFI() {
 	register_alias<ssize_t>(defined_types, "ssize_t");
 	register_alias<intptr_t>(defined_types, "intptr_t");
 	register_alias<uintptr_t>(defined_types, "uintptr_t");
+
+	register_alias<char16_t>(defined_types, "char16_t");
+	register_alias<char32_t>(defined_types, "char32_t");
+
+	register_alias<real_t>(defined_types, "real_t");
 }
 
 Ref<CFFILibraryHandle> CFFI::open(const String& name) const {
