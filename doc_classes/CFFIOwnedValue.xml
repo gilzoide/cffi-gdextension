@@ -8,12 +8,9 @@
 	</description>
 	<tutorials>
 	</tutorials>
-	<methods>
-		<method name="get_base_address" qualifiers="const">
-			<return type="CFFIPointer" />
-			<description>
-				Get base address pointer, alias for [code]offset_by(0)[/code].
-			</description>
-		</method>
-	</methods>
+	<members>
+		<member name="base_address" type="CFFIPointer" setter="" getter="get_base_address">
+			Base address pointer, alias for [code]offset_by(0)[/code].
+		</member>
+	</members>
 </class>

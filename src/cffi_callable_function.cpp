@@ -1,6 +1,5 @@
 #include "cffi_callable_function.hpp"
 #include "cffi_type.hpp"
-#include "godot_cpp/variant/utility_functions.hpp"
 
 namespace cffi {
 

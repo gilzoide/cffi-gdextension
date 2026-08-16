@@ -235,6 +235,9 @@ void CFFIPointer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("to_vector4_array", "length"), &CFFIPointer::to_vector4_array);
 	ClassDB::bind_method(D_METHOD("to_color_array", "length"), &CFFIPointer::to_color_array);
 	ClassDB::bind_method(D_METHOD("to_dictionary"), &CFFIPointer::to_dictionary);
+
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "address", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NONE), "", "get_address");
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "element_type", PROPERTY_HINT_NONE, CFFIType::get_class_static(), PROPERTY_USAGE_NONE), "", "get_element_type");
 }
 
 bool CFFIPointer::_get(const StringName& property_name, Variant& r_value) const {

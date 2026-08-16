@@ -35,19 +35,6 @@
 				[param size] represents the number of elements to duplicate. Must be a positive number.
 			</description>
 		</method>
-		<method name="get_address" qualifiers="const">
-			<return type="int" />
-			<description>
-				Get the pointer address as an integer.
-				Useful to compare pointers for equality.
-			</description>
-		</method>
-		<method name="get_element_type" qualifiers="const">
-			<return type="CFFIType" />
-			<description>
-				Get the type of elements pointed to by this pointer.
-			</description>
-		</method>
 		<method name="get_field" qualifiers="const">
 			<return type="CFFIPointer" />
 			<param index="0" name="field_name" type="StringName" />
@@ -229,4 +216,13 @@
 			</description>
 		</method>
 	</methods>
+	<members>
+		<member name="address" type="int" setter="" getter="get_address">
+			Pointer address as an integer.
+			Useful to compare pointers for equality.
+		</member>
+		<member name="element_type" type="CFFIType" setter="" getter="get_element_type">
+			Type of elements pointed to by this pointer.
+		</member>
+	</members>
 </class>
