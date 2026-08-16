@@ -28,14 +28,7 @@ CFFIOwnedValue::~CFFIOwnedValue() {
 	}
 }
 
-Ref<CFFIPointer> CFFIOwnedValue::get_base_address() const {
-	return offset_by(0);
-}
-
 void CFFIOwnedValue::_bind_methods() {
-	ClassDB::bind_method(D_METHOD("get_base_address"), &CFFIOwnedValue::get_base_address);
-
-	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "base_address", PROPERTY_HINT_NONE, CFFIPointer::get_class_static(), PROPERTY_USAGE_NONE), "", "get_base_address");
 }
 
 String CFFIOwnedValue::_to_string() const {

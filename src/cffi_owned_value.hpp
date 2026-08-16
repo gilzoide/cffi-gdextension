@@ -46,13 +46,6 @@ public:
 	 */
 	virtual ~CFFIOwnedValue();
 
-	/**
-	 * Get base address.
-	 *
-	 * Alias for `offset_by(0)`.
-	 */
-	Ref<CFFIPointer> get_base_address() const;
-
 protected:
 	static void _bind_methods();
 	String _to_string() const override;
