@@ -26,23 +26,16 @@
 				If [param initialize_with_zeros] is true, the allocated array will be zero-initialized. Otherwise, the allocated memory will not be initialized and may contain garbage data.
 			</description>
 		</method>
-		<method name="get_alignment" qualifiers="const">
-			<return type="int" />
-			<description>
-				Get the FFI type's alignment in bytes.
-			</description>
-		</method>
-		<method name="get_name" qualifiers="const">
-			<return type="String" />
-			<description>
-				Get the type's name.
-			</description>
-		</method>
-		<method name="get_size" qualifiers="const">
-			<return type="int" />
-			<description>
-				Get the FFI type's size in bytes.
-			</description>
-		</method>
 	</methods>
+	<members>
+		<member name="alignment" type="int" setter="" getter="get_alignment">
+			FFI type's alignment in bytes.
+		</member>
+		<member name="name" type="String" setter="" getter="get_name">
+			Type's name.
+		</member>
+		<member name="size" type="int" setter="" getter="get_size">
+			FFI type's size in bytes.
+		</member>
+	</members>
 </class>

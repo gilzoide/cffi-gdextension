@@ -206,6 +206,10 @@ void CFFIType::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_alignment"), &CFFIType::get_alignment);
 	ClassDB::bind_method(D_METHOD("alloc", "initialize_with_zeros"), &CFFIType::alloc, DEFVAL(true));
 	ClassDB::bind_method(D_METHOD("alloc_array", "size", "initialize_with_zeros"), &CFFIType::alloc_array, DEFVAL(true));
+
+	ADD_PROPERTY(PropertyInfo(Variant::STRING, "name", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NONE), "", "get_name");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "size", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NONE), "", "get_size");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "alignment", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NONE), "", "get_alignment");
 }
 
 String CFFIType::_to_string() const {
