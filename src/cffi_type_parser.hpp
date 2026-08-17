@@ -2,6 +2,7 @@
 #define __CFFI_TYPE_PARSER_HPP__
 
 #include <ffi.h>
+#include <godot_cpp/templates/local_vector.hpp>
 #include <godot_cpp/variant/string.hpp>
 
 using namespace godot;
@@ -30,10 +31,10 @@ public:
 	 */
 	const String& get_base_name() const;
 	/**
-	 * @return The parsed type's pointer level.
-	 *         If the type is not a pointer, returns 0.
+	 * Get the parsed type's array levels.
+	 * A negative array level means it's a simple pointer.
 	 */
-	int get_pointer_level() const;
+	const LocalVector<int>& get_array_levels() const;
 	/**
 	 * Get the parsed type's full name, including pointer levels.
 	 */
@@ -47,9 +48,7 @@ public:
 
 private:
 	String name;
-	int pointer_level;
-
-	bool set_name(const String& new_name);
+	LocalVector<int> array_levels;
 };
 
 }
