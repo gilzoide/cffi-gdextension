@@ -192,7 +192,9 @@ Array CFFIPointer::to_array(int length) const {
 
 Ref<CFFIPointer> CFFIPointer::get_field(const StringName& field) const {
 	auto struct_type = Object::cast_to<CFFIStructType>(element_type.ptr());
-	ERR_FAIL_COND_V_EDMSG(!struct_type, nullptr, "Only struct and union values support address_of");
+	if (!struct_type) {
+		return nullptr;
+	}
 
 	auto field_type = struct_type->type_of(field);
 	if (field_type.is_null()) {
