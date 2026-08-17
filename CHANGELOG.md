@@ -10,6 +10,7 @@
 ### Changed
 - **Breaking**: `CFFI` now inherits from `Object` instead of `CFFIScope`
   + The API provided by `CFFIScope` was replicated into `CFFI`, so this change will only break if trying to cast CFFI to CFFIScope
+- Updated libffi from v3.5.2 to [v3.8.0](https://github.com/libffi/libffi/releases/tag/v3.8.0)
 
 ### Removed
 - `CFFIOwnedValue.get_base_address`.
