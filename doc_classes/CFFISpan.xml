@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CFFISpan" inherits="RefCounted" api_type="extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+		Object that provides access to a finite number of contiguous elements in memory.
+	</brief_description>
+	<description>
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="duplicate" qualifiers="const">
+			<return type="CFFIOwnedValue" />
+			<description>
+				Duplicate data into a new [CFFIOwnedValue].
+			</description>
+		</method>
+		<method name="from" qualifiers="static">
+			<return type="CFFISpan" />
+			<param index="0" name="pointer" type="CFFIPointer" />
+			<param index="1" name="count" type="int" />
+			<description>
+				Create a new span from a pointer and a count.
+				If [param pointer] is [code]null[/code] or [param count] is negative, prints an error and returns [code]null[/code].
+			</description>
+		</method>
+		<method name="get_pointer" qualifiers="const">
+			<return type="CFFIPointer" />
+			<param index="0" name="index" type="int" />
+			<description>
+				Get a pointer for the element at [param index].
+				If the index is out of bounds, prints an error and returns [code]null[/code].
+				Alias for [code]data.offset_by(index)[/code].
+			</description>
+		</method>
+		<method name="get_string_from_ascii" qualifiers="const">
+			<return type="String" />
+			<description>
+				Get a String from this span, using ASCII encoding.
+				This span should contain elements with 1 byte, such as [code]char[/code] or [code]int8_t[/code].
+				It's an error to read ASCII strings from elements with more than 1 byte.
+			</description>
+		</method>
+		<method name="get_string_from_utf8" qualifiers="const">
+			<return type="String" />
+			<description>
+				Get a String from this span, using UTF-8 encoding.
+				This span should contain elements with 1 byte, such as [code]char[/code] or [code]int8_t[/code].
+				It's an error to read UTF-8 strings from elements with more than 1 byte.
+			</description>
+		</method>
+		<method name="get_string_from_utf16" qualifiers="const">
+			<return type="String" />
+			<description>
+				Get a String from this span, using UTF-16 encoding.
+				This span should contain elements with 2 bytes, such as [code]char16_t[/code] or [code]int16_t[/code].
+				It's an error to read UTF-16 strings from elements with any size other than 2 bytes.
+			</description>
+		</method>
+		<method name="get_string_from_utf32" qualifiers="const">
+			<return type="String" />
+			<description>
+				Get a String from this span, using UTF-32 encoding.
+				This span should contain elements with 4 bytes, such as [code]char32_t[/code] or [code]int32_t[/code].
+				It's an error to read UTF-32 strings from elements with any size other than 4 bytes.
+			</description>
+		</method>
+		<method name="get_string_from_wchar" qualifiers="const">
+			<return type="String" />
+			<description>
+				Get a String from a span of [code]wchar_t[/code].
+				This span should contain elements with [code]sizeof(wchar_t)[/code] bytes, such as [code]wchar_t[/code]. Note that the size of [code]wchar_t[/code] is platform-dependent.
+				It's an error to read wide strings from elements with any size other than [code]sizeof(wchar_t)[/code] bytes.
+			</description>
+		</method>
+		<method name="get_value" qualifiers="const">
+			<return type="Variant" />
+			<param index="0" name="index" type="int" />
+			<description>
+				Get the value at [param index].
+				If the index is out of bounds, prints an error and returns [code]null[/code].
+				Alias for [code]get_pointer(index).get_value()[/code].
+			</description>
+		</method>
+		<method name="is_empty" qualifiers="const">
+			<return type="bool" />
+			<description>
+				Returns [code]true[/code] if the span has no elements.
+			</description>
+		</method>
+		<method name="set_value" qualifiers="const">
+			<return type="bool" />
+			<param index="0" name="index" type="int" />
+			<param index="1" name="value" type="Variant" />
+			<description>
+				Sets the value at [param index].
+				If the index is out of bounds, prints an error and returns [code]false[/code].
+				Alias for [code]get_pointer(index).set_value(value)[/code].
+			</description>
+		</method>
+		<method name="subspan" qualifiers="const">
+			<return type="CFFISpan" />
+			<param index="0" name="from" type="int" />
+			<param index="1" name="count" type="int" default="-1" />
+			<description>
+				Returns part of the span from the position [param from] with [param count] elements.
+				If [param count] is -1 (as by default), returns the rest of the span starting from the given position.
+				Passing [param from] or [param count] that would grow the bounds of the span will print an error and return [code]null[/code].
+			</description>
+		</method>
+		<method name="to_array" qualifiers="const">
+			<return type="Array" />
+			<description>
+				Get an [Array] with the values of this span using [method get_value].
+			</description>
+		</method>
+		<method name="to_byte_array" qualifiers="const">
+			<return type="PackedByteArray" />
+			<description>
+				Get a copy of the memory of the span as a [PackedByteArray].
+				The size of the result [PackedByteArray] is equal to [member size_bytes].
+			</description>
+		</method>
+		<method name="to_color_array" qualifiers="const">
+			<return type="PackedColorArray" />
+			<description>
+				Get a copy of the memory of the span as a [PackedColorArray].
+				Element type must have the size of a [code]Color[/code].
+			</description>
+		</method>
+		<method name="to_float32_array" qualifiers="const">
+			<return type="PackedFloat32Array" />
+			<description>
+				Get a copy of the memory of the span as a [PackedFloat32Array].
+				Element type must have the size of a [code]float[/code].
+			</description>
+		</method>
+		<method name="to_float64_array" qualifiers="const">
+			<return type="PackedFloat64Array" />
+			<description>
+				Get a copy of the memory of the span as a [PackedFloat64Array].
+				Element type must have the size of a [code]double[/code].
+			</description>
+		</method>
+		<method name="to_int32_array" qualifiers="const">
+			<return type="PackedInt32Array" />
+			<description>
+				Get a copy of the memory of the span as a [PackedInt32Array].
+				Element type must have the size of a [code]int32_t[/code].
+			</description>
+		</method>
+		<method name="to_int64_array" qualifiers="const">
+			<return type="PackedInt64Array" />
+			<description>
+				Get a copy of the memory of the span as a [PackedInt64Array].
+				Element type must have the size of a [code]int64_t[/code].
+			</description>
+		</method>
+		<method name="to_vector2_array" qualifiers="const">
+			<return type="PackedVector2Array" />
+			<description>
+				Get a copy of the memory of the span as a [PackedVector2Array].
+				Element type must have the size of a [code]Vector2[/code].
+			</description>
+		</method>
+		<method name="to_vector3_array" qualifiers="const">
+			<return type="PackedVector3Array" />
+			<description>
+				Get a copy of the memory of the span as a [PackedVector3Array].
+				Element type must have the size of a [code]Vector3[/code].
+			</description>
+		</method>
+		<method name="to_vector4_array" qualifiers="const">
+			<return type="PackedVector4Array" />
+			<description>
+				Get a copy of the memory of the span as a [PackedVector4Array].
+				Element type must have the size of a [code]Vector4[/code].
+			</description>
+		</method>
+	</methods>
+	<members>
+		<member name="data" type="CFFIPointer" setter="" getter="get_data">
+			Pointer to the first element of the span.
+		</member>
+		<member name="element_type" type="CFFIType" setter="" getter="get_element_type">
+			Type of elements of the span.
+			Alias for [code]data.element_type[/code].
+		</member>
+		<member name="length" type="int" setter="" getter="get_length">
+			Number of elements in the span.
+		</member>
+		<member name="size_bytes" type="int" setter="" getter="get_size_bytes">
+			Size of the span in bytes.
+			Alias for [code]length * element_type.size[/code].
+		</member>
+	</members>
+</class>

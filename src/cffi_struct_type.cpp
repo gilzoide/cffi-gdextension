@@ -95,12 +95,13 @@ bool CFFIStructType::variant_to_data(const Variant& value, uint8_t *buffer) cons
 					return true;
 				}
 			}
+			break;
 		}
 
 		default:
 			break;
 	}
-	ERR_FAIL_V_EDMSG(false, String("Invalid type \"%s\" for pointer type \"%s\"") % Array::make(value.get_type_name(value.get_type()), name));
+	ERR_FAIL_V_EDMSG(false, String("Invalid type \"%s\" for struct type \"%s\"") % Array::make(value.get_type_name(value.get_type()), name));
 }
 
 ffi_type CFFIStructType::create_struct_type() {

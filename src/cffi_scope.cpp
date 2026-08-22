@@ -1,4 +1,5 @@
 #include "cffi.hpp"
+#include "cffi_array_type.hpp"
 #include "cffi_callable_function.hpp"
 #include "cffi_pointer_type.hpp"
 #include "cffi_struct_type.hpp"
@@ -56,8 +57,13 @@ Ref<CFFIType> CFFIScope::find_type(const String& name) const {
 	auto base_type = defined_types.getptr(base_name) ?: get_globally_defined_types().getptr(base_name);
 	ERR_FAIL_COND_V_EDMSG(base_type == nullptr, nullptr, String("Unknown type name: \"%s\"") % name);
 	auto type = *base_type;
-	for (int i = 0; i < parser.get_pointer_level(); i++) {
-		type = Ref<CFFIType>(memnew(CFFIPointerType(type)));
+	for (int level : parser.get_array_levels()) {
+		if (level < 0) {
+			type = Ref<CFFIType>(memnew(CFFIPointerType(type)));
+		}
+		else {
+			type = Ref<CFFIType>(memnew(CFFIArrayType(type, level)));
+		}
 	}
 	return type;
 }
@@ -65,7 +71,7 @@ Ref<CFFIType> CFFIScope::find_type(const String& name) const {
 Ref<CFFIStructType> CFFIScope::define_struct(const String& name, const Dictionary& fields) {
 	CFFITypeParser parser;
 	ERR_FAIL_COND_V_EDMSG(
-		!parser.parse(name) || parser.get_pointer_level() != 0,
+		!parser.parse(name) || !parser.get_array_levels().is_empty(),
 		nullptr,
 		String("Invalid type name: \"%s\"") % name
 	);

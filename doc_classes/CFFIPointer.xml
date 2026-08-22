@@ -78,9 +78,9 @@
 			<return type="String" />
 			<param index="0" name="length" type="int" default="-1" />
 			<description>
-				Get a String from this pointer, using UTF-16 encoding.
+				Get a String from this pointer, using UTF-32 encoding.
 				This pointer should point to elements with 4 bytes, such as [code]char32_t[/code] or [code]int32_t[/code].
-				It's an error to read UTF-16 strings from elements with any size other than 4 bytes.
+				It's an error to read UTF-32 strings from elements with any size other than 4 bytes.
 				[param length] determines the length of the string in 4-byte chars. Pass [code]-1[/code] to read null-terminated strings.
 			</description>
 		</method>
@@ -89,6 +89,8 @@
 			<param index="0" name="length" type="int" default="-1" />
 			<description>
 				Get a String from a pointer to [code]wchar_t[/code].
+				This pointer should point to elements with [code]sizeof(wchar_t)[/code] bytes, such as [code]wchar_t[/code]. Note that the size of [code]wchar_t[/code] is platform-dependent.
+				It's an error to read wide strings from elements with any size other than [code]sizeof(wchar_t)[/code] bytes.
 				[param length] determines the length of the string in [code]sizeof(wchar_t)[/code] sized chars. Pass [code]-1[/code] to read null-terminated wide strings.
 			</description>
 		</method>

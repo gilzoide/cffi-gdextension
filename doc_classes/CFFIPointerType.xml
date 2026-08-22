@@ -7,4 +7,9 @@
 	</description>
 	<tutorials>
 	</tutorials>
+	<members>
+		<member name="element_type" type="CFFIType" setter="" getter="get_element_type">
+			Type of pointed elements.
+		</member>
+	</members>
 </class>

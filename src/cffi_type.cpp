@@ -28,8 +28,8 @@ const String& CFFIType::get_name() const {
 }
 
 bool CFFIType::data_to_variant(const PackedByteArray& data, Variant& r_variant) const {
-	if (data.size() < ffi_handle.size) {
-		ERR_PRINT_ED(String("Expected at least %d bytes for %s, got %d") % Array::make((uint64_t) ffi_handle.size, name, data.size()));
+	if (data.size() < get_size()) {
+		ERR_PRINT_ED(String("Expected at least %d bytes for %s, got %d") % Array::make(get_size(), name, data.size()));
 		return false;
 	}
 

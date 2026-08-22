@@ -29,11 +29,11 @@ bool CFFIPointerType::data_to_variant(const uint8_t *ptr, Variant& r_variant) co
 
 bool CFFIPointerType::variant_to_data(const Variant& value, PackedByteArray& buffer) const {
 	int64_t previous_size = buffer.size();
-	buffer.resize(previous_size + ffi_handle.size);
+	buffer.resize(previous_size + get_size());
 	switch (value.get_type()) {
 		case Variant::Type::STRING:
 		case Variant::Type::STRING_NAME: {
-			size_t element_size = element_type->get_ffi_type().size;
+			uint64_t element_size = element_type->get_size();
 			switch (element_size) {
 				case 1:
 					buffer.append_array(CFFI::null_terminated_utf8_buffer(value));
@@ -48,7 +48,7 @@ bool CFFIPointerType::variant_to_data(const Variant& value, PackedByteArray& buf
 					break;
 
 				default:
-					ERR_FAIL_V_MSG(false, String("String is incompatible with pointer for element of size %d. Only pointers to elements of size 1, 2 or 4 are supported.") % Array::make((uint64_t) element_size));
+					ERR_FAIL_V_MSG(false, String("String is incompatible with pointer for element of size %d. Only pointers to elements of size 1, 2 or 4 are supported.") % Array::make( element_size));
 			}
 			void **ptr = (void **) (buffer.ptrw() + previous_size);
 			*ptr = ptr + 1;
@@ -130,6 +130,9 @@ bool CFFIPointerType::variant_to_data(const Variant& value, uint8_t *buffer) con
 }
 
 void CFFIPointerType::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_element_type"), &CFFIPointerType::get_element_type);
+
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "element_type", PROPERTY_HINT_NONE, CFFIType::get_class_static(), PROPERTY_USAGE_NONE), "", "get_element_type");
 }
 
 }

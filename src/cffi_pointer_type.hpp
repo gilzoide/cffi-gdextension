@@ -37,7 +37,7 @@ public:
 	/**
 	 * Write the Variant `value` into `buffer`.
 	 *
-	 * Only PackedByteArray, String and CFFIPointers are supported.
+	 * Only Packed Arrays, String and CFFIPointers are supported.
 	 *
 	 * @return True if the conversion succeeded, false otherwise.
 	 */
@@ -45,7 +45,7 @@ public:
 	/**
 	 * Write the Variant `value` into `buffer`.
 	 *
-	 * Only PackedByteArray and CFFIPointers are supported.
+	 * Only Packed Arrays and CFFIPointers are supported.
 	 *
 	 * @return True if the conversion succeeded, false otherwise.
 	 */
