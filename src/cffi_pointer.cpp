@@ -111,7 +111,7 @@ PackedInt32Array CFFIPointer::to_int32_array(int length) const {
 	ERR_FAIL_COND_V_EDMSG(element_type->get_size() != sizeof(int32_t), PackedInt32Array(), String("Element mismatch, expected int32_t, found %s") % element_type->get_name());
 	PackedInt32Array array;
 	array.resize(length);
-	memcpy(array.ptrw(), address, length);
+	memcpy(array.ptrw(), address, length * sizeof(int32_t));
 	return array;
 }
 
@@ -120,7 +120,7 @@ PackedInt64Array CFFIPointer::to_int64_array(int length) const {
 	ERR_FAIL_COND_V_EDMSG(element_type->get_size() != sizeof(int64_t), PackedInt64Array(), String("Element mismatch, expected int64_t, found %s") % element_type->get_name());
 	PackedInt64Array array;
 	array.resize(length);
-	memcpy(array.ptrw(), address, length);
+	memcpy(array.ptrw(), address, length * sizeof(int64_t));
 	return array;
 }
 
@@ -129,7 +129,7 @@ PackedFloat32Array CFFIPointer::to_float32_array(int length) const {
 	ERR_FAIL_COND_V_EDMSG(element_type->get_size() != sizeof(float), PackedFloat32Array(), String("Element mismatch, expected float, found %s") % element_type->get_name());
 	PackedFloat32Array array;
 	array.resize(length);
-	memcpy(array.ptrw(), address, length);
+	memcpy(array.ptrw(), address, length * sizeof(float));
 	return array;
 }
 
@@ -138,7 +138,7 @@ PackedFloat64Array CFFIPointer::to_float64_array(int length) const {
 	ERR_FAIL_COND_V_EDMSG(element_type->get_size() != sizeof(double), PackedFloat64Array(), String("Element mismatch, expected double, found %s") % element_type->get_name());
 	PackedFloat64Array array;
 	array.resize(length);
-	memcpy(array.ptrw(), address, length);
+	memcpy(array.ptrw(), address, length * sizeof(double));
 	return array;
 }
 
@@ -147,7 +147,7 @@ PackedVector2Array CFFIPointer::to_vector2_array(int length) const {
 	ERR_FAIL_COND_V_EDMSG(element_type->get_size() != sizeof(Vector2), PackedVector2Array(), String("Element mismatch, expected Vector2, found %s") % element_type->get_name());
 	PackedVector2Array array;
 	array.resize(length);
-	memcpy(array.ptrw(), address, length);
+	memcpy(array.ptrw(), address, length * sizeof(Vector2));
 	return array;
 }
 
@@ -156,7 +156,7 @@ PackedVector3Array CFFIPointer::to_vector3_array(int length) const {
 	ERR_FAIL_COND_V_EDMSG(element_type->get_size() != sizeof(Vector3), PackedVector3Array(), String("Element mismatch, expected Vector3, found %s") % element_type->get_name());
 	PackedVector3Array array;
 	array.resize(length);
-	memcpy(array.ptrw(), address, length);
+	memcpy(array.ptrw(), address, length * sizeof(Vector3));
 	return array;
 }
 
@@ -165,7 +165,7 @@ PackedVector4Array CFFIPointer::to_vector4_array(int length) const {
 	ERR_FAIL_COND_V_EDMSG(element_type->get_size() != sizeof(Vector4), PackedVector4Array(), String("Element mismatch, expected Vector4, found %s") % element_type->get_name());
 	PackedVector4Array array;
 	array.resize(length);
-	memcpy(array.ptrw(), address, length);
+	memcpy(array.ptrw(), address, length * sizeof(Vector4));
 	return array;
 }
 
@@ -174,7 +174,7 @@ PackedColorArray CFFIPointer::to_color_array(int length) const {
 	ERR_FAIL_COND_V_EDMSG(element_type->get_size() != sizeof(Color), PackedColorArray(), String("Element mismatch, expected Color, found %s") % element_type->get_name());
 	PackedColorArray array;
 	array.resize(length);
-	memcpy(array.ptrw(), address, length);
+	memcpy(array.ptrw(), address, length * sizeof(Color));
 	return array;
 }
 
