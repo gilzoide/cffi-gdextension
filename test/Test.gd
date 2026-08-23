@@ -102,3 +102,9 @@ func _ready():
 	CFFI.memset(bytes_ptr, 0, bytes.size())
 	for i in bytes:
 		assert(i == 0)
+	
+	
+	var int_3 = CFFI["int[3]"]
+	prints(int_3, int_3.size, int_3.alignment)
+	var int_3_instance = int_3.alloc()
+	prints(int_3_instance)
