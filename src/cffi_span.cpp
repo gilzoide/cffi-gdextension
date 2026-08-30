@@ -257,7 +257,7 @@ void CFFISpan::_bind_methods() {
 }
 
 String CFFISpan::_to_string() const {
-	return String("[%s:%s[%d] 0x%x]") % Array::make(get_class_static(), get_element_type()->get_name(), length, (uint64_t) address);
+	return String("[%s:%s[%d] 0x%x]") % Array::make(get_class(), get_element_type()->get_name(), length, (uint64_t) address);
 }
 
 }
