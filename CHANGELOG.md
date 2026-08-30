@@ -3,13 +3,23 @@
 ### Added
 - `CFFI.get_pointer` for returning the inner pointer from Strings and Packed Arrays.
   Extremely dangerous (as with anything involving raw pointers), make sure you know what you're doing!
-- Built-in C types `size_t`, `ssize_t`, `intptr_t`, `uintptr_t`, `char16_t`, `char32_t` and Godot's `real_t`
-- `CFFIPointer.address` and `CFFIPointer.element_type` properties
-- `CFFIType.alignment`, `CFFIType.name` and `CFFIType.size` properties
+- Built-in C types `size_t`, `ssize_t`, `intptr_t`, `uintptr_t`, `char16_t`, `char32_t` and Godot's `real_t`.
+- `CFFIPointer.address` and `CFFIPointer.element_type` properties.
+- `CFFIType.alignment`, `CFFIType.name` and `CFFIType.size` properties.
+- `CFFISpan`, object that provides access to a finite number of contiguous FFI elements in memory.
+  Use `CFFISpan.from` to create a span from a pointer + length.
+  Spans are also used when indexing struct fields of array type.
+- `CFFIPointerType.from` to more easily create a pointer type from the element type
+- `CFFIArrayType`: used for fixed size arrays such as `int[3]`, `float[4]` and `uint8_t[0]`.
+  Zero-sized arrays are supported inside structs and apply extra padding to it if necessary.
+  Array types are decayed to pointers when used as function arguments.
+- `CFFIOwnedArray`, analog of `CFFIOwnedValue` but for arrays.
+  Inherits from `CFFISpan` instead of `CFFIPointer`.
 
 ### Changed
 - **Breaking**: `CFFI` now inherits from `Object` instead of `CFFIScope`
   + The API provided by `CFFIScope` was replicated into `CFFI`, so this change will only break if trying to cast CFFI to CFFIScope
+- **Breaking**: `CFFIType.alloc_array` and `CFFIPointer.duplicate_array` now returns `CFFIOwnedArray` instead of `CFFIOwnedValue`.
 - Updated libffi from v3.5.2 to [v3.8.0](https://github.com/libffi/libffi/releases/tag/v3.8.0)
 
 ### Removed
@@ -18,6 +28,7 @@
 
 ### Fixed
 - Godot 4.7 warning: `add_singleton: RefCounted singleton 'CFFI' will be disallowed soon; raw pointer will dangle when last Ref is released. Use Object singleton.`
+- `CFFIPointer::to_*_array` now copies the correct number of bytes into the resulting packed array.
 
 
 ## [0.3.0](https://github.com/gilzoide/cffi-gdextension/releases/tag/0.3.0)
