@@ -159,6 +159,8 @@ void CFFIScope::setup_builtin_types() {
 	defined_types["int64_t"] = defined_types["sint64"];
 	defined_types["uint64_t"] = defined_types["uint64"];
 
+	register_alias<bool>(defined_types, "bool");
+
 	register_alias<size_t>(defined_types, "size_t");
 	register_alias<ssize_t>(defined_types, "ssize_t");
 	register_alias<intptr_t>(defined_types, "intptr_t");

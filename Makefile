@@ -10,3 +10,8 @@ download-latest-build:
 
 generate-docs:
 	$(GODOT_BIN) --path test --doctool .. --gdextension-docs
+
+test:
+	$(GODOT_BIN) --headless --quit --path test --script test_entrypoint.gd $(GODOT_ARGS)
+
+.PHONY: test download-latest-build generate-docs
