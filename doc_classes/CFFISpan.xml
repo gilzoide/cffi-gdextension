@@ -9,9 +9,9 @@
 	</tutorials>
 	<methods>
 		<method name="duplicate" qualifiers="const">
-			<return type="CFFIOwnedValue" />
+			<return type="CFFIOwnedArray" />
 			<description>
-				Duplicate data into a new [CFFIOwnedValue].
+				Duplicate data into a new [CFFIOwnedArray].
 			</description>
 		</method>
 		<method name="from" qualifiers="static">

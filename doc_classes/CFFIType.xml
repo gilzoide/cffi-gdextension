@@ -17,7 +17,7 @@
 			</description>
 		</method>
 		<method name="alloc_array">
-			<return type="CFFIOwnedValue" />
+			<return type="CFFIOwnedArray" />
 			<param index="0" name="size" type="int" />
 			<param index="1" name="initialize_with_zeros" type="bool" default="true" />
 			<description>

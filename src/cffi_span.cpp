@@ -1,4 +1,4 @@
-#include "cffi_owned_value.hpp"
+#include "cffi_owned_array.hpp"
 #include "cffi_span.hpp"
 
 #include <godot_cpp/variant/utility_functions.hpp>
@@ -8,18 +8,23 @@ namespace cffi {
 class CFFIPointerType;
 
 CFFISpan::CFFISpan() {}
-CFFISpan::CFFISpan(Ref<CFFIPointer> pointer, int64_t element_count)
-	: data(pointer)
-	, length(element_count)
+CFFISpan::CFFISpan(Ref<CFFIType> element_type, uint8_t *address, int64_t length)
+	: element_type(element_type)
+	, address(address)
+	, length(length)
+{
+}
+CFFISpan::CFFISpan(Ref<CFFIPointer> pointer, int64_t length)
+	: CFFISpan(pointer->get_element_type(), pointer->address_offset_by(0), length)
 {
 }
 
 Ref<CFFIPointer> CFFISpan::get_data() const {
-	return data;
+	return memnew(CFFIPointer(element_type, address));
 }
 
 Ref<CFFIType> CFFISpan::get_element_type() const {
-	return data->get_element_type();
+	return element_type;
 }
 
 int64_t CFFISpan::get_length() const {
@@ -27,7 +32,7 @@ int64_t CFFISpan::get_length() const {
 }
 
 int64_t CFFISpan::get_size_bytes() const {
-	ERR_FAIL_COND_V(data == nullptr, 0);
+	ERR_FAIL_COND_V(address == nullptr, 0);
 	return get_length() * get_element_type()->get_size();
 }
 
@@ -42,13 +47,14 @@ Ref<CFFISpan> CFFISpan::subspan(int from, int count) const {
 		count = length - from;
 	}
 	ERR_FAIL_COND_V(from + count > length, nullptr);
-	return memnew(CFFISpan(data->offset_by(from), count));
+	return memnew(CFFISpan(element_type, address + from * element_type->get_size(), count));
 }
 
 Ref<CFFIPointer> CFFISpan::get_pointer(int index) const {
 	ERR_FAIL_COND_V(index < 0, nullptr);
 	ERR_FAIL_COND_V(index >= length, nullptr);
-	return data->offset_by(index);
+	uint8_t *offset_address = address + index * element_type->get_size();
+	return memnew(CFFIPointer(element_type, offset_address));
 }
 
 Variant CFFISpan::get_value(int index) const {
@@ -73,137 +79,137 @@ bool CFFISpan::set_value(int index, const Variant& value) const {
 	}
 }
 
-Ref<CFFIOwnedValue> CFFISpan::duplicate() const {
-	return data->duplicate_array(length);
+Ref<CFFIOwnedArray> CFFISpan::duplicate() const {
+	return memnew(CFFIOwnedArray(element_type, length, address));
 }
 
 String CFFISpan::get_string_from_ascii() const {
-	ERR_FAIL_COND_V(data == nullptr, "");
+	ERR_FAIL_COND_V(address == nullptr, "");
 	ERR_FAIL_COND_V_EDMSG(get_element_type()->get_size() != sizeof(char), "", String("Element mismatch, expected char, found %s") % get_element_type()->get_name());
 	String s;
-	godot::internal::gdextension_interface_string_new_with_latin1_chars_and_len(s._native_ptr(), (const char *) data->address_offset_by(0), length);
+	godot::internal::gdextension_interface_string_new_with_latin1_chars_and_len(s._native_ptr(), (const char *) address, length);
 	return s;
 }
 
 String CFFISpan::get_string_from_utf8() const {
-	ERR_FAIL_COND_V(data == nullptr, "");
+	ERR_FAIL_COND_V(address == nullptr, "");
 	ERR_FAIL_COND_V_EDMSG(get_element_type()->get_size() != sizeof(char), "", String("Element mismatch, expected char, found %s") % get_element_type()->get_name());
 	String s;
-	godot::internal::gdextension_interface_string_new_with_utf8_chars_and_len(s._native_ptr(), (const char *) data->address_offset_by(0), length);
+	godot::internal::gdextension_interface_string_new_with_utf8_chars_and_len(s._native_ptr(), (const char *) address, length);
 	return s;
 }
 
 String CFFISpan::get_string_from_utf16() const {
-	ERR_FAIL_COND_V(data == nullptr, "");
+	ERR_FAIL_COND_V(address == nullptr, "");
 	ERR_FAIL_COND_V_EDMSG(get_element_type()->get_size() != sizeof(char16_t), "", String("Element mismatch, expected char16_t, found %s") % get_element_type()->get_name());
 	String s;
-	godot::internal::gdextension_interface_string_new_with_utf16_chars_and_len(s._native_ptr(), (const char16_t *) data->address_offset_by(0), length);
+	godot::internal::gdextension_interface_string_new_with_utf16_chars_and_len(s._native_ptr(), (const char16_t *) address, length);
 	return s;
 }
 
 String CFFISpan::get_string_from_utf32() const {
-	ERR_FAIL_COND_V(data == nullptr, "");
+	ERR_FAIL_COND_V(address == nullptr, "");
 	ERR_FAIL_COND_V_EDMSG(get_element_type()->get_size() != sizeof(char32_t), "", String("Element mismatch, expected char32_t, found %s") % get_element_type()->get_name());
 	String s;
-	godot::internal::gdextension_interface_string_new_with_utf32_chars_and_len(s._native_ptr(), (const char32_t *) data->address_offset_by(0), length);
+	godot::internal::gdextension_interface_string_new_with_utf32_chars_and_len(s._native_ptr(), (const char32_t *) address, length);
 	return s;
 }
 
 String CFFISpan::get_string_from_wchar() const {
-	ERR_FAIL_COND_V(data == nullptr, "");
+	ERR_FAIL_COND_V(address == nullptr, "");
 	ERR_FAIL_COND_V_EDMSG(get_element_type()->get_size() != sizeof(wchar_t), "", String("Element mismatch, expected wchar_t, found %s") % get_element_type()->get_name());
 	String s;
-	godot::internal::gdextension_interface_string_new_with_wide_chars_and_len(s._native_ptr(), (const wchar_t *) data->address_offset_by(0), length);
+	godot::internal::gdextension_interface_string_new_with_wide_chars_and_len(s._native_ptr(), (const wchar_t *) address, length);
 	return s;
 }
 
 PackedByteArray CFFISpan::to_byte_array() const {
-	ERR_FAIL_COND_V(data == nullptr, PackedByteArray());
+	ERR_FAIL_COND_V(address == nullptr, PackedByteArray());
 	PackedByteArray array;
 	array.resize(length);
-	memcpy(array.ptrw(), data->address_offset_by(0), length);
+	memcpy(array.ptrw(), address, length);
 	return array;
 }
 
 PackedInt32Array CFFISpan::to_int32_array() const {
-	ERR_FAIL_COND_V(data == nullptr, PackedInt32Array());
+	ERR_FAIL_COND_V(address == nullptr, PackedInt32Array());
 	ERR_FAIL_COND_V_EDMSG(get_element_type()->get_size() != sizeof(int32_t), PackedInt32Array(), String("Element mismatch, expected int32_t, found %s") % get_element_type()->get_name());
 	PackedInt32Array array;
 	array.resize(length);
-	memcpy(array.ptrw(), data->address_offset_by(0), length * sizeof(int32_t));
+	memcpy(array.ptrw(), address, length * sizeof(int32_t));
 	return array;
 }
 
 PackedInt64Array CFFISpan::to_int64_array() const {
-	ERR_FAIL_COND_V(data == nullptr, PackedInt64Array());
+	ERR_FAIL_COND_V(address == nullptr, PackedInt64Array());
 	ERR_FAIL_COND_V_EDMSG(get_element_type()->get_size() != sizeof(int64_t), PackedInt64Array(), String("Element mismatch, expected int64_t, found %s") % get_element_type()->get_name());
 	PackedInt64Array array;
 	array.resize(length);
-	memcpy(array.ptrw(), data->address_offset_by(0), length * sizeof(int64_t));
+	memcpy(array.ptrw(), address, length * sizeof(int64_t));
 	return array;
 }
 
 PackedFloat32Array CFFISpan::to_float32_array() const {
-	ERR_FAIL_COND_V(data == nullptr, PackedFloat32Array());
+	ERR_FAIL_COND_V(address == nullptr, PackedFloat32Array());
 	ERR_FAIL_COND_V_EDMSG(get_element_type()->get_size() != sizeof(float), PackedFloat32Array(), String("Element mismatch, expected float, found %s") % get_element_type()->get_name());
 	PackedFloat32Array array;
 	array.resize(length);
-	memcpy(array.ptrw(), data->address_offset_by(0), length * sizeof(float));
+	memcpy(array.ptrw(), address, length * sizeof(float));
 	return array;
 }
 
 PackedFloat64Array CFFISpan::to_float64_array() const {
-	ERR_FAIL_COND_V(data == nullptr, PackedFloat64Array());
+	ERR_FAIL_COND_V(address == nullptr, PackedFloat64Array());
 	ERR_FAIL_COND_V_EDMSG(get_element_type()->get_size() != sizeof(double), PackedFloat64Array(), String("Element mismatch, expected double, found %s") % get_element_type()->get_name());
 	PackedFloat64Array array;
 	array.resize(length);
-	memcpy(array.ptrw(), data->address_offset_by(0), length * sizeof(double));
+	memcpy(array.ptrw(), address, length * sizeof(double));
 	return array;
 }
 
 PackedVector2Array CFFISpan::to_vector2_array() const {
-	ERR_FAIL_COND_V(data == nullptr, PackedVector2Array());
+	ERR_FAIL_COND_V(address == nullptr, PackedVector2Array());
 	ERR_FAIL_COND_V_EDMSG(get_element_type()->get_size() != sizeof(Vector2), PackedVector2Array(), String("Element mismatch, expected Vector2, found %s") % get_element_type()->get_name());
 	PackedVector2Array array;
 	array.resize(length);
-	memcpy(array.ptrw(), data->address_offset_by(0), length * sizeof(Vector2));
+	memcpy(array.ptrw(), address, length * sizeof(Vector2));
 	return array;
 }
 
 PackedVector3Array CFFISpan::to_vector3_array() const {
-	ERR_FAIL_COND_V(data == nullptr, PackedVector3Array());
+	ERR_FAIL_COND_V(address == nullptr, PackedVector3Array());
 	ERR_FAIL_COND_V_EDMSG(get_element_type()->get_size() != sizeof(Vector3), PackedVector3Array(), String("Element mismatch, expected Vector3, found %s") % get_element_type()->get_name());
 	PackedVector3Array array;
 	array.resize(length);
-	memcpy(array.ptrw(), data->address_offset_by(0), length * sizeof(Vector3));
+	memcpy(array.ptrw(), address, length * sizeof(Vector3));
 	return array;
 }
 
 PackedVector4Array CFFISpan::to_vector4_array() const {
-	ERR_FAIL_COND_V(data == nullptr, PackedVector4Array());
+	ERR_FAIL_COND_V(address == nullptr, PackedVector4Array());
 	ERR_FAIL_COND_V_EDMSG(get_element_type()->get_size() != sizeof(Vector4), PackedVector4Array(), String("Element mismatch, expected Vector4, found %s") % get_element_type()->get_name());
 	PackedVector4Array array;
 	array.resize(length);
-	memcpy(array.ptrw(), data->address_offset_by(0), length * sizeof(Vector4));
+	memcpy(array.ptrw(), address, length * sizeof(Vector4));
 	return array;
 }
 
 PackedColorArray CFFISpan::to_color_array() const {
-	ERR_FAIL_COND_V(data == nullptr, PackedColorArray());
+	ERR_FAIL_COND_V(address == nullptr, PackedColorArray());
 	ERR_FAIL_COND_V_EDMSG(get_element_type()->get_size() != sizeof(Color), PackedColorArray(), String("Element mismatch, expected Color, found %s") % get_element_type()->get_name());
 	PackedColorArray array;
 	array.resize(length);
-	memcpy(array.ptrw(), data->address_offset_by(0), length * sizeof(Color));
+	memcpy(array.ptrw(), address, length * sizeof(Color));
 	return array;
 }
 
 Array CFFISpan::to_array() const {
-	ERR_FAIL_COND_V(data == nullptr, Array());
+	ERR_FAIL_COND_V(address == nullptr, Array());
 	Ref<CFFIType> element_type = get_element_type();
 	Array array;
 	array.resize(length);
 	for (int i = 0; i < length; i++) {
-		if (!element_type->data_to_variant(data->address_offset_by(i), array[i])) {
+		if (!element_type->data_to_variant(address + i * element_type->get_size(), array[i])) {
 			return Array();
 		}
 	}
@@ -251,7 +257,7 @@ void CFFISpan::_bind_methods() {
 }
 
 String CFFISpan::_to_string() const {
-	return String("[%s:%s[%d] 0x%x]") % Array::make(get_class_static(), get_element_type()->get_name(), length, (uint64_t) data->address_offset_by(0));
+	return String("[%s:%s[%d] 0x%x]") % Array::make(get_class_static(), get_element_type()->get_name(), length, (uint64_t) address);
 }
 
 }

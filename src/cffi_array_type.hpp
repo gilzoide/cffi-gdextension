@@ -47,6 +47,11 @@ public:
 	 */
 	bool variant_to_data(const Variant& value, uint8_t *buffer) const override;
 
+	/**
+	 * Construct a CFFIArrayType from the element type and length.
+	 */
+	static Ref<CFFIArrayType> from(const Variant& type, int64_t length);
+
 protected:
 	static void _bind_methods();
 	static ffi_type create_array_type(const ffi_type& element_type, int64_t element_count);

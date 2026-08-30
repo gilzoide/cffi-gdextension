@@ -1,4 +1,5 @@
 #include "cffi_array_type.hpp"
+#include "cffi_owned_array.hpp"
 #include "cffi_span.hpp"
 
 #include <cstdint>
@@ -24,8 +25,7 @@ int64_t CFFIArrayType::get_length() const {
 }
 
 bool CFFIArrayType::data_to_variant(const uint8_t *ptr, Variant& r_variant) const {
-	Ref<CFFIPointer> data = memnew(CFFIPointer(element_type, const_cast<uint8_t*>(ptr)));
-	r_variant = memnew(CFFISpan(data, length));
+	r_variant = memnew(CFFIOwnedArray(element_type, length, ptr));
 	return true;
 }
 
@@ -130,7 +130,24 @@ bool CFFIArrayType::variant_to_data(const Variant& value, uint8_t *buffer) const
 	ERR_FAIL_V_EDMSG(false, String("Invalid type \"%s\" for array type \"%s\"") % Array::make(value.get_type_name(value.get_type()), name));
 }
 
+Ref<CFFIArrayType> CFFIArrayType::from(const Variant& type, int64_t length) {
+	ERR_FAIL_COND_V(length < 0, nullptr);
+	Ref<CFFIType> element_type = CFFIType::from_variant(type, nullptr);
+	if (element_type.is_valid()) {
+		return memnew(CFFIArrayType(element_type, length));
+	}
+	else {
+		return nullptr;
+	}
+}
+
 void CFFIArrayType::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("get_element_type"), &CFFIArrayType::get_element_type);
+	ClassDB::bind_method(D_METHOD("get_length"), &CFFIArrayType::get_length);
+	ClassDB::bind_static_method(get_class_static(), D_METHOD("from", "type", "length"), &CFFIArrayType::from);
+
+	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "element_type", PROPERTY_HINT_NONE, CFFIType::get_class_static(), PROPERTY_USAGE_NONE), "", "get_element_type");
+	ADD_PROPERTY(PropertyInfo(Variant::INT, "length", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NONE), "", "get_length");
 }
 
 ffi_type CFFIArrayType::create_array_type(const ffi_type& element_type, int64_t length) {

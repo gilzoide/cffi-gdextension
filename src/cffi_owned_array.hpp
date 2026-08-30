@@ -1,54 +1,55 @@
-#ifndef __CFFI_OWNED_VALUE_HPP__
-#define __CFFI_OWNED_VALUE_HPP__
+#ifndef __CFFI_OWNED_ARRAY_HPP__
+#define __CFFI_OWNED_ARRAY_HPP__
 
-#include "cffi_pointer.hpp"
+#include "cffi_span.hpp"
 
 using namespace godot;
 
 namespace cffi {
 
 /**
- * Godot object that stores a pointer with managed memory.
+ * Godot object that stores an array with managed memory.
  *
- * This object allocates memory for the value upon construction and releases it when destroyed.
+ * This object allocates memory for the values upon construction and releases it when destroyed.
  */
-class CFFIOwnedValue : public CFFIPointer {
-	GDCLASS(CFFIOwnedValue, CFFIPointer);
+class CFFIOwnedArray : public CFFISpan {
+	GDCLASS(CFFIOwnedArray, CFFISpan);
 public:
 	/**
 	 * Necessary to define a Godot class.
 	 * @warning Never use this constructor.
 	 */
-	CFFIOwnedValue();
+	CFFIOwnedArray();
 	/**
 	 * Allocate a new value of `type`.
 	 *
-	 * @param type  The FFI type for this value.
+	 * @param type  FFI type for the array elements.
 	 *        Must not be null.
+	 * @param length  Number of elements of the owned array.
 	 * @param initialize_with_zeros  If true, the allocated value will be zero-initialized.
 	 *        Otherwise, the allocated memory will not be initialized and may contain garbage data.
 	 */
-	CFFIOwnedValue(Ref<CFFIType> type, bool initialize_with_zeros = true);
+	CFFIOwnedArray(Ref<CFFIType> type, int64_t length, bool initialize_with_zeros = true);
 	/**
 	 * Allocate a new value of `type`, copying bytes from `existing_data`.
 	 *
-	 * @param type  The FFI type for this value.
+	 * @param type  FFI type for the array elements.
 	 *        Must not be null.
+	 * @param length  Number of elements of the owned array.
 	 * @param existing_data  Pointer to the raw data that should be copied to the new value.
 	 *        This should be a valid pointer to a block of data with at least `size` times the given `type` size.
 	 *        If null is passed, the new value will not be initialized and may contain garbage data.
 	 */
-	CFFIOwnedValue(Ref<CFFIType> type, const uint8_t *existing_data);
+	CFFIOwnedArray(Ref<CFFIType> type, int64_t length, const uint8_t *existing_data);
 	/**
 	 * Frees the allocated memory for this value.
 	 */
-	virtual ~CFFIOwnedValue();
+	virtual ~CFFIOwnedArray();
 
 protected:
 	static void _bind_methods();
-	String _to_string() const override;
 };
 
 }
 
-#endif  // __CFFI_OWNED_VALUE_HPP__
+#endif  // __CFFI_OWNED_ARRAY_HPP__

@@ -9,6 +9,7 @@ using namespace godot;
 
 namespace cffi {
 
+class CFFIOwnedArray;
 class CFFIOwnedValue;
 
 /**
@@ -92,11 +93,11 @@ public:
 	Ref<CFFIOwnedValue> duplicate() const;
 
 	/**
-	 * Duplicate data into a new `CFFIOwnedValue`.
+	 * Duplicate data into a new `CFFIOwnedArray`.
 	 *
 	 * @param size  The number of elements to duplicate. Must be a positive number.
 	 */
-	Ref<CFFIOwnedValue> duplicate_array(int64_t size) const;
+	Ref<CFFIOwnedArray> duplicate_array(int64_t length) const;
 
 	/**
 	 * Get a String from this pointer, using ASCII encoding.

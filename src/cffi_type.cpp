@@ -1,4 +1,5 @@
 #include "cffi.hpp"
+#include "cffi_owned_array.hpp"
 #include "cffi_owned_value.hpp"
 #include "cffi_type.hpp"
 
@@ -178,12 +179,12 @@ bool CFFIType::variant_to_data(const Variant& value, uint8_t *buffer) const {
 }
 
 Ref<CFFIOwnedValue> CFFIType::alloc(bool initialize_with_zeros) {
-	return alloc_array(1, initialize_with_zeros);
+	return memnew(CFFIOwnedValue(this, initialize_with_zeros));
 }
 
-Ref<CFFIOwnedValue> CFFIType::alloc_array(int64_t size, bool initialize_with_zeros) {
-	ERR_FAIL_COND_V_MSG(size <= 0, nullptr, "Size must be positive");
-	return memnew(CFFIOwnedValue(this, size, initialize_with_zeros));
+Ref<CFFIOwnedArray> CFFIType::alloc_array(int64_t length, bool initialize_with_zeros) {
+	ERR_FAIL_COND_V_MSG(length <= 0, nullptr, "Size must be positive");
+	return memnew(CFFIOwnedArray(this, length, initialize_with_zeros));
 }
 
 Ref<CFFIType> CFFIType::from_variant(const Variant& var, const CFFIScope *type_scope) {

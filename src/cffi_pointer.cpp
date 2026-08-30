@@ -1,3 +1,5 @@
+#include "cffi_array_type.hpp"
+#include "cffi_owned_array.hpp"
 #include "cffi_owned_value.hpp"
 #include "cffi_pointer.hpp"
 #include "cffi_struct_type.hpp"
@@ -54,12 +56,12 @@ Ref<CFFIPointer> CFFIPointer::cast_elements(const Variant& type) const {
 }
 
 Ref<CFFIOwnedValue> CFFIPointer::duplicate() const {
-	return duplicate_array(1);
+	return memnew(CFFIOwnedValue(element_type, address));
 }
 
-Ref<CFFIOwnedValue> CFFIPointer::duplicate_array(int64_t size) const {
-	ERR_FAIL_COND_V_MSG(size <= 0, nullptr, "Size must be positive");
-	return memnew(CFFIOwnedValue(element_type, size, address));
+Ref<CFFIOwnedArray> CFFIPointer::duplicate_array(int64_t length) const {
+	ERR_FAIL_COND_V_MSG(length <= 0, nullptr, "Length must be positive");
+	return memnew(CFFIOwnedArray(element_type, length, address));
 }
 
 String CFFIPointer::get_string_from_ascii(int length) const {
@@ -247,6 +249,14 @@ bool CFFIPointer::_get(const StringName& property_name, Variant& r_value) const 
 	if (field_ptr.is_valid()) {
 		if (Object::cast_to<CFFIStructType>(field_ptr->element_type.ptr())) {
 			r_value = field_ptr;
+		}
+		else if (auto array_type = Object::cast_to<CFFIArrayType>(field_ptr->element_type.ptr())) {
+			if (auto length = array_type->get_length(); length > 0) {
+				r_value = memnew(CFFISpan(field_ptr, length));
+			}
+			else {
+				r_value = field_ptr;
+			}
 		}
 		else {
 			r_value = field_ptr->get_value();

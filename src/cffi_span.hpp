@@ -10,7 +10,7 @@ using namespace godot;
 namespace cffi {
 
 class CFFIType;
-class CFFIOwnedValue;
+class CFFIOwnedArray;
 
 /**
  * Object that provides access to a finite number of contiguous elements in memory.
@@ -29,6 +29,10 @@ public:
 	CFFISpan();
 	/**
 	 * Create a new span from an existing `address`, pointing to `length` elements of type `element_type`.
+	 */
+	CFFISpan(Ref<CFFIType> element_type, uint8_t *address, int64_t length);
+	/**
+	 * Create a new span from an existing `pointer`, pointing to `length` elements.
 	 */
 	CFFISpan(Ref<CFFIPointer> pointer, int64_t length);
 
@@ -87,9 +91,9 @@ public:
 	bool set_value(int index, const Variant& value) const;
 
 	/**
-	 * Duplicate data into a new `CFFIOwnedValue`.
+	 * Duplicate data into a new `CFFIOwnedArray`.
 	 */
-	Ref<CFFIOwnedValue> duplicate() const;
+	Ref<CFFIOwnedArray> duplicate() const;
 
 	/**
 	 * Get a String from this span, using ASCII encoding.
@@ -177,7 +181,8 @@ protected:
 	static void _bind_methods();
 	virtual String _to_string() const;
 
-	Ref<CFFIPointer> data;
+	Ref<CFFIType> element_type;
+	uint8_t *address;
 	int64_t length = 0;
 };
 

@@ -28,10 +28,10 @@
 			</description>
 		</method>
 		<method name="duplicate_array" qualifiers="const">
-			<return type="CFFIOwnedValue" />
+			<return type="CFFIOwnedArray" />
 			<param index="0" name="size" type="int" />
 			<description>
-				Duplicate data into a new [CFFIOwnedValue].
+				Duplicate data into a new [CFFIOwnedArray].
 				[param size] represents the number of elements to duplicate. Must be a positive number.
 			</description>
 		</method>

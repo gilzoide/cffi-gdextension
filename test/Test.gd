@@ -54,13 +54,13 @@ func _ready():
 	
 	var charp = CFFI.find_type("char")
 	var hi_msg = charp.alloc_array(3, false)
-	hi_msg.set_value(ord('h'), 0)
-	hi_msg.set_value(ord('i'), 1)
-	hi_msg.set_value(0, 2)
+	hi_msg.set_value(0, ord('h'))
+	hi_msg.set_value(1, ord('i'))
+	hi_msg.set_value(2, 0)
 	printt(hi_msg.get_string_from_ascii())
 	
 	var hi_msg_stream = StreamPeerCFFIPointer.new()
-	hi_msg_stream.pointer = hi_msg
+	hi_msg_stream.pointer = hi_msg.data
 	hi_msg_stream.size = 2
 	printt(hi_msg_stream.get_available_bytes(), hi_msg_stream.get_utf8_string(1), hi_msg_stream.get_utf8_string(1), hi_msg_stream.get_available_bytes())
 	
@@ -91,8 +91,8 @@ func _ready():
 	var int_ptr = CFFI["int"].alloc()
 	assert(int_ptr.get_value() == 0)
 	for i in int_array_size:
-		CFFI.memcpy(int_ptr, int_array.offset_by(1), int_ptr.get_element_type().get_size())
-		assert(int_ptr.get_value() == int_array.get_value(1))
+		CFFI.memcpy(int_ptr, int_array.get_pointer(i), int_ptr.element_type.size)
+		assert(int_ptr.get_value() == int_array.get_value(i))
 	
 	# Memset + get_pointer
 	var bytes = PackedByteArray([1, 2, 3, 4, 5])
