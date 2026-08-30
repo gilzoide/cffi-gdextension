@@ -18,7 +18,7 @@ uint32_t CFFITypeTuple::size() const {
 
 String CFFITypeTuple::to_string() const {
 	PackedStringArray types_str;
-	for (int i = 0; i < fields.size(); i++) {
+	for (int i = 0; i < fields.size(); ++i) {
 		types_str.append(fields[i]->get_name());
 	}
 	return String("(%s)") % String(", ").join(types_str);
@@ -26,11 +26,15 @@ String CFFITypeTuple::to_string() const {
 
 ffi_type **CFFITypeTuple::get_element_types() {
 	if (ffi_fields.is_empty()) {
-		ffi_fields.resize(fields.size() + 1);
-		for (int i = 0; i < fields.size(); i++) {
-			ffi_fields[i] = &fields[i]->get_ffi_type();
+		bool needs_padding;
+		for (int i = 0; i < fields.size(); ++i) {
+			ffi_type& t = fields[i]->get_ffi_type();
+			// filter-out zero-sized arrays
+			if (t.size != 0 || t.type != FFI_TYPE_STRUCT) {
+				ffi_fields.push_back(&t);
+			}
 		}
-		ffi_fields[fields.size()] = nullptr;
+		ffi_fields.push_back(nullptr);
 	}
 	return ffi_fields.ptr();
 }
