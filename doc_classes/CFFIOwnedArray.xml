@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <class name="CFFIOwnedArray" inherits="CFFISpan" api_type="extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
 	<brief_description>
+		Godot object that stores an array with managed memory, which is released automatically.
 	</brief_description>
 	<description>
+		This object can be allocated using [method CFFIType.alloc_array]. This object is also returned by [CFFIFunction]s that return array values.
 	</description>
 	<tutorials>
 	</tutorials>

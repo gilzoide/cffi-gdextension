@@ -30,12 +30,25 @@ func test_struct_with_zero_sized_array() -> bool:
 	
 	var struct_long_data = CFFI.define_struct("test_struct_with_zero_sized_array_long", {
 		"length": "int32_t",
-		"data": "int64_t[0]",  # bigger alignment than length
+		"data": "int64_t[0]",  # bigger alignment than length in most archs
 	})
 	assert(struct_long_data.offset_of("length") == 0)
-	assert(struct_long_data.offset_of("data") == CFFI["int64_t"].size)
+	assert(struct_long_data.offset_of("data") >= CFFI["int32_t"].size)
 	assert(struct_long_data.offset_of("data") == struct_long_data.size)
 	
 	var struct_instance = struct_long_data.alloc()
 	assert(struct_instance.data is CFFIPointer)
+	return true
+
+
+func test_struct_with_sized_array() -> bool:
+	var struct = CFFI.define_struct("test_struct_with_sized_array", {
+		"chars": "char[5]",
+		"i": "int",
+	})
+	assert(struct.offset_of("i") == 8)
+	
+	var struct_instance = struct.alloc()
+	assert(struct_instance.chars is CFFISpan)
+	assert(struct_instance.chars.length == 5)
 	return true

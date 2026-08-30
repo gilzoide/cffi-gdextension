@@ -7,6 +7,17 @@
 	</description>
 	<tutorials>
 	</tutorials>
+	<methods>
+		<method name="from" qualifiers="static">
+			<return type="CFFIPointerType" />
+			<param index="0" name="type" type="Variant" />
+			<description>
+				Creates a new [CFFIPointerType] with the specified element type.
+				If [param type] is not a valid CFFI type, returns [code]null[/code].
+	 			See [method CFFI.find_type].
+			</description>
+		</method>
+	</methods>
 	<members>
 		<member name="element_type" type="CFFIType" setter="" getter="get_element_type">
 			Type of pointed elements.

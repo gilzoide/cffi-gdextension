@@ -7,6 +7,18 @@
 	</description>
 	<tutorials>
 	</tutorials>
+	<methods>
+		<method name="from" qualifiers="static">
+			<return type="CFFIArrayType" />
+			<param index="0" name="type" type="Variant" />
+			<param index="1" name="length" type="int" />
+			<description>
+				Creates a new [CFFIArrayType] with the specified element type and length.
+				If [param type] is not a valid CFFI type, returns [code]null[/code].
+	 			See [method CFFI.find_type].
+			</description>
+		</method>
+	</methods>
 	<members>
 		<member name="element_type" type="CFFIType" setter="" getter="get_element_type">
 			Type of array elements.
