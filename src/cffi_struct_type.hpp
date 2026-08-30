@@ -89,6 +89,7 @@ private:
 	CFFIStructType(const String& name, CFFITypeTuple&& fields, HashMap<StringName, int>&& field_map);
 
 	ffi_type create_struct_type();
+	void fill_extra_offsets();
 };
 
 }

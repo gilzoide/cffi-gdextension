@@ -26,17 +26,21 @@ CFFIStructType::CFFIStructType(const String& name, CFFITypeTuple&& fields, HashM
 		default:
 			break;
 	}
+	fill_extra_offsets();
 }
 
 Ref<CFFIStructType> CFFIStructType::from_dictionary(const String& name, const Dictionary& fields, CFFIScope *type_scope) {
 	CFFITypeTuple field_types = CFFITypeTuple::from_array(fields.values(), type_scope);
-	Array names = fields.keys();
-	if (field_types.size() != names.size()) {
+	if (field_types.size() != fields.size()) {
 		return nullptr;
 	}
+	Array names = fields.keys();
 	HashMap<StringName, int> field_map;
-	for (int i = 0; i < names.size(); i++) {
-		field_map[names[i]] = i;
+	for (int i = 0, field_index = 0; i < names.size(); i++) {
+		field_map[names[i]] = field_index;
+		if (field_types.get_fields()[i]->get_size() != 0) {
+			++field_index;
+		}
 	}
 	return memnew(CFFIStructType(name, std::move(field_types), std::move(field_map)));
 }
@@ -109,6 +113,23 @@ ffi_type CFFIStructType::create_struct_type() {
 	type.type = FFI_TYPE_STRUCT;
 	type.elements = get_element_types();
 	return type;
+}
+
+void CFFIStructType::fill_extra_offsets() {
+	unsigned int ffi_fields_size = ffi_fields.size() - 1; // -1 to account for the ending nullptr
+	if (ffi_fields_size == fields.size()) {
+		return;
+	}
+
+	int alignment = get_alignment();
+	for (unsigned int i = ffi_fields_size; i < fields.size(); ++i) {
+		alignment = MAX(alignment, fields[i]->get_alignment());
+	}
+
+	size_t aligned_size = ROUND_UP(get_size(), alignment);
+	for (unsigned int i = ffi_fields_size; i < fields.size(); ++i) {
+		offsets[i] = aligned_size;
+	}
 }
 
 void CFFIStructType::_bind_methods() {
