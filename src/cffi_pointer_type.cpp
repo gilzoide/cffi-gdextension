@@ -129,8 +129,19 @@ bool CFFIPointerType::variant_to_data(const Variant& value, uint8_t *buffer) con
 	ERR_FAIL_V_EDMSG(false, String("Invalid type \"%s\" for pointer type \"%s\"") % Array::make(value.get_type_name(value.get_type()), name));
 }
 
+Ref<CFFIPointerType> CFFIPointerType::from(const Variant& type) {
+	Ref<CFFIType> element_type = CFFIType::from_variant(type, nullptr);
+	if (element_type.is_valid()) {
+		return memnew(CFFIPointerType(element_type));
+	}
+	else {
+		return nullptr;
+	}
+}
+
 void CFFIPointerType::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_element_type"), &CFFIPointerType::get_element_type);
+	ClassDB::bind_static_method(get_class_static(), D_METHOD("from", "type"), &CFFIPointerType::from);
 
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "element_type", PROPERTY_HINT_NONE, CFFIType::get_class_static(), PROPERTY_USAGE_NONE), "", "get_element_type");
 }

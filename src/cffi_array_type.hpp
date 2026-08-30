@@ -49,6 +49,9 @@ public:
 
 	/**
 	 * Construct a CFFIArrayType from the element type and length.
+	 *
+	 * If `type` is not a valid CFFI type, returns `nullptr`.
+	 * @see CFFIType::from_variant
 	 */
 	static Ref<CFFIArrayType> from(const Variant& type, int64_t length);
 

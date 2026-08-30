@@ -51,6 +51,14 @@ public:
 	 */
 	bool variant_to_data(const Variant& value, uint8_t *buffer) const override;
 
+	/**
+	 * Construct a CFFIPointerType from the element type.
+	 *
+	 * If `type` is not a valid CFFI type, returns `nullptr`.
+	 * @see CFFIType::from_variant
+	 */
+	static Ref<CFFIPointerType> from(const Variant& type);
+
 protected:
 	static void _bind_methods();
 
