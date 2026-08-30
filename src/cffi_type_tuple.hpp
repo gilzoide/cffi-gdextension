@@ -39,6 +39,10 @@ public:
 	/**
 	 * Get the tuple's inner fields list.
 	 */
+	CFFITypeVector& get_fields();
+	/**
+	 * Get the tuple's inner fields list.
+	 */
 	const CFFITypeVector& get_fields() const;
 
 	/**
@@ -57,19 +61,6 @@ public:
 	 * @see CFFIType::from_variant
 	 */
 	static CFFITypeTuple from_array(const Array& array, const CFFIScope *type_scope);
-
-	auto begin() {
-		return fields.begin();
-	}
-	auto end() {
-		return fields.end();
-	}
-	auto begin() const {
-		return fields.begin();
-	}
-	auto end() const {
-		return fields.end();
-	}
 
 protected:
 	CFFITypeVector fields;

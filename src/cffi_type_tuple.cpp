@@ -8,6 +8,10 @@ CFFITypeTuple::CFFITypeTuple() {}
 CFFITypeTuple::CFFITypeTuple(CFFITypeVector&& fields) : fields(fields) {}
 CFFITypeTuple::CFFITypeTuple(const CFFITypeVector& fields) : fields(fields) {}
 
+CFFITypeVector& CFFITypeTuple::get_fields() {
+	return fields;
+}
+
 const CFFITypeVector& CFFITypeTuple::get_fields() const {
 	return fields;
 }

@@ -15,7 +15,7 @@ CFFIFunction::CFFIFunction(const String& name, void *address, const Ref<CFFIType
 	, is_variadic(is_variadic)
 {
 	// decay arrays into pointer
-	for (auto& arg_type : this->argument_types) {
+	for (auto& arg_type : this->argument_types.get_fields()) {
 		if (auto array_type = Object::cast_to<CFFIArrayType>(arg_type.ptr())) {
 			arg_type = Ref(memnew(CFFIPointerType(array_type->get_element_type())));
 		}
