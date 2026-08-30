@@ -126,9 +126,9 @@ void CFFIStructType::fill_extra_offsets() {
 		alignment = MAX(alignment, fields[i]->get_alignment());
 	}
 
-	size_t aligned_size = ROUND_UP(get_size(), alignment);
+	ffi_handle.size = ROUND_UP(get_size(), alignment);
 	for (unsigned int i = ffi_fields_size; i < fields.size(); ++i) {
-		offsets[i] = aligned_size;
+		offsets[i] = ffi_handle.size;
 	}
 }
 

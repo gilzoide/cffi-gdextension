@@ -26,6 +26,7 @@ func test_struct_with_zero_sized_array() -> bool:
 	})
 	assert(struct_int_data.offset_of("length") == 0)
 	assert(struct_int_data.offset_of("data") == CFFI["int32_t"].size)
+	assert(struct_int_data.offset_of("data") == struct_int_data.size)
 	
 	var struct_long_data = CFFI.define_struct("test_struct_with_zero_sized_array_long", {
 		"length": "int32_t",
@@ -33,4 +34,8 @@ func test_struct_with_zero_sized_array() -> bool:
 	})
 	assert(struct_long_data.offset_of("length") == 0)
 	assert(struct_long_data.offset_of("data") == CFFI["int64_t"].size)
+	assert(struct_long_data.offset_of("data") == struct_long_data.size)
+	
+	var struct_instance = struct_long_data.alloc()
+	assert(struct_instance.data is CFFIPointer)
 	return true
