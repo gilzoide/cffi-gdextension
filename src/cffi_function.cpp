@@ -1,4 +1,6 @@
+#include "cffi_array_type.hpp"
 #include "cffi_function.hpp"
+#include "cffi_pointer_type.hpp"
 #include "cffi_type.hpp"
 #include "cffi_value_tuple.hpp"
 
@@ -6,8 +8,18 @@ namespace cffi {
 
 CFFIFunction::CFFIFunction() {}
 CFFIFunction::CFFIFunction(const String& name, void *address, const Ref<CFFIType>& return_type, const CFFITypeTuple& argument_types, bool is_variadic, ffi_abi abi)
-	: name(name), address(address), return_type(return_type), argument_types(argument_types), is_variadic(is_variadic)
+	: name(name)
+	, address(address)
+	, return_type(return_type)
+	, argument_types(argument_types)
+	, is_variadic(is_variadic)
 {
+	// decay arrays into pointer
+	for (auto& arg_type : this->argument_types) {
+		if (auto array_type = Object::cast_to<CFFIArrayType>(arg_type.ptr())) {
+			arg_type = Ref(memnew(CFFIPointerType(array_type->get_element_type())));
+		}
+	}
 	ffi_status status = ffi_prep_cif(&ffi_handle, abi, argument_types.size(), &return_type->get_ffi_type(), this->argument_types.get_element_types());
 	ERR_FAIL_COND(status != FFI_OK);
 }
