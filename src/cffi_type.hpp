@@ -19,6 +19,24 @@ class CFFIType : public RefCounted {
 	GDCLASS(CFFIType, RefCounted);
 public:
 	/**
+	 * Which field-handling branch a type takes when a struct field is read.
+	 *
+	 * A cheap alternative to `Object::cast_to` for that decision: the hierarchy
+	 * walk costs ~21ns, this is a member read. Only the composite types that
+	 * hold other values need naming - everything else, pointers included, is a
+	 * leaf read through `data_to_variant`, and `Other` says so.
+	 *
+	 * Deliberately NOT bound to GDScript, so it stays an implementation detail.
+	 */
+	enum class TypeKind {
+		Other,
+		Array,
+		Struct,
+	};
+
+	TypeKind type_kind() const { return kind; }
+
+	/**
 	 * Necessary to define a Godot class.
 	 * @warning Never use this constructor.
 	 */
@@ -117,6 +135,7 @@ protected:
 
 	String name;
 	ffi_type ffi_handle;
+	TypeKind kind = TypeKind::Other;
 };
 
 }

@@ -126,8 +126,13 @@ String CFFISpan::get_string_from_wchar() const {
 PackedByteArray CFFISpan::to_byte_array() const {
 	ERR_FAIL_COND_V(address == nullptr, PackedByteArray());
 	PackedByteArray array;
-	array.resize(length);
-	memcpy(array.ptrw(), address, length);
+	// The whole span, in bytes: `length` counts elements, which are not
+	// necessarily 1 byte each.
+	int64_t size_bytes = get_size_bytes();
+	array.resize(size_bytes);
+	if (size_bytes > 0) {
+		memcpy(array.ptrw(), address, size_bytes);
+	}
 	return array;
 }
 

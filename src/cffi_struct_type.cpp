@@ -7,12 +7,17 @@
 
 namespace cffi {
 
-CFFIStructType::CFFIStructType() {}
-CFFIStructType::CFFIStructType(const String& name, CFFITypeTuple&& fields, HashMap<StringName, int>&& field_map)
+CFFIStructType::CFFIStructType() {
+	kind = TypeKind::Struct;
+}
+CFFIStructType::CFFIStructType(const String& name, CFFITypeTuple&& fields, HashMap<StringName, int>&& field_map, HashMap<StringName, int>&& offset_map, LocalVector<int>&& offset_index_by_field)
 	: CFFITypeTuple(fields)
 	, CFFIType(name, create_struct_type())
 	, field_map(field_map)
+	, offset_map(offset_map)
+	, offset_index_by_field(offset_index_by_field)
 {
+	kind = TypeKind::Struct;
 	offsets.resize(fields.size());
 	switch (ffi_get_struct_offsets(FFI_DEFAULT_ABI, &ffi_handle, offsets.ptr())) {
 		case FFI_BAD_ABI:
@@ -35,24 +40,50 @@ Ref<CFFIStructType> CFFIStructType::from_dictionary(const String& name, const Di
 		return nullptr;
 	}
 	Array names = fields.keys();
+	// Two index spaces, so two maps. `fields` is indexed by declaration order;
+	// `offsets` is indexed the way the FFI sees the struct, where a zero-sized
+	// field (a flexible array member) has no slot of its own and shares the one
+	// belonging to the field after it. Mapping a name to the FFI index and then
+	// using that to look up `fields` gave every field declared after a flexible
+	// array member the flexible member's own type.
 	HashMap<StringName, int> field_map;
-	for (int i = 0, field_index = 0; i < names.size(); i++) {
-		field_map[names[i]] = field_index;
+	HashMap<StringName, int> offset_map;
+	LocalVector<int> offset_index_by_field;
+	offset_index_by_field.resize(names.size());
+	for (int i = 0, offset_index = 0; i < names.size(); i++) {
+		field_map[names[i]] = i;
+		offset_map[names[i]] = offset_index;
+		offset_index_by_field[i] = offset_index;
 		if (field_types.get_fields()[i]->get_size() != 0) {
-			++field_index;
+			++offset_index;
 		}
 	}
-	return memnew(CFFIStructType(name, std::move(field_types), std::move(field_map)));
+	return memnew(CFFIStructType(name, std::move(field_types), std::move(field_map),
+		std::move(offset_map), std::move(offset_index_by_field)));
 }
 
 Ref<CFFIType> CFFIStructType::type_of(const StringName& field_name) const {
+	Ref<CFFIType> type = find_type_of(field_name);
+	ERR_FAIL_COND_V_EDMSG(type.is_null(), nullptr, String("Unknown field: \"%s\"") % field_name);
+	return type;
+}
+
+const Ref<CFFIType> *CFFIStructType::find_field(const StringName& field_name, int64_t& r_offset) const {
 	const int *index_ptr = field_map.getptr(field_name);
-	ERR_FAIL_COND_V_EDMSG(index_ptr == nullptr, nullptr, String("Unknown field: \"%s\"") % field_name);
-	return fields[*index_ptr];
+	if (index_ptr == nullptr) {
+		return nullptr;
+	}
+	r_offset = offsets[offset_index_by_field[*index_ptr]];
+	return &fields[*index_ptr];
+}
+
+Ref<CFFIType> CFFIStructType::find_type_of(const StringName& field_name) const {
+	const int *index_ptr = field_map.getptr(field_name);
+	return index_ptr ? fields[*index_ptr] : Ref<CFFIType>();
 }
 
 int64_t CFFIStructType::offset_of(const StringName& field_name) const {
-	const int *index_ptr = field_map.getptr(field_name);
+	const int *index_ptr = offset_map.getptr(field_name);
 	ERR_FAIL_COND_V_EDMSG(index_ptr == nullptr, -1, String("Unknown field: \"%s\"") % field_name);
 	return offsets[*index_ptr];
 }
@@ -61,7 +92,7 @@ Dictionary CFFIStructType::get_dictionary_from_struct_data(const uint8_t *ptr) c
 	Dictionary dict;
 	for (auto it : field_map) {
 		int index = it.value;
-		fields[index]->data_to_variant(ptr + offsets[index], dict[it.key]);
+		fields[index]->data_to_variant(ptr + offsets[offset_map[it.key]], dict[it.key]);
 	}
 	return dict;
 }
@@ -70,7 +101,7 @@ void CFFIStructType::dictionary_to_data(const Dictionary& dict, uint8_t *buffer)
 	for (auto it : field_map) {
 		auto field_type = fields[it.value];
 		Variant value = dict.get(it.key, Variant());
-		size_t offset = offsets[it.value];
+		size_t offset = offsets[offset_map[it.key]];
 		if (value.booleanize()) {
 			field_type->variant_to_data(value, buffer + offset);
 		}
