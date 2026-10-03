@@ -198,7 +198,7 @@ Ref<CFFIPointer> CFFIPointer::get_field(const StringName& field) const {
 		return nullptr;
 	}
 
-	auto field_type = struct_type->type_of(field);
+	auto field_type = struct_type->find_type_of(field);
 	if (field_type.is_null()) {
 		return nullptr;
 	}
@@ -245,27 +245,43 @@ void CFFIPointer::_bind_methods() {
 }
 
 bool CFFIPointer::_get(const StringName& property_name, Variant& r_value) const {
-	auto field_ptr = get_field(property_name);
-	if (field_ptr.is_valid()) {
-		if (Object::cast_to<CFFIStructType>(field_ptr->element_type.ptr())) {
-			r_value = field_ptr;
-		}
-		else if (auto array_type = Object::cast_to<CFFIArrayType>(field_ptr->element_type.ptr())) {
-			if (auto length = array_type->get_length(); length > 0) {
-				r_value = memnew(CFFISpan(field_ptr, length));
-			}
-			else {
-				r_value = field_ptr;
-			}
-		}
-		else {
-			r_value = field_ptr->get_value();
-		}
-		return true;
-	}
-	else {
+	// A property is either a struct field or one of the pointer's own properties
+	// ("address", "element_type"). Only claim the name when it really is a field:
+	// erroring on an unknown field here would shadow those properties.
+	auto struct_type = Object::cast_to<CFFIStructType>(element_type.ptr());
+	if (!struct_type) {
 		return false;
 	}
+	Ref<CFFIType> field_type = struct_type->find_type_of(property_name);
+	if (field_type.is_null()) {
+		return false;
+	}
+	uint8_t *field_address = address + struct_type->offset_of(property_name);
+
+	// One object per access, as before: each branch knows the type it wants, and
+	// building a CFFIPointer up front would leave it discarded on the two array
+	// paths.
+	if (Object::cast_to<CFFIStructType>(field_type.ptr())) {
+		r_value = memnew(CFFIPointer(field_type, field_address));
+	}
+	else if (auto array_type = Object::cast_to<CFFIArrayType>(field_type.ptr())) {
+		int64_t length = array_type->get_length();
+		if (length > 0) {
+			// Span the ELEMENT type. Spanning the array type itself would stride
+			// by sizeof(T[N]) per element and read past the field.
+			r_value = memnew(CFFISpan(array_type->get_element_type(), field_address, length));
+		}
+		else {
+			// Zero-length array, ie. a flexible array member: the element count
+			// lives elsewhere, so hand back the first element. A pointer to `T[0]`
+			// would stride by zero bytes and be unusable for indexing.
+			r_value = memnew(CFFIPointer(array_type->get_element_type(), field_address));
+		}
+	}
+	else {
+		r_value = Ref<CFFIPointer>(memnew(CFFIPointer(field_type, field_address)))->get_value();
+	}
+	return true;
 }
 
 bool CFFIPointer::_set(const StringName& property_name, const Variant& value) {

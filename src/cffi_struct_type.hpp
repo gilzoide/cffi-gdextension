@@ -30,6 +30,14 @@ public:
 	 */
 	Ref<CFFIType> type_of(const StringName& field_name) const;
 	/**
+	 * @return Type of the field named `field_name`, or `null` if there is no such field.
+	 *
+	 * Unlike `type_of`, an unknown field name is not an error. Use this when
+	 * probing whether a name is a field at all, such as when resolving a
+	 * property access that may be referring to something else entirely.
+	 */
+	Ref<CFFIType> find_type_of(const StringName& field_name) const;
+	/**
 	 * @return Offset of the field named `field_name`, in bytes.
 	 *         Returns `-1` if the field cannot be found in the struct.
 	 */
@@ -83,10 +91,18 @@ protected:
 	String _to_string() const override;
 
 	HashMap<StringName, int> field_map;
+	/**
+	 * Field name to index in `offsets`.
+	 *
+	 * Differs from `field_map` for a field declared after a zero-sized array: the
+	 * FFI gives a zero-sized field no slot of its own, so it and the following
+	 * field share one, and `offsets` has fewer meaningful entries than `fields`.
+	 */
+	HashMap<StringName, int> offset_map;
 	LocalVector<size_t> offsets;
 
 private:
-	CFFIStructType(const String& name, CFFITypeTuple&& fields, HashMap<StringName, int>&& field_map);
+	CFFIStructType(const String& name, CFFITypeTuple&& fields, HashMap<StringName, int>&& field_map, HashMap<StringName, int>&& offset_map);
 
 	ffi_type create_struct_type();
 	void fill_extra_offsets();
