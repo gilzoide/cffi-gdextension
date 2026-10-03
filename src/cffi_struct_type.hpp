@@ -38,6 +38,15 @@ public:
 	 */
 	Ref<CFFIType> find_type_of(const StringName& field_name) const;
 	/**
+	 * Resolve a field in a single probe, for the hot path.
+	 *
+	 * Returns the field's type — borrowed, valid for as long as this struct type
+	 * is — and writes its byte offset into `r_offset`, or returns null if there
+	 * is no such field. Not bound to GDScript: it exists so reading a field does
+	 * one hash lookup instead of two, and no reference count traffic.
+	 */
+	const Ref<CFFIType> *find_field(const StringName& field_name, int64_t& r_offset) const;
+	/**
 	 * @return Offset of the field named `field_name`, in bytes.
 	 *         Returns `-1` if the field cannot be found in the struct.
 	 */
@@ -99,10 +108,15 @@ protected:
 	 * field share one, and `offsets` has fewer meaningful entries than `fields`.
 	 */
 	HashMap<StringName, int> offset_map;
+	/**
+	 * Declared field index to `offsets` index, so a name resolved through
+	 * `field_map` can reach its offset without a second hash lookup.
+	 */
+	LocalVector<int> offset_index_by_field;
 	LocalVector<size_t> offsets;
 
 private:
-	CFFIStructType(const String& name, CFFITypeTuple&& fields, HashMap<StringName, int>&& field_map, HashMap<StringName, int>&& offset_map);
+	CFFIStructType(const String& name, CFFITypeTuple&& fields, HashMap<StringName, int>&& field_map, HashMap<StringName, int>&& offset_map, LocalVector<int>&& offset_index_by_field);
 
 	ffi_type create_struct_type();
 	void fill_extra_offsets();

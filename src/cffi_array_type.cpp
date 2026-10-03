@@ -8,12 +8,15 @@ using namespace godot;
 
 namespace cffi {
 
-CFFIArrayType::CFFIArrayType() {}
+CFFIArrayType::CFFIArrayType() {
+	kind = TypeKind::Array;
+}
 CFFIArrayType::CFFIArrayType(Ref<CFFIType> element_type, int64_t length)
 	: CFFIType(String("%s[%d]") % Array::make(element_type->get_name(), length), create_array_type(element_type->get_ffi_type(), length))
 	, element_type(element_type)
 	, length(length)
 {
+	kind = TypeKind::Array;
 }
 
 Ref<CFFIType> CFFIArrayType::get_element_type() const {

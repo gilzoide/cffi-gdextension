@@ -7,13 +7,17 @@
 
 namespace cffi {
 
-CFFIStructType::CFFIStructType() {}
-CFFIStructType::CFFIStructType(const String& name, CFFITypeTuple&& fields, HashMap<StringName, int>&& field_map, HashMap<StringName, int>&& offset_map)
+CFFIStructType::CFFIStructType() {
+	kind = TypeKind::Struct;
+}
+CFFIStructType::CFFIStructType(const String& name, CFFITypeTuple&& fields, HashMap<StringName, int>&& field_map, HashMap<StringName, int>&& offset_map, LocalVector<int>&& offset_index_by_field)
 	: CFFITypeTuple(fields)
 	, CFFIType(name, create_struct_type())
 	, field_map(field_map)
 	, offset_map(offset_map)
+	, offset_index_by_field(offset_index_by_field)
 {
+	kind = TypeKind::Struct;
 	offsets.resize(fields.size());
 	switch (ffi_get_struct_offsets(FFI_DEFAULT_ABI, &ffi_handle, offsets.ptr())) {
 		case FFI_BAD_ABI:
@@ -44,20 +48,33 @@ Ref<CFFIStructType> CFFIStructType::from_dictionary(const String& name, const Di
 	// array member the flexible member's own type.
 	HashMap<StringName, int> field_map;
 	HashMap<StringName, int> offset_map;
+	LocalVector<int> offset_index_by_field;
+	offset_index_by_field.resize(names.size());
 	for (int i = 0, offset_index = 0; i < names.size(); i++) {
 		field_map[names[i]] = i;
 		offset_map[names[i]] = offset_index;
+		offset_index_by_field[i] = offset_index;
 		if (field_types.get_fields()[i]->get_size() != 0) {
 			++offset_index;
 		}
 	}
-	return memnew(CFFIStructType(name, std::move(field_types), std::move(field_map), std::move(offset_map)));
+	return memnew(CFFIStructType(name, std::move(field_types), std::move(field_map),
+		std::move(offset_map), std::move(offset_index_by_field)));
 }
 
 Ref<CFFIType> CFFIStructType::type_of(const StringName& field_name) const {
 	Ref<CFFIType> type = find_type_of(field_name);
 	ERR_FAIL_COND_V_EDMSG(type.is_null(), nullptr, String("Unknown field: \"%s\"") % field_name);
 	return type;
+}
+
+const Ref<CFFIType> *CFFIStructType::find_field(const StringName& field_name, int64_t& r_offset) const {
+	const int *index_ptr = field_map.getptr(field_name);
+	if (index_ptr == nullptr) {
+		return nullptr;
+	}
+	r_offset = offsets[offset_index_by_field[*index_ptr]];
+	return &fields[*index_ptr];
 }
 
 Ref<CFFIType> CFFIStructType::find_type_of(const StringName& field_name) const {
