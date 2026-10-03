@@ -2,6 +2,7 @@
 #include "cffi.hpp"
 #include "cffi_function.hpp"
 #include "cffi_pointer.hpp"
+#include "cffi_span.hpp"
 
 namespace cffi {
 
@@ -115,6 +116,13 @@ bool CFFIPointerType::variant_to_data(const Variant& value, uint8_t *buffer) con
 		case Variant::Type::OBJECT:
 			if (auto pointer_value = Object::cast_to<CFFIPointer>(value)) {
 				*(uint8_t **) buffer = pointer_value->address_offset_by(0);
+				return true;
+			}
+			// A span is a pointer plus a length. The length is irrelevant to a
+			// pointer parameter, so accept it and pass the base address: without
+			// this, handing a span to a `T *` parameter is a conversion error.
+			if (auto span_value = Object::cast_to<CFFISpan>(value)) {
+				*(uint8_t **) buffer = span_value->get_data()->address_offset_by(0);
 				return true;
 			}
 			if (auto function_value = Object::cast_to<CFFIFunction>(value)) {

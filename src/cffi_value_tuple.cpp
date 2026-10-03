@@ -9,6 +9,7 @@ using namespace godot;
 namespace cffi {
 
 CFFIValueTuple::CFFIValueTuple() {}
+CFFIValueTuple::CFFIValueTuple(int64_t error_index) : error_index(error_index) {}
 CFFIValueTuple::CFFIValueTuple(const PackedByteArray& bytes, const PackedInt32Array& byte_offsets) : bytes(bytes) {
 	value_addresses.resize(byte_offsets.size());
 	const uint8_t *ptr = this->bytes.ptr();
@@ -25,15 +26,23 @@ void * const *CFFIValueTuple::get_value_addresses() const {
 	return value_addresses.ptr();
 }
 
+bool CFFIValueTuple::is_valid() const {
+	return error_index < 0;
+}
+
+int64_t CFFIValueTuple::get_error_index() const {
+	return error_index;
+}
+
 CFFIValueTuple CFFIValueTuple::from_varargs(const CFFITypeTuple& type_tuple, const Variant **args, GDExtensionInt arg_count) {
-	ERR_FAIL_COND_V_EDMSG(type_tuple.size() != arg_count, CFFIValueTuple(), "Array size doesn't match types size");
+	ERR_FAIL_COND_V_EDMSG(type_tuple.size() != arg_count, CFFIValueTuple(-1), "Array size doesn't match types size");
 
 	const CFFITypeVector& fields = type_tuple.get_fields();
 	PackedByteArray buffer;
 	PackedInt32Array offsets;
 	for (GDExtensionInt i = 0; i < arg_count; i++) {
 		offsets.append(buffer.size());
-		ERR_FAIL_COND_V(!fields[i]->variant_to_data(*args[i], buffer), CFFIValueTuple());
+		ERR_FAIL_COND_V(!fields[i]->variant_to_data(*args[i], buffer), CFFIValueTuple(i));
 	}
 	// fixup any string pointers that could have been repositioned by a realloc in buffer
 	for (GDExtensionInt i = 0; i < arg_count - 1; i++) {
@@ -46,14 +55,14 @@ CFFIValueTuple CFFIValueTuple::from_varargs(const CFFITypeTuple& type_tuple, con
 }
 
 CFFIValueTuple CFFIValueTuple::from_array(const CFFITypeTuple& type_tuple, const Array& array) {
-	ERR_FAIL_COND_V_EDMSG(type_tuple.size() != array.size(), CFFIValueTuple(), "Array size doesn't match types size");
+	ERR_FAIL_COND_V_EDMSG(type_tuple.size() != array.size(), CFFIValueTuple(-1), "Array size doesn't match types size");
 
 	const CFFITypeVector& fields = type_tuple.get_fields();
 	PackedByteArray buffer;
 	PackedInt32Array offsets;
 	for (int64_t i = 0; i < array.size(); i++) {
 		offsets.append(buffer.size());
-		ERR_FAIL_COND_V(!fields[i]->variant_to_data(array[i], buffer), CFFIValueTuple());
+		ERR_FAIL_COND_V(!fields[i]->variant_to_data(array[i], buffer), CFFIValueTuple(i));
 	}
 	// fixup any string pointers that could have been repositioned by a realloc in buffer
 	for (GDExtensionInt i = 0; i < array.size() - 1; i++) {

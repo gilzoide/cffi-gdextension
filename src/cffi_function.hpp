@@ -61,6 +61,10 @@ protected:
 	String _to_string() const;
 
 	Variant invoke(const CFFIValueTuple& arguments);
+	/**
+	 * Describe why `argument_data` could not be converted, naming the argument.
+	 */
+	String _argument_error_message(const CFFIValueTuple& argument_data) const;
 
 	String name;
 	void *address;

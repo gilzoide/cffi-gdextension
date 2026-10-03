@@ -25,6 +25,12 @@ CFFIFunction::CFFIFunction(const String& name, void *address, const Ref<CFFIType
 }
 
 Variant CFFIFunction::invoke(const CFFIValueTuple& argument_data) {
+	// The FFI reads one pointer per declared argument straight out of this tuple.
+	// A tuple that failed to convert has no addresses at all, so calling with it
+	// would pass a null argument vector to ffi_call.
+	ERR_FAIL_COND_V_MSG(argument_data.size() != argument_types.size(), Variant(),
+		String("%s expects %d arguments, but %d were converted")
+			% Array::make(name, (int64_t) argument_types.size(), (int64_t) argument_data.size()));
 	PackedByteArray return_data;
 	return_data.resize(MAX(return_type->get_size(), sizeof(ffi_arg)));
 	ffi_call(&ffi_handle, (void(*)()) address, (void *) return_data.ptr(), (void **) argument_data.get_value_addresses());
@@ -43,6 +49,7 @@ Variant CFFIFunction::invokev(const Array& arguments) {
 	}
 
 	CFFIValueTuple argument_data = CFFIValueTuple::from_array(argument_types, arguments);
+	ERR_FAIL_COND_V_EDMSG(!argument_data.is_valid(), Variant(), _argument_error_message(argument_data));
 	return invoke(argument_data);
 }
 
@@ -59,7 +66,22 @@ Variant CFFIFunction::invoke_variadic(const Variant **args, GDExtensionInt arg_c
 	}
 
 	CFFIValueTuple argument_data = CFFIValueTuple::from_varargs(argument_types, args, arg_count);
+	if (!argument_data.is_valid()) {
+		error.error = GDEXTENSION_CALL_ERROR_INVALID_ARGUMENT;
+		error.argument = argument_data.get_error_index();
+		error.expected = argument_types.size();
+		return Variant();
+	}
 	return invoke(argument_data);
+}
+
+String CFFIFunction::_argument_error_message(const CFFIValueTuple& argument_data) const {
+	int64_t index = argument_data.get_error_index();
+	if (index < 0 || index >= argument_types.size()) {
+		return String("%s: arguments could not be converted") % name;
+	}
+	return String("%s: argument %d cannot be converted to %s")
+		% Array::make(name, index, argument_types.get_fields()[index]->get_name());
 }
 
 void *CFFIFunction::get_code_address() const {
